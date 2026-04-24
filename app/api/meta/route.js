@@ -53,10 +53,10 @@ export async function GET(request) {
         return stats.action_values?.find(a => a.action_type === type)?.value || 0;
       };
       
-      const sales = parseInt(getActionValue('offsite_conversion.fb_pixel_purchase'));
-      const revenue = parseFloat(getActionRevenue('offsite_conversion.fb_pixel_purchase'));
-      const checkouts = parseInt(getActionValue('offsite_conversion.fb_pixel_initiate_checkout'));
-      const carts = parseInt(getActionValue('offsite_conversion.fb_pixel_add_to_cart'));
+      const sales = getActionValue('offsite_conversion.fb_pixel_purchase') || getActionValue('purchase') || getActionValue('onsite_conversion.fb_pixel_purchase');
+      const revenue = getActionRevenue('offsite_conversion.fb_pixel_purchase') || getActionRevenue('purchase') || getActionRevenue('onsite_conversion.fb_pixel_purchase');
+      const checkouts = getActionValue('offsite_conversion.fb_pixel_initiate_checkout') || getActionValue('initiate_checkout');
+      const carts = getActionValue('offsite_conversion.fb_pixel_add_to_cart') || getActionValue('add_to_cart');
 
       const calculatedRoas = stats.spend > 0 ? (revenue / parseFloat(stats.spend)) : 0;
 
@@ -76,9 +76,14 @@ export async function GET(request) {
         },
         adsets: adsetData.data?.map(ad => {
           const adInsights = ad.insights?.data?.[0] || {};
-          const adSales = parseInt(adInsights.actions?.find(a => a.action_type === 'offsite_conversion.fb_pixel_purchase')?.value || 0);
-          const adRevenue = parseFloat(adInsights.action_values?.find(a => a.action_type === 'offsite_conversion.fb_pixel_purchase')?.value || 0);
+          
+          const getAdAction = (type) => parseInt(adInsights.actions?.find(a => a.action_type === type)?.value || 0);
+          const getAdVal = (type) => parseFloat(adInsights.action_values?.find(a => a.action_type === type)?.value || 0);
+
+          const adSales = getAdAction('offsite_conversion.fb_pixel_purchase') || getAdAction('purchase') || getAdAction('onsite_conversion.fb_pixel_purchase');
+          const adRevenue = getAdVal('offsite_conversion.fb_pixel_purchase') || getAdVal('purchase') || getAdVal('onsite_conversion.fb_pixel_purchase');
           const adSpend = parseFloat(adInsights.spend || 0);
+
           return {
             name: ad.name,
             status: ad.status,

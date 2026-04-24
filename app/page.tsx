@@ -20,6 +20,9 @@ export default function LowticketGregoriHub() {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<any[]>([]);
   const [input, setInput] = useState("");
+  const [pendingAction, setPendingAction] = useState<any>(null);
+  const [executingAction, setExecutingAction] = useState(false);
+  const [actionLog, setActionLog] = useState<string[]>([]);
 
   useEffect(() => {
     setMounted(true);
@@ -68,16 +71,47 @@ export default function LowticketGregoriHub() {
   const handleSendMessage = async (e: any) => {
     e.preventDefault();
     if (!input.trim()) return;
-    setMessages(prev => [...prev, { role: "user", content: input }]);
+    const userMsg = { role: "user", content: input };
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
     setInput("");
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
-        body: JSON.stringify({ message: input }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: newMessages,
+          metrics: data?.metrics || null,
+          adsets: data?.adsets || [],
+          currentAccount: selectedAccount,
+        }),
       });
       const aiRes = await res.json();
       setMessages(prev => [...prev, { role: "assistant", content: aiRes.response }]);
+      if (aiRes.action) {
+        setPendingAction(aiRes.action);
+      }
     } catch (err) { console.error(err); }
+  };
+
+  const handleExecuteAction = async () => {
+    if (!pendingAction) return;
+    setExecutingAction(true);
+    try {
+      const res = await fetch("/api/jarvis/execute", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: pendingAction }),
+      });
+      const result = await res.json();
+      const logEntry = result.message || (result.success ? "Ação executada" : "Falha na execução");
+      setActionLog(prev => [logEntry, ...prev]);
+      setMessages(prev => [...prev, { role: "assistant", content: `🛡️ **EXECUÇÃO CONFIRMADA**\n\n${logEntry}` }]);
+    } catch (err) {
+      setActionLog(prev => ["❌ Erro na execução", ...prev]);
+    }
+    setPendingAction(null);
+    setExecutingAction(false);
   };
 
   if (!mounted) return <div className="bg-[#050505] min-h-screen" />;
@@ -248,10 +282,49 @@ export default function LowticketGregoriHub() {
       <aside className="jarvis-panel">
         <div className="p-8 border-b border-white/5 bg-white/[0.03] flex items-center gap-4">
           <div className="w-12 h-12 bg-[#00f2ff] rounded-2xl flex items-center justify-center glow-cyan shadow-xl shadow-cyan-500/20"><MessageSquare className="text-black" size={24} /></div>
-          <div><h3 className="text-xs font-black uppercase tracking-[0.2em] italic text-white leading-none">Jarvis Supremo</h3><p className="text-[10px] text-[#00ff88] font-bold uppercase tracking-tighter mt-1 animate-pulse">Orquestrador Ativo</p></div>
+          <div><h3 className="text-xs font-black uppercase tracking-[0.2em] italic text-white leading-none">Jarvis Supremo</h3><p className="text-[10px] text-[#00ff88] font-bold uppercase tracking-tighter mt-1 animate-pulse">Orquestrador Ativo ● Gemini Online</p></div>
         </div>
+
+        {/* Action Pending Banner */}
+        {pendingAction && (
+          <div className="mx-4 mt-4 p-4 rounded-2xl border border-yellow-500/40 bg-yellow-500/5">
+            <p className="text-[10px] font-black uppercase tracking-widest text-yellow-400 mb-3">⚡ Ordem Pendente de Confirmação</p>
+            <p className="text-[11px] text-gray-300 font-bold mb-4">
+              {pendingAction.type === 'pause_adset' && `Pausar: ${pendingAction.adsetName || pendingAction.adsetId}`}
+              {pendingAction.type === 'adjust_budget' && `Escalar ${((pendingAction.budgetMultiplier - 1) * 100).toFixed(0)}%: ${pendingAction.adsetName || pendingAction.adsetId}`}
+            </p>
+            <div className="flex gap-2">
+              <button onClick={handleExecuteAction} disabled={executingAction} className="flex-1 py-3 rounded-xl bg-[#00ff88] text-black text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all disabled:opacity-50">
+                {executingAction ? "Executando..." : "✅ Confirmar"}
+              </button>
+              <button onClick={() => setPendingAction(null)} className="flex-1 py-3 rounded-xl bg-white/5 text-gray-400 text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all">
+                ❌ Cancelar
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Action Log */}
+        {actionLog.length > 0 && (
+          <div className="mx-4 mt-3 p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-2">Log de Execuções</p>
+            {actionLog.slice(0, 3).map((log, i) => (
+              <p key={i} className="text-[10px] text-gray-400 font-bold truncate">{log}</p>
+            ))}
+          </div>
+        )}
+
         <div className="flex-1 overflow-y-auto p-8 space-y-6 scrollbar-hide">
-          {messages.map((msg, i) => (<div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2`}><div className={`max-w-[90%] p-5 rounded-2xl text-[11px] leading-relaxed font-bold shadow-2xl ${msg.role === 'user' ? 'bg-[#00f2ff] text-black italic' : 'bg-white/5 text-gray-300 border border-white/10'}`}>{msg.content}</div></div>))}
+          {messages.length === 0 && (
+            <div className="text-center py-12 space-y-3">
+              <div className="w-16 h-16 bg-cyan-500/10 rounded-3xl flex items-center justify-center mx-auto border border-cyan-500/20">
+                <BrainCircuit className="text-cyan-400" size={32} />
+              </div>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600">Jarvis Aguardando Ordens</p>
+              <p className="text-[9px] text-gray-700 font-bold">Conectado ao Gemini ● Métricas ao Vivo</p>
+            </div>
+          )}
+          {messages.map((msg, i) => (<div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2`}><div className={`max-w-[90%] p-5 rounded-2xl text-[11px] leading-relaxed font-bold shadow-2xl whitespace-pre-wrap ${msg.role === 'user' ? 'bg-[#00f2ff] text-black italic' : 'bg-white/5 text-gray-300 border border-white/10'}`}>{msg.content}</div></div>))}
         </div>
         <form onSubmit={handleSendMessage} className="p-8 bg-black/50 border-t border-white/5 flex gap-3">
           <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Disparar ordem estratégica..." className="flex-1 bg-white/[0.04] border border-white/10 rounded-2xl px-6 py-4 text-[12px] text-white focus:outline-none focus:border-cyan-500/50 font-bold" /><button type="submit" className="bg-[#00f2ff] text-black p-4 rounded-2xl hover:scale-110 active:scale-90 transition-all shadow-xl shadow-cyan-500/30"><Zap size={22} /></button>
