@@ -28,7 +28,6 @@ export async function GET(request) {
     if (type === 'insights' && accountId) {
       const targetId = campaignId || accountId;
       
-      // Insights detalhados com todas as métricas de conversão
       const url = `https://graph.facebook.com/${API_VERSION}/${targetId}/insights?fields=adset_id,adset_name,spend,reach,frequency,cpm,ctr,cpc,actions,action_values,inline_link_clicks,purchase_roas&level=adset&date_preset=${datePreset}&access_token=${token}`;
       
       const res = await fetch(url);
@@ -44,23 +43,21 @@ export async function GET(request) {
         const spend = parseFloat(ad.spend || 0);
         const linkClicks = parseInt(ad.inline_link_clicks || 0);
         
-        // Mapeamento Inteligente: Procura qualquer evento que seja venda ou checkout
-        const getSumActions = (patterns) => {
-          return ad.actions?.filter(a => patterns.some(p => a.action_type.includes(p)))
-                          .reduce((acc, curr) => acc + parseInt(curr.value || 0), 0) || 0;
-        };
+        // MAPEAMENTO CIRÚRGICO (Priorizando Purchase Padrão)
+        const getAction = (type) => parseInt(ad.actions?.find(a => a.action_type === type)?.value || 0);
+        const getRevenue = (type) => parseFloat(ad.action_values?.find(a => a.action_type === type)?.value || 0);
 
-        const getSumRevenue = (patterns) => {
-          return ad.action_values?.filter(a => patterns.some(p => a.action_type.includes(p)))
-                               .reduce((acc, curr) => acc + parseFloat(curr.value || 0), 0) || 0;
-        };
+        // Vendas: Prioriza 'purchase', se zero tenta 'offsite_conversion.fb_pixel_purchase'
+        let sales = getAction('purchase');
+        if (sales === 0) sales = getAction('offsite_conversion.fb_pixel_purchase');
+        
+        let revenue = getRevenue('purchase');
+        if (revenue === 0) revenue = getRevenue('offsite_conversion.fb_pixel_purchase');
 
-        // Captura agressiva de vendas (Purchase, Conversão Customizada, etc.)
-        const sales = getSumActions(['purchase', 'conversion', 'order']);
-        const revenue = getSumRevenue(['purchase', 'conversion', 'order']);
-        const checkouts = getSumActions(['initiate_checkout', 'checkout']);
-        const carts = getSumActions(['add_to_cart', 'cart']);
-        const lpv = getSumActions(['landing_page_view', 'view_content']);
+        // Checkouts, Carts e LPV (Mapeamento Único para evitar duplicidade)
+        const checkouts = getAction('initiate_checkout') || getAction('offsite_conversion.fb_pixel_initiate_checkout');
+        const carts = getAction('add_to_cart') || getAction('offsite_conversion.fb_pixel_add_to_cart');
+        const lpv = getAction('landing_page_view') || getAction('offsite_conversion.fb_pixel_view_content');
 
         totalSpend += spend;
         totalSalesCount += sales;
