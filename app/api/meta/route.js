@@ -27,19 +27,19 @@ export async function GET(request) {
       return NextResponse.json(data);
     }
 
-    // 3. BUSCAR INSIGHTS DETALHADOS (MÉTRICAS COMPLETAS)
+    // 3. BUSCAR INSIGHTS DETALHADOS (MÉTRICAS SUPREMO 2.0)
     if (type === 'insights' && accountId) {
       const targetId = campaignId || accountId;
       
-      // Insights Consolidados
+      // Insights Consolidados (Adicionando Reach e Frequency)
       const insightRes = await fetch(
-        `https://graph.facebook.com/v19.0/${targetId}/insights?fields=spend,purchase_roas,actions,action_values,clicks,impressions,cpc,cpm,cpp,ctr&date_preset=${datePreset}&access_token=${token}`
+        `https://graph.facebook.com/v19.0/${targetId}/insights?fields=spend,purchase_roas,actions,action_values,clicks,impressions,cpc,cpm,cpp,ctr,reach,frequency&date_preset=${datePreset}&access_token=${token}`
       );
       const insightData = await insightRes.json();
       
-      // Detalhes dos Adsets
+      // Detalhes dos Adsets (Adicionando CTR e CPM por conjunto)
       const adsetRes = await fetch(
-        `https://graph.facebook.com/v19.0/${targetId}/adsets?fields=name,status,insights.date_preset(${datePreset}){spend,purchase_roas,actions,action_values}&access_token=${token}`
+        `https://graph.facebook.com/v19.0/${targetId}/adsets?fields=name,status,insights.date_preset(${datePreset}){spend,purchase_roas,actions,action_values,ctr,cpm}&access_token=${token}`
       );
       const adsetData = await adsetRes.json();
 
@@ -64,12 +64,15 @@ export async function GET(request) {
         metrics: {
           spend: parseFloat(stats.spend || 0),
           sales: parseInt(sales),
+          salesValue: parseFloat(revenue || 0),
           roas: parseFloat(calculatedRoas || 0),
           totalCheckouts: parseInt(checkouts),
           totalCarts: parseInt(carts),
-          cpm: parseFloat(stats.cpm || 0),
-          ctr: parseFloat(stats.ctr || 0),
-          cpc: parseFloat(stats.cpc || 0),
+          totalReach: parseInt(stats.reach || 0),
+          avgFrequency: parseFloat(stats.frequency || 0).toFixed(2),
+          cpm: parseFloat(stats.cpm || 0).toFixed(2),
+          ctr: parseFloat(stats.ctr || 0).toFixed(2) + "%",
+          cpc: parseFloat(stats.cpc || 0).toFixed(2),
           clicks: parseInt(stats.clicks || 0),
           impressions: parseInt(stats.impressions || 0),
           cpa: sales > 0 ? (parseFloat(stats.spend || 0) / sales).toFixed(2) : "0.00"
@@ -89,7 +92,10 @@ export async function GET(request) {
             status: ad.status,
             spend: adSpend,
             sales: adSales,
+            salesValue: adRevenue,
             roas: adSpend > 0 ? (adRevenue / adSpend).toFixed(2) : "0.00",
+            ctr: parseFloat(adInsights.ctr || 0).toFixed(2) + "%",
+            cpm: parseFloat(adInsights.cpm || 0).toFixed(2),
             cpa: adSales > 0 ? (adSpend / adSales).toFixed(2) : "0.00"
           };
         }) || []

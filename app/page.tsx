@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import { 
   Zap, MessageSquare, TrendingUp, Target, ShoppingCart, 
   RefreshCw, Cpu, BrainCircuit, Activity, Wallet, Calendar, Search, ArrowRight, CheckCircle2, ShieldCheck, Layers, Terminal as TerminalIcon,
-  BarChart3, MousePointer2, Eye, Percent, Power
+  BarChart3, MousePointer2, Eye, Percent, Power, DollarSign
 } from "lucide-react";
 import { AGENT_REGISTRY, GROUP_CONFIG } from "@/app/lib/agentRegistry";
 
-export default function NexusSupremoV12() {
+export default function NexusSupremoV12Aligned() {
   const [activeProject, setActiveProject] = useState("");
   const [activeTab, setActiveTab] = useState("traffic"); 
   const [mounted, setMounted] = useState(false);
@@ -24,7 +24,6 @@ export default function NexusSupremoV12() {
   const [messages, setMessages] = useState<any[]>([]);
   const [input, setInput] = useState("");
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
-  const [agentSearch, setAgentSearch] = useState("");
   const [lastUpdate, setLastUpdate] = useState("");
 
   useEffect(() => {
@@ -153,7 +152,7 @@ export default function NexusSupremoV12() {
       <main className="flex-1 overflow-y-auto scrollbar-hide flex flex-col bg-[#070707]">
         <header className="h-24 border-b border-white/5 flex items-center px-10 justify-between bg-black/40 sticky top-0 z-20 backdrop-blur-md">
           <div className="flex items-center gap-6">
-            <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10"><span className="text-2xl">{(GROUP_CONFIG as any)[activeTab]?.icon || "📊"}</span></div>
+            <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 shadow-lg shadow-cyan-500/5"><span className="text-2xl">{(GROUP_CONFIG as any)[activeTab]?.icon || "📊"}</span></div>
             <div>
               <h2 className="text-xl font-black uppercase tracking-[4px] text-white italic">{activeTab === 'traffic' ? 'CONSOLIDAÇÃO SUPREMA' : activeTab}</h2>
               <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{selectedAgent ? `Sincronia Alpha: ${selectedAgent.name}` : `Última Sincronização: ${lastUpdate || '--:--:--'}`}</p>
@@ -172,49 +171,51 @@ export default function NexusSupremoV12() {
               <div className="grid grid-cols-3 gap-6 p-4 glass-card border-white/5 bg-white/[0.02] shadow-2xl">
                 <div className="space-y-2"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Conta Alpha</p><select value={selectedAccount} onChange={(e) => setSelectedAccount(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase text-white p-4 focus:outline-none cursor-pointer">{accounts.map(acc => (<option key={acc.id} value={acc.id} className="bg-[#050505]">{acc.name}</option>))}</select></div>
                 <div className="space-y-2 border-x border-white/5"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Campanha Ativa</p><select value={selectedCampaign} onChange={(e) => setSelectedCampaign(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase text-white p-4 focus:outline-none cursor-pointer"><option value="" className="bg-[#050505]">Todas as Campanhas</option>{campaigns.map(camp => (<option key={camp.id} value={camp.id} className="bg-[#050505]">{camp.name}</option>))}</select></div>
-                <div className="space-y-2"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Período Tático</p><div className="flex gap-2 px-4 py-2">{['today', 'yesterday', 'last_7d', 'last_30d'].map(p => (<button key={p} onClick={() => setSelectedDate(p)} className={`px-4 py-2 rounded-lg text-[9px] font-black uppercase transition-all ${selectedDate === p ? 'bg-cyan-500 text-black' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}>{p === 'today' ? 'Hoje' : p === 'yesterday' ? 'Ontem' : p === 'last_7d' ? '7D' : '30D'}</button>))}</div></div>
+                <div className="space-y-2"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Período Tático</p><div className="flex gap-2 px-4 py-2">{['today', 'yesterday', 'last_7d', 'last_30d'].map(p => (<button key={p} onClick={() => setSelectedDate(p)} className={`px-4 py-2 rounded-lg text-[9px] font-black uppercase transition-all ${selectedDate === p ? 'bg-cyan-500 text-black shadow-lg shadow-cyan-500/20' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}>{p === 'today' ? 'Hoje' : p === 'yesterday' ? 'Ontem' : p === 'last_7d' ? '7D' : '30D'}</button>))}</div></div>
               </div>
 
-              {/* CARDS SUPREMO 2.0 */}
-              <div className="grid grid-cols-4 gap-6">
+              {/* CARDS SUPREMO 2.0 (GRADE COMPLETA) */}
+              <div className="grid grid-cols-3 gap-6">
                 {[
                   { label: "Investimento", value: `R$ ${data?.metrics?.spend?.toFixed(2) || "0,00"}`, color: "text-white", icon: Wallet },
-                  { label: "Vendas", value: data?.metrics?.sales || "0", color: "text-[#00ff88]", icon: ShoppingCart },
-                  { label: "ROAS Alpha", value: `${data?.metrics?.roas?.toFixed(2) || "0.00"}x`, color: "text-[#7000ff]", icon: TrendingUp },
+                  { label: "Faturamento Alpha", value: `R$ ${data?.metrics?.salesValue?.toFixed(2) || "0,00"}`, color: "text-[#00ff88]", icon: DollarSign },
+                  { label: "ROAS Supremo", value: `${data?.metrics?.roas?.toFixed(2) || "0.00"}x`, color: "text-[#7000ff]", icon: TrendingUp },
+                  { label: "Vendas (Puras)", value: data?.metrics?.sales || "0", color: "text-[#00ff88]", icon: ShoppingCart },
                   { label: "CPA Médio", value: `R$ ${data?.metrics?.cpa || "0,00"}`, color: "text-red-500", icon: Target },
-                  { label: "Carrinhos (ATC)", value: data?.metrics?.totalCarts || "0", color: "text-cyan-400", icon: ShoppingCart },
                   { label: "Checkouts (IC)", value: data?.metrics?.totalCheckouts || "0", color: "text-yellow-400", icon: ShieldCheck },
                   { label: "Alcance Real", value: data?.metrics?.totalReach?.toLocaleString() || "0", color: "text-blue-400", icon: Eye },
                   { label: "Frequência", value: data?.metrics?.avgFrequency || "0.00", color: "text-purple-400", icon: RefreshCw },
+                  { label: "Carrinhos (ATC)", value: data?.metrics?.totalCarts || "0", color: "text-cyan-400", icon: ShoppingCart },
                 ].map((stat, i) => (
-                  <div key={i} className="glass-card p-8 group hover:border-cyan-500/30 transition-all">
-                    <div className="flex items-center justify-between mb-4"><stat.icon size={18} className="text-gray-600 group-hover:text-cyan-400 transition-colors" /><p className="text-[9px] uppercase font-black tracking-widest text-gray-500">{stat.label}</p></div>
-                    <h3 className={`text-3xl font-black tracking-tighter ${stat.color}`}>{stat.value}</h3>
+                  <div key={i} className="glass-card p-8 group hover:border-cyan-500/30 transition-all shadow-xl">
+                    <div className="flex items-center justify-between mb-4"><stat.icon size={18} className="text-gray-600 group-hover:text-cyan-400 transition-colors" /><p className="text-[10px] uppercase font-black tracking-widest text-gray-500">{stat.label}</p></div>
+                    <h3 className={`text-4xl font-black tracking-tighter ${stat.color} drop-shadow-2xl`}>{stat.value}</h3>
                   </div>
                 ))}
               </div>
 
-              {/* TABELA DE GUERRA (ABO/CBO) */}
+              {/* TABELA DE GUERRA (ALINHADA) */}
               <div className="glass-card !p-0 overflow-hidden border-white/10 shadow-2xl">
-                <div className="p-6 bg-white/[0.02] border-b border-white/5 flex items-center justify-between"><div className="flex items-center gap-3"><Activity className="text-cyan-400 animate-pulse" size={18} /><span className="text-[11px] font-black uppercase tracking-widest text-white">Gerenciamento de Conjuntos Alpha</span></div><span className="text-[9px] font-black text-gray-600 uppercase">Ação Direta</span></div>
+                <div className="p-6 bg-white/[0.02] border-b border-white/5 flex items-center justify-between"><div className="flex items-center gap-3"><Activity className="text-cyan-400 animate-pulse" size={18} /><span className="text-[11px] font-black uppercase tracking-widest text-white">Auditoria de Conjuntos Alpha (ABO/CBO)</span></div><span className="text-[9px] font-black text-gray-600 uppercase">Sincronia Zero-Delay</span></div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-[11px]">
                     <thead className="bg-white/[0.04] text-gray-500 uppercase font-black tracking-widest border-b border-white/5">
                       <tr>
-                        <th className="p-5">Conjunto</th><th className="p-5 text-center">Status</th><th className="p-5 text-center">Gasto</th><th className="p-5 text-center">Vendas</th><th className="p-5 text-center">ROAS</th><th className="p-5 text-center">CTR</th><th className="p-5 text-center">CPM</th><th className="p-5 text-right">Ações</th>
+                        <th className="p-5">Conjunto</th><th className="p-5 text-center">Status</th><th className="p-5 text-center">Gasto</th><th className="p-5 text-center">Vendas</th><th className="p-5 text-center">Valor Gerado</th><th className="p-5 text-center">ROAS</th><th className="p-5 text-center">CTR</th><th className="p-5 text-center">CPM</th><th className="p-5 text-right">Ação</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5">
                       {data?.adsets?.map((ad: any, i: number) => (
                         <tr key={i} className="hover:bg-white/[0.02] transition-colors group">
-                          <td className="p-5 font-black text-gray-300 uppercase italic group-hover:text-cyan-400">{ad.name}</td>
+                          <td className="p-5 font-black text-gray-200 uppercase italic group-hover:text-cyan-400">{ad.name}</td>
                           <td className="p-5 text-center"><span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase ${ad.status === 'ACTIVE' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-500'}`}>{ad.status}</span></td>
                           <td className="p-5 text-center font-bold text-gray-500">R$ {ad.spend?.toFixed(2)}</td>
                           <td className="p-5 text-center text-[#00ff88] font-black text-base">{ad.sales}</td>
+                          <td className="p-5 text-center font-bold text-gray-200">R$ {ad.salesValue?.toFixed(2) || '0,00'}</td>
                           <td className="p-5 text-center font-black text-[#7000ff]">{ad.roas}x</td>
-                          <td className="p-5 text-center font-bold text-gray-500">{ad.ctr || '0.00%'}</td>
-                          <td className="p-5 text-center font-bold text-gray-500">R$ {ad.cpm || '0.00'}</td>
-                          <td className="p-5 text-right"><button className="p-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Power size={14} /></button></td>
+                          <td className="p-5 text-center font-bold text-gray-500">{ad.ctr}</td>
+                          <td className="p-5 text-center font-bold text-gray-500">R$ {ad.cpm}</td>
+                          <td className="p-5 text-right"><button className="p-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-lg"><Power size={14} /></button></td>
                         </tr>
                       ))}
                     </tbody>
@@ -224,13 +225,13 @@ export default function NexusSupremoV12() {
             </div>
           )}
 
-          {/* MODO HUB & CARDS PURISTAS */}
+          {/* MODO HUB & CARDS PURISTAS (FROTA COMPLETA) */}
           {activeTab !== "traffic" && !selectedAgent && (
             <div className="grid grid-cols-3 gap-8 animate-in slide-in-from-bottom-4 duration-500">
               {Object.values(AGENT_REGISTRY).filter(a => a.group === activeTab).map((agent) => (
-                <button key={agent.id} onClick={() => setSelectedAgentId(agent.id)} className="glass-card p-10 text-left hover:border-cyan-500/40 transition-all group relative overflow-hidden">
+                <button key={agent.id} onClick={() => setSelectedAgentId(agent.id)} className="glass-card p-10 text-left hover:border-cyan-500/40 transition-all group relative overflow-hidden shadow-xl">
                   <div className="absolute -right-6 -bottom-6 text-9xl opacity-5 group-hover:scale-125 transition-all">{agent.icon}</div>
-                  <span className="text-5xl mb-6 block">{agent.icon}</span>
+                  <span className="text-5xl mb-6 block group-hover:scale-110 transition-transform">{agent.icon}</span>
                   <h3 className="text-xl font-black text-white uppercase italic tracking-tighter mb-4">{agent.name}</h3>
                   <div className="mt-8 flex items-center gap-3 text-[10px] font-black uppercase text-cyan-400 italic">Identificar Agente <ArrowRight size={14} /></div>
                 </button>
@@ -246,10 +247,10 @@ export default function NexusSupremoV12() {
               </div>
               <div className="grid grid-cols-3 gap-8">
                 {[{ label: "O QUE FAZ", text: selectedAgent.f, color: "text-cyan-400" }, { label: "O QUE RESOLVE", text: selectedAgent.r, color: "text-[#00ff88]" }, { label: "ONDE USAR", text: selectedAgent.u, color: "text-[#7000ff]" }].map((box, i) => (
-                  <div key={i} className="glass-card p-10 border-white/10 bg-white/[0.02] min-h-[250px] flex flex-col"><h4 className={`text-[10px] font-black uppercase tracking-[4px] ${box.color} mb-6`}>{box.label}</h4><p className="text-sm font-bold text-gray-300 leading-relaxed uppercase flex-1">{box.text}</p></div>
+                  <div key={i} className="glass-card p-10 border-white/10 bg-white/[0.02] min-h-[250px] flex flex-col shadow-xl"><h4 className={`text-[10px] font-black uppercase tracking-[4px] ${box.color} mb-6`}>{box.label}</h4><p className="text-sm font-bold text-gray-300 leading-relaxed uppercase flex-1">{box.text}</p></div>
                 ))}
               </div>
-              <div className="glass-card !p-0 overflow-hidden border-cyan-500/20 bg-cyan-500/[0.01]">
+              <div className="glass-card !p-0 overflow-hidden border-cyan-500/20 bg-cyan-500/[0.01] shadow-2xl">
                 <div className="bg-cyan-500/10 p-5 border-b border-cyan-500/20 flex items-center justify-between"><div className="flex items-center gap-3"><TerminalIcon size={16} className="text-cyan-400" /><span className="text-[10px] font-black uppercase tracking-widest text-cyan-400">Terminal Tático Alpha</span></div></div>
                 <div className="p-10 space-y-8"><div className="bg-black/60 rounded-2xl p-8 font-mono text-xs text-cyan-500/70 border border-white/5 h-48 overflow-y-auto"><p>&gt; Sistema {selectedAgent.name.toLowerCase()} integrado...</p><p>&gt; Sincronização neural concluída. Aguardando comando...</p><div className="w-1.5 h-5 bg-cyan-500 animate-pulse inline-block mt-4"></div></div><button onClick={() => setInput(`Ativar ${selectedAgent.name}: Executar análise de campo imediata.`)} className="w-full py-5 bg-cyan-500 text-black rounded-2xl text-[13px] font-black uppercase tracking-[4px] hover:scale-[1.01] transition-all shadow-2xl shadow-cyan-500/20">EXECUTAR MISSÃO SOBERANA</button></div>
               </div>
