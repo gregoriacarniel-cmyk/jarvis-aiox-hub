@@ -158,23 +158,59 @@ export default function NexusPlatinumDashboard() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-2 scrollbar-hide">
-          {Object.values(AGENT_REGISTRY)
-            .filter(a => a.group === sidebarTab && a.name.toLowerCase().includes(agentSearch.toLowerCase()))
-            .map((agent) => (
-              <button 
-                key={agent.id} 
-                onClick={() => { setSelectedAgentId(agent.id); setActiveTab("agent-dashboard"); }}
-                className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${selectedAgentId === agent.id ? 'bg-white/[0.05] border-white/10' : 'hover:bg-white/[0.02] border-transparent'}`}
-              >
-                <span className="text-2xl">{agent.icon}</span>
-                <div className="text-left flex-1">
-                  <p className={`text-[12px] font-black tracking-tight ${selectedAgentId === agent.id ? 'text-white' : 'text-gray-500'}`}>{agent.name}</p>
-                  <p className="text-[8px] text-gray-700 font-black uppercase tracking-widest">{agent.group}</p>
-                </div>
-                {selectedAgentId === agent.id && <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-lg shadow-cyan-500/50"></div>}
-              </button>
-            ))}
+        <div className="flex-1 overflow-y-auto p-4 space-y-8 scrollbar-hide">
+          {/* SEÇÃO FIXA: COMANDO MASTER */}
+          <div className="space-y-3">
+            <h3 className="px-4 text-[9px] font-black uppercase tracking-[0.3em] text-cyan-500 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
+              Comando Master
+            </h3>
+            <div className="space-y-1">
+              {["mente-maestro", "gestor-trafego"].map((id) => {
+                const agent = (AGENT_REGISTRY as any)[id];
+                if (!agent) return null;
+                return (
+                  <button 
+                    key={agent.id} 
+                    onClick={() => { setSelectedAgentId(agent.id); setActiveTab("agent-dashboard"); }}
+                    className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${selectedAgentId === agent.id ? 'bg-white/[0.05] border-white/10' : 'hover:bg-white/[0.02] border-transparent'}`}
+                  >
+                    <span className="text-2xl">{agent.icon}</span>
+                    <div className="text-left flex-1">
+                      <p className={`text-[12px] font-black tracking-tight ${selectedAgentId === agent.id ? 'text-white' : 'text-gray-500'}`}>{agent.name}</p>
+                      <p className="text-[8px] text-gray-700 font-black uppercase tracking-widest">Soberano</p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* DEPARTAMENTOS FILTRADOS */}
+          <div className="space-y-3">
+            <h3 className="px-4 text-[9px] font-black uppercase tracking-[0.3em] text-gray-700 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full" style={{backgroundColor: (GROUP_CONFIG as any)[sidebarTab]?.color}}></span>
+              {sidebarTab}
+            </h3>
+            <div className="space-y-1">
+              {Object.values(AGENT_REGISTRY)
+                .filter(a => a.group === sidebarTab && a.id !== "mente-maestro" && a.id !== "gestor-trafego" && a.name.toLowerCase().includes(agentSearch.toLowerCase()))
+                .map((agent) => (
+                  <button 
+                    key={agent.id} 
+                    onClick={() => { setSelectedAgentId(agent.id); setActiveTab("agent-dashboard"); }}
+                    className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${selectedAgentId === agent.id ? 'bg-white/[0.05] border-white/10' : 'hover:bg-white/[0.02] border-transparent'}`}
+                  >
+                    <span className="text-2xl">{agent.icon}</span>
+                    <div className="text-left flex-1">
+                      <p className={`text-[12px] font-black tracking-tight ${selectedAgentId === agent.id ? 'text-white' : 'text-gray-500'}`}>{agent.name}</p>
+                      <p className="text-[8px] text-gray-700 font-black uppercase tracking-widest">{agent.group}</p>
+                    </div>
+                    {selectedAgentId === agent.id && <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-lg shadow-cyan-500/50"></div>}
+                  </button>
+                ))}
+            </div>
+          </div>
         </div>
 
         <div className="p-6 border-t border-white/5 bg-white/[0.01] flex items-center gap-3">
