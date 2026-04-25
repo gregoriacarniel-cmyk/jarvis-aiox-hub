@@ -8,9 +8,7 @@ export async function GET(request) {
   const datePreset = searchParams.get('datePreset') || 'today';
   const token = process.env.META_ACCESS_TOKEN;
 
-  if (!token) {
-    return NextResponse.json({ error: 'Token ausente' }, { status: 400 });
-  }
+  if (!token) return NextResponse.json({ error: 'Token ausente' }, { status: 400 });
 
   try {
     const API_VERSION = 'v25.0';
@@ -30,7 +28,7 @@ export async function GET(request) {
     if (type === 'insights' && accountId) {
       const targetId = campaignId || accountId;
       
-      // Insights detalhados incluindo Landing Page Views e Cliques no Link
+      // Insights detalhados com todas as métricas de conversão
       const url = `https://graph.facebook.com/${API_VERSION}/${targetId}/insights?fields=adset_id,adset_name,spend,reach,frequency,cpm,ctr,cpc,actions,action_values,inline_link_clicks,purchase_roas&level=adset&date_preset=${datePreset}&access_token=${token}`;
       
       const res = await fetch(url);
@@ -46,15 +44,23 @@ export async function GET(request) {
         const spend = parseFloat(ad.spend || 0);
         const linkClicks = parseInt(ad.inline_link_clicks || 0);
         
-        // Mapeamento Universal de Eventos
-        const getActionValue = (type) => parseInt(ad.actions?.find(a => a.action_type === type)?.value || 0);
-        const getRevenueValue = (type) => parseFloat(ad.action_values?.find(a => a.action_type === type)?.value || 0);
+        // Mapeamento Inteligente: Procura qualquer evento que seja venda ou checkout
+        const getSumActions = (patterns) => {
+          return ad.actions?.filter(a => patterns.some(p => a.action_type.includes(p)))
+                          .reduce((acc, curr) => acc + parseInt(curr.value || 0), 0) || 0;
+        };
 
-        const sales = getActionValue('purchase') || getActionValue('offsite_conversion.fb_pixel_purchase') || getActionValue('onsite_conversion.fb_pixel_purchase');
-        const revenue = getRevenueValue('purchase') || getRevenueValue('offsite_conversion.fb_pixel_purchase') || getRevenueValue('onsite_conversion.fb_pixel_purchase');
-        const checkouts = getActionValue('initiate_checkout') || getActionValue('offsite_conversion.fb_pixel_initiate_checkout');
-        const carts = getActionValue('add_to_cart') || getActionValue('offsite_conversion.fb_pixel_add_to_cart');
-        const lpv = getActionValue('landing_page_view') || getActionValue('offsite_conversion.fb_pixel_view_content');
+        const getSumRevenue = (patterns) => {
+          return ad.action_values?.filter(a => patterns.some(p => a.action_type.includes(p)))
+                               .reduce((acc, curr) => acc + parseFloat(curr.value || 0), 0) || 0;
+        };
+
+        // Captura agressiva de vendas (Purchase, Conversão Customizada, etc.)
+        const sales = getSumActions(['purchase', 'conversion', 'order']);
+        const revenue = getSumRevenue(['purchase', 'conversion', 'order']);
+        const checkouts = getSumActions(['initiate_checkout', 'checkout']);
+        const carts = getSumActions(['add_to_cart', 'cart']);
+        const lpv = getSumActions(['landing_page_view', 'view_content']);
 
         totalSpend += spend;
         totalSalesCount += sales;

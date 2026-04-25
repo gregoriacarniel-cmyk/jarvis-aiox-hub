@@ -1,5 +1,6 @@
 "use client";
 
+/* FORCE DEPLOY V1.2.1 - CONNECT RATE & SALES FIX */
 import { useState, useEffect } from "react";
 import { 
   Zap, MessageSquare, TrendingUp, Target, ShoppingCart, 
@@ -8,7 +9,7 @@ import {
 } from "lucide-react";
 import { AGENT_REGISTRY, GROUP_CONFIG } from "@/app/lib/agentRegistry";
 
-export default function NexusSupremoV12Final() {
+export default function NexusSupremoV12FinalAligned() {
   const [activeProject, setActiveProject] = useState("");
   const [activeTab, setActiveTab] = useState("traffic"); 
   const [mounted, setMounted] = useState(false);
@@ -174,13 +175,13 @@ export default function NexusSupremoV12Final() {
                 <div className="space-y-2"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Período Tático</p><div className="flex gap-2 px-4 py-2">{['today', 'yesterday', 'last_7d', 'last_30d'].map(p => (<button key={p} onClick={() => setSelectedDate(p)} className={`px-4 py-2 rounded-lg text-[9px] font-black uppercase transition-all ${selectedDate === p ? 'bg-cyan-500 text-black shadow-lg shadow-cyan-500/20' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}>{p === 'today' ? 'Hoje' : p === 'yesterday' ? 'Ontem' : p === 'last_7d' ? '7D' : '30D'}</button>))}</div></div>
               </div>
 
-              {/* CARDS SUPREMO 2.0 (INCLUINDO CONNECT RATE) */}
+              {/* CARDS SUPREMO 2.0 (GRADE ATUALIZADA) */}
               <div className="grid grid-cols-4 gap-6">
                 {[
                   { label: "Investimento", value: `R$ ${data?.metrics?.spend?.toFixed(2) || "0,00"}`, color: "text-white", icon: Wallet },
                   { label: "Vendas Alpha", value: data?.metrics?.sales || "0", color: "text-[#00ff88]", icon: ShoppingCart },
                   { label: "CPA Médio", value: `R$ ${data?.metrics?.cpa || "0,00"}`, color: "text-red-500", icon: Target },
-                  { label: "Taxa de Conexão", value: data?.metrics?.connectRate || "0.0%", color: "text-cyan-400", icon: LinkIcon },
+                  { label: "Connect Rate", value: data?.metrics?.connectRate || "0.0%", color: "text-cyan-400", icon: LinkIcon },
                   { label: "Faturamento", value: `R$ ${data?.metrics?.salesValue?.toFixed(2) || "0,00"}`, color: "text-[#00ff88]", icon: DollarSign },
                   { label: "ROAS Supremo", value: `${data?.metrics?.roas?.toFixed(2) || "0.00"}x`, color: "text-[#7000ff]", icon: TrendingUp },
                   { label: "Visualizações (LPV)", value: data?.metrics?.totalLPV?.toLocaleString() || "0", color: "text-blue-400", icon: Monitor },
@@ -199,7 +200,7 @@ export default function NexusSupremoV12Final() {
 
               {/* TABELA DE GUERRA (ALINHADA COM CONNECT RATE) */}
               <div className="glass-card !p-0 overflow-hidden border-white/10 shadow-2xl">
-                <div className="p-6 bg-white/[0.02] border-b border-white/5 flex items-center justify-between"><div className="flex items-center gap-3"><Activity className="text-cyan-400 animate-pulse" size={18} /><span className="text-[11px] font-black uppercase tracking-widest text-white">Auditoria de Conjuntos Alpha (Connect Rate Sync)</span></div><span className="text-[9px] font-black text-gray-600 uppercase">Sincronia Zero-Delay</span></div>
+                <div className="p-6 bg-white/[0.02] border-b border-white/5 flex items-center justify-between"><div className="flex items-center gap-3"><Activity className="text-cyan-400 animate-pulse" size={18} /><span className="text-[11px] font-black uppercase tracking-widest text-white">Auditoria de Conjuntos Alpha (V25.0 Full)</span></div><span className="text-[9px] font-black text-gray-600 uppercase">Sincronia Zero-Delay</span></div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-[11px]">
                     <thead className="bg-white/[0.04] text-gray-500 uppercase font-black tracking-widest border-b border-white/5">
