@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import { 
   Zap, MessageSquare, TrendingUp, Target, ShoppingCart, 
-  RefreshCw, Cpu, BrainCircuit, Activity, Wallet, Calendar, Search, ArrowRight, CheckCircle2, ShieldCheck, Layers, Terminal as TerminalIcon
+  RefreshCw, Cpu, BrainCircuit, Activity, Wallet, Calendar, Search, ArrowRight, CheckCircle2, ShieldCheck, Layers, Terminal as TerminalIcon,
+  BarChart3, MousePointer2, Eye, Percent, Power
 } from "lucide-react";
 import { AGENT_REGISTRY, GROUP_CONFIG } from "@/app/lib/agentRegistry";
 
-export default function NexusPuristV12() {
+export default function NexusSupremoV12() {
   const [activeProject, setActiveProject] = useState("");
   const [activeTab, setActiveTab] = useState("traffic"); 
   const [mounted, setMounted] = useState(false);
@@ -24,6 +25,7 @@ export default function NexusPuristV12() {
   const [input, setInput] = useState("");
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [agentSearch, setAgentSearch] = useState("");
+  const [lastUpdate, setLastUpdate] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -61,6 +63,7 @@ export default function NexusPuristV12() {
       const res = await fetch(`/api/meta?type=insights&accountId=${selectedAccount}&campaignId=${selectedCampaign}&datePreset=${selectedDate}`);
       const json = await res.json();
       setData(json);
+      setLastUpdate(new Date().toLocaleTimeString());
     } catch (err) { console.error(err); }
     setLoading(false);
   };
@@ -89,21 +92,20 @@ export default function NexusPuristV12() {
 
   if (!mounted) return <div className="bg-[#050505] min-h-screen" />;
 
-  // --- SELEÇÃO DE PROJETO ---
   if (!activeProject) {
     return (
       <div className="min-h-screen bg-[#050505] flex items-center justify-center p-8 relative overflow-hidden font-['Outfit']">
         <div className="max-w-4xl w-full space-y-12 relative z-10 text-center">
           <div className="space-y-4">
-            <h1 className="text-5xl font-black tracking-tighter italic text-white">NEXUS <span className="text-cyan-400">PLATINUM</span> V12</h1>
-            <p className="text-[10px] uppercase font-black tracking-[0.6em] text-gray-600">Sistema de Comando Supremo | Gregori Alpha</p>
+            <h1 className="text-6xl font-black tracking-tighter italic text-white leading-none">NEXUS <span className="text-cyan-400">SUPREMO</span> V12</h1>
+            <p className="text-[10px] uppercase font-black tracking-[1em] text-gray-600">Gregori Alpha | Sistema de Comando Soberano</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[{ id: "Projeto Principal", desc: "Gestão Master de Tráfego" }, { id: "FoxConect Expansão", desc: "Operações B" }].map((p, i) => (
-              <button key={i} onClick={() => setActiveProject(p.id)} className="glass-card p-10 border-white/5 hover:border-cyan-500/40 transition-all text-left">
-                <h3 className="text-2xl font-black tracking-tight text-white mb-3 uppercase italic">{p.id}</h3>
+            {[{ id: "Projeto Principal", desc: "Gestão Master de Tráfego e Escala" }, { id: "FoxConect Expansão", desc: "Central de Leads e Operações B" }].map((p, i) => (
+              <button key={i} onClick={() => setActiveProject(p.id)} className="glass-card p-10 border-white/5 hover:border-cyan-500/40 transition-all text-left group">
+                <h3 className="text-2xl font-black tracking-tight text-white mb-3 uppercase italic group-hover:text-cyan-400 transition-colors">{p.id}</h3>
                 <p className="text-sm text-gray-500 font-bold leading-relaxed">{p.desc}</p>
-                <div className="mt-8 flex items-center gap-3 text-[11px] font-black uppercase text-cyan-400">Iniciar Operação <ArrowRight size={16} /></div>
+                <div className="mt-8 flex items-center gap-3 text-[11px] font-black uppercase text-cyan-400 group-hover:gap-5 transition-all">Iniciar Operação <ArrowRight size={16} /></div>
               </button>
             ))}
           </div>
@@ -120,20 +122,13 @@ export default function NexusPuristV12() {
       {/* ── SIDEBAR ── */}
       <aside className="border-r border-white/5 bg-black/40 flex flex-col overflow-hidden">
         <div className="p-6 border-b border-white/5 space-y-6">
-          <button onClick={() => { setActiveTab("traffic"); setSelectedAgentId(null); }} className="flex items-center gap-3 w-full group">
-            <div className="w-10 h-10 bg-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-all"><Zap size={20} className="text-black" /></div>
-            <div className="text-left"><h2 className="text-[11px] font-black uppercase tracking-widest text-white italic">Métricas Master</h2></div>
+          <button onClick={() => { setActiveTab("traffic"); setSelectedAgentId(null); }} className="flex items-center gap-4 w-full group">
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${activeTab === "traffic" ? "bg-cyan-500 shadow-xl shadow-cyan-500/20" : "bg-white/5"}`}><BarChart3 size={24} className={activeTab === "traffic" ? "text-black" : "text-gray-500"} /></div>
+            <div className="text-left"><h2 className="text-[12px] font-black uppercase tracking-widest text-white italic">Métricas Master</h2><p className="text-[8px] text-cyan-400 font-black uppercase">Supremo 2.0</p></div>
           </button>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 pt-2">
             {Object.keys(GROUP_CONFIG).map((group) => (
-              <button 
-                key={group}
-                onClick={() => { setActiveTab(group); setSelectedAgentId(null); }}
-                className={`w-full text-left p-4 rounded-2xl text-[10px] font-black tracking-widest transition-all border ${activeTab === group ? "bg-white/10 text-white border-white/20" : "text-gray-600 border-transparent hover:bg-white/5"}`}
-                style={{ color: activeTab === group ? (GROUP_CONFIG as any)[group].color : "" }}
-              >
-                {(GROUP_CONFIG as any)[group].icon} {group.toUpperCase()}
-              </button>
+              <button key={group} onClick={() => { setActiveTab(group); setSelectedAgentId(null); }} className={`w-full text-left p-4 rounded-2xl text-[10px] font-black tracking-widest transition-all border ${activeTab === group ? "bg-white/10 text-white border-white/20" : "text-gray-600 border-transparent hover:bg-white/5"}`} style={{ color: activeTab === group ? (GROUP_CONFIG as any)[group].color : "" }}>{(GROUP_CONFIG as any)[group].icon} {group.toUpperCase()}</button>
             ))}
           </div>
         </div>
@@ -142,25 +137,11 @@ export default function NexusPuristV12() {
             <h3 className="px-4 text-[9px] font-black uppercase tracking-[3px] text-cyan-500">COMANDO MASTER</h3>
             {["mente-maestro", "gestor-trafego"].map((id) => {
               const agent = (AGENT_REGISTRY as any)[id];
+              const isActive = selectedAgentId === id || (id === "gestor-trafego" && activeTab === "traffic");
               return (
-                <button 
-                  key={id} 
-                  onClick={() => { 
-                    if (id === "gestor-trafego") {
-                      setActiveTab("traffic");
-                      setSelectedAgentId(null);
-                    } else {
-                      setSelectedAgentId(id); 
-                      setActiveTab(agent.group); 
-                    }
-                  }} 
-                  className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${selectedAgentId === id || (id === "gestor-trafego" && activeTab === "traffic") ? 'bg-white/[0.05] border-white/10' : 'hover:bg-white/[0.02] border-transparent'}`}
-                >
+                <button key={id} onClick={() => { if(id === "gestor-trafego"){ setActiveTab("traffic"); setSelectedAgentId(null); } else { setSelectedAgentId(id); setActiveTab(agent.group); } }} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${isActive ? 'bg-white/[0.05] border-white/10 shadow-xl' : 'hover:bg-white/[0.02] border-transparent'}`}>
                   <span className="text-2xl">{agent.icon}</span>
-                  <div className="text-left">
-                    <p className={`text-[12px] font-black tracking-tight ${selectedAgentId === id || (id === "gestor-trafego" && activeTab === "traffic") ? 'text-white' : 'text-gray-500'}`}>{agent.name}</p>
-                    <p className="text-[8px] text-gray-700 font-black uppercase">Soberano</p>
-                  </div>
+                  <div className="text-left"><p className={`text-[12px] font-black tracking-tight ${isActive ? 'text-white' : 'text-gray-500'}`}>{agent.name}</p><p className="text-[8px] text-gray-700 font-black uppercase">Soberano</p></div>
                 </button>
               );
             })}
@@ -170,96 +151,107 @@ export default function NexusPuristV12() {
 
       {/* ── CONSOLE CENTRAL ── */}
       <main className="flex-1 overflow-y-auto scrollbar-hide flex flex-col bg-[#070707]">
-        <header className="h-20 border-b border-white/5 flex items-center px-10 justify-between bg-black/40 sticky top-0 z-20 backdrop-blur-md">
-          <div className="flex items-center gap-4">
-            <span className="text-2xl">{(GROUP_CONFIG as any)[activeTab]?.icon || "📊"}</span>
-            <h2 className="text-sm font-black uppercase tracking-[3px] text-white italic">{activeTab}</h2>
+        <header className="h-24 border-b border-white/5 flex items-center px-10 justify-between bg-black/40 sticky top-0 z-20 backdrop-blur-md">
+          <div className="flex items-center gap-6">
+            <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10"><span className="text-2xl">{(GROUP_CONFIG as any)[activeTab]?.icon || "📊"}</span></div>
+            <div>
+              <h2 className="text-xl font-black uppercase tracking-[4px] text-white italic">{activeTab === 'traffic' ? 'CONSOLIDAÇÃO SUPREMA' : activeTab}</h2>
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{selectedAgent ? `Sincronia Alpha: ${selectedAgent.name}` : `Última Sincronização: ${lastUpdate || '--:--:--'}`}</p>
+            </div>
           </div>
-          {selectedAgent && <button onClick={() => setSelectedAgentId(null)} className="px-6 py-2 rounded-xl bg-white/5 text-[9px] font-black uppercase tracking-[3px] text-gray-500 hover:text-white border border-white/5 transition-all">Voltar ao Hub</button>}
+          <div className="flex items-center gap-4">
+            {activeTab === "traffic" && <button onClick={fetchData} className="flex items-center gap-2 px-6 py-3 glass-card hover:border-cyan-500/50 transition-all text-[10px] font-black text-cyan-400 uppercase tracking-widest"><RefreshCw className={loading ? "animate-spin" : ""} size={14} /> Atualizar Dados</button>}
+            {selectedAgent && <button onClick={() => setSelectedAgentId(null)} className="px-6 py-3 rounded-xl bg-white/5 text-[9px] font-black uppercase tracking-[3px] text-gray-500 hover:text-white border border-white/5 transition-all">Retornar ao Hub</button>}
+          </div>
         </header>
 
-        <div className="p-10 space-y-8 animate-in fade-in duration-500">
+        <div className="p-10 space-y-10 animate-in fade-in duration-500">
           {activeTab === "traffic" && (
-            <div className="space-y-8">
-              <div className="grid grid-cols-3 gap-4 p-2 glass-card border-white/5 bg-white/[0.02]">
-                <select value={selectedAccount} onChange={(e) => setSelectedAccount(e.target.value)} className="bg-transparent text-[10px] font-black uppercase text-white p-4 focus:outline-none">
-                  {accounts.map(acc => (<option key={acc.id} value={acc.id} className="bg-[#050505]">{acc.name}</option>))}
-                </select>
-                <select value={selectedCampaign} onChange={(e) => setSelectedCampaign(e.target.value)} className="bg-transparent text-[10px] font-black uppercase text-white p-4 border-x border-white/5 focus:outline-none">
-                  <option value="" className="bg-[#050505]">Todas as Campanhas</option>
-                  {campaigns.map(camp => (<option key={camp.id} value={camp.id} className="bg-[#050505]">{camp.name}</option>))}
-                </select>
-                <select value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="bg-transparent text-[10px] font-black uppercase text-white p-4 focus:outline-none">
-                  <option value="today" className="bg-[#050505]">Hoje</option>
-                  <option value="yesterday" className="bg-[#050505]">Ontem</option>
-                  <option value="last_7d" className="bg-[#050505]">7 Dias</option>
-                </select>
+            <div className="space-y-10">
+              {/* SELETORES ALPHA */}
+              <div className="grid grid-cols-3 gap-6 p-4 glass-card border-white/5 bg-white/[0.02] shadow-2xl">
+                <div className="space-y-2"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Conta Alpha</p><select value={selectedAccount} onChange={(e) => setSelectedAccount(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase text-white p-4 focus:outline-none cursor-pointer">{accounts.map(acc => (<option key={acc.id} value={acc.id} className="bg-[#050505]">{acc.name}</option>))}</select></div>
+                <div className="space-y-2 border-x border-white/5"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Campanha Ativa</p><select value={selectedCampaign} onChange={(e) => setSelectedCampaign(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase text-white p-4 focus:outline-none cursor-pointer"><option value="" className="bg-[#050505]">Todas as Campanhas</option>{campaigns.map(camp => (<option key={camp.id} value={camp.id} className="bg-[#050505]">{camp.name}</option>))}</select></div>
+                <div className="space-y-2"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Período Tático</p><div className="flex gap-2 px-4 py-2">{['today', 'yesterday', 'last_7d', 'last_30d'].map(p => (<button key={p} onClick={() => setSelectedDate(p)} className={`px-4 py-2 rounded-lg text-[9px] font-black uppercase transition-all ${selectedDate === p ? 'bg-cyan-500 text-black' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}>{p === 'today' ? 'Hoje' : p === 'yesterday' ? 'Ontem' : p === 'last_7d' ? '7D' : '30D'}</button>))}</div></div>
               </div>
-              <div className="grid grid-cols-4 gap-5">
+
+              {/* CARDS SUPREMO 2.0 */}
+              <div className="grid grid-cols-4 gap-6">
                 {[
-                  { label: "Investimento", value: `R$ ${data?.metrics?.spend?.toFixed(2) || "0,00"}`, color: "text-white" },
-                  { label: "Vendas", value: data?.metrics?.sales || "0", color: "text-[#00ff88]" },
-                  { label: "ROAS", value: `${data?.metrics?.roas?.toFixed(2) || "0.00"}x`, color: "text-[#7000ff]" },
-                  { label: "CPA", value: `R$ ${data?.metrics?.cpa || "0,00"}`, color: "text-red-500" },
+                  { label: "Investimento", value: `R$ ${data?.metrics?.spend?.toFixed(2) || "0,00"}`, color: "text-white", icon: Wallet },
+                  { label: "Vendas", value: data?.metrics?.sales || "0", color: "text-[#00ff88]", icon: ShoppingCart },
+                  { label: "ROAS Alpha", value: `${data?.metrics?.roas?.toFixed(2) || "0.00"}x`, color: "text-[#7000ff]", icon: TrendingUp },
+                  { label: "CPA Médio", value: `R$ ${data?.metrics?.cpa || "0,00"}`, color: "text-red-500", icon: Target },
+                  { label: "Carrinhos (ATC)", value: data?.metrics?.totalCarts || "0", color: "text-cyan-400", icon: ShoppingCart },
+                  { label: "Checkouts (IC)", value: data?.metrics?.totalCheckouts || "0", color: "text-yellow-400", icon: ShieldCheck },
+                  { label: "Alcance Real", value: data?.metrics?.totalReach?.toLocaleString() || "0", color: "text-blue-400", icon: Eye },
+                  { label: "Frequência", value: data?.metrics?.avgFrequency || "0.00", color: "text-purple-400", icon: RefreshCw },
                 ].map((stat, i) => (
-                  <div key={i} className="glass-card p-8"><p className="text-[10px] uppercase font-black tracking-widest text-gray-500 mb-2">{stat.label}</p><h3 className={`text-3xl font-black tracking-tighter ${stat.color}`}>{stat.value}</h3></div>
+                  <div key={i} className="glass-card p-8 group hover:border-cyan-500/30 transition-all">
+                    <div className="flex items-center justify-between mb-4"><stat.icon size={18} className="text-gray-600 group-hover:text-cyan-400 transition-colors" /><p className="text-[9px] uppercase font-black tracking-widest text-gray-500">{stat.label}</p></div>
+                    <h3 className={`text-3xl font-black tracking-tighter ${stat.color}`}>{stat.value}</h3>
+                  </div>
                 ))}
+              </div>
+
+              {/* TABELA DE GUERRA (ABO/CBO) */}
+              <div className="glass-card !p-0 overflow-hidden border-white/10 shadow-2xl">
+                <div className="p-6 bg-white/[0.02] border-b border-white/5 flex items-center justify-between"><div className="flex items-center gap-3"><Activity className="text-cyan-400 animate-pulse" size={18} /><span className="text-[11px] font-black uppercase tracking-widest text-white">Gerenciamento de Conjuntos Alpha</span></div><span className="text-[9px] font-black text-gray-600 uppercase">Ação Direta</span></div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-[11px]">
+                    <thead className="bg-white/[0.04] text-gray-500 uppercase font-black tracking-widest border-b border-white/5">
+                      <tr>
+                        <th className="p-5">Conjunto</th><th className="p-5 text-center">Status</th><th className="p-5 text-center">Gasto</th><th className="p-5 text-center">Vendas</th><th className="p-5 text-center">ROAS</th><th className="p-5 text-center">CTR</th><th className="p-5 text-center">CPM</th><th className="p-5 text-right">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {data?.adsets?.map((ad: any, i: number) => (
+                        <tr key={i} className="hover:bg-white/[0.02] transition-colors group">
+                          <td className="p-5 font-black text-gray-300 uppercase italic group-hover:text-cyan-400">{ad.name}</td>
+                          <td className="p-5 text-center"><span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase ${ad.status === 'ACTIVE' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-500'}`}>{ad.status}</span></td>
+                          <td className="p-5 text-center font-bold text-gray-500">R$ {ad.spend?.toFixed(2)}</td>
+                          <td className="p-5 text-center text-[#00ff88] font-black text-base">{ad.sales}</td>
+                          <td className="p-5 text-center font-black text-[#7000ff]">{ad.roas}x</td>
+                          <td className="p-5 text-center font-bold text-gray-500">{ad.ctr || '0.00%'}</td>
+                          <td className="p-5 text-center font-bold text-gray-500">R$ {ad.cpm || '0.00'}</td>
+                          <td className="p-5 text-right"><button className="p-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Power size={14} /></button></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           )}
 
+          {/* MODO HUB & CARDS PURISTAS */}
           {activeTab !== "traffic" && !selectedAgent && (
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid grid-cols-3 gap-8 animate-in slide-in-from-bottom-4 duration-500">
               {Object.values(AGENT_REGISTRY).filter(a => a.group === activeTab).map((agent) => (
-                <button key={agent.id} onClick={() => setSelectedAgentId(agent.id)} className="glass-card p-8 text-left hover:border-cyan-500/40 transition-all group">
-                  <span className="text-4xl mb-4 block">{agent.icon}</span>
-                  <h3 className="text-lg font-black text-white uppercase italic mb-2">{agent.name}</h3>
-                  <div className="mt-4 text-[9px] font-black uppercase text-cyan-400 italic">Identificar Agente →</div>
+                <button key={agent.id} onClick={() => setSelectedAgentId(agent.id)} className="glass-card p-10 text-left hover:border-cyan-500/40 transition-all group relative overflow-hidden">
+                  <div className="absolute -right-6 -bottom-6 text-9xl opacity-5 group-hover:scale-125 transition-all">{agent.icon}</div>
+                  <span className="text-5xl mb-6 block">{agent.icon}</span>
+                  <h3 className="text-xl font-black text-white uppercase italic tracking-tighter mb-4">{agent.name}</h3>
+                  <div className="mt-8 flex items-center gap-3 text-[10px] font-black uppercase text-cyan-400 italic">Identificar Agente <ArrowRight size={14} /></div>
                 </button>
               ))}
             </div>
           )}
 
           {selectedAgent && (
-            <div className="space-y-12 animate-in zoom-in-95 duration-500">
-              <div className="flex items-center gap-8">
-                <div className="w-24 h-24 bg-white/5 rounded-[35px] flex items-center justify-center text-5xl border border-white/10">{selectedAgent.icon}</div>
-                <div>
-                  <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">{selectedAgent.name}</h2>
-                  <p className="text-[10px] text-cyan-400 font-black uppercase tracking-[0.4em] mt-2 italic">Nexus Purist v12.0 ● Unidade Ativa</p>
-                </div>
+            <div className="max-w-5xl mx-auto space-y-12 animate-in zoom-in-95 duration-500">
+              <div className="flex items-center gap-10 border-b border-white/5 pb-10">
+                <div className="w-32 h-32 bg-white/5 rounded-[45px] flex items-center justify-center text-6xl border border-white/10 shadow-2xl">{selectedAgent.icon}</div>
+                <div><h2 className="text-5xl font-black text-white italic uppercase tracking-tighter">{selectedAgent.name}</h2><p className="text-[12px] text-cyan-400 font-black uppercase tracking-[0.6em] mt-3 italic">Unidade de Inteligência Purista</p></div>
               </div>
-
-              {/* DNA PURISTA: O QUE FAZ / RESOLVE / USA */}
-              <div className="grid grid-cols-3 gap-6">
-                <div className="glass-card p-8 border-white/10 bg-white/[0.02]">
-                  <h4 className="text-[9px] font-black uppercase tracking-[3px] text-cyan-400 mb-4">O QUE FAZ</h4>
-                  <p className="text-[11px] font-bold text-gray-400 leading-relaxed uppercase">{selectedAgent.f}</p>
-                </div>
-                <div className="glass-card p-8 border-white/10 bg-white/[0.02]">
-                  <h4 className="text-[9px] font-black uppercase tracking-[3px] text-[#00ff88] mb-4">O QUE RESOLVE</h4>
-                  <p className="text-[11px] font-bold text-gray-400 leading-relaxed uppercase">{selectedAgent.r}</p>
-                </div>
-                <div className="glass-card p-8 border-white/10 bg-white/[0.02]">
-                  <h4 className="text-[9px] font-black uppercase tracking-[3px] text-[#7000ff] mb-4">ONDE USAR</h4>
-                  <p className="text-[11px] font-bold text-gray-400 leading-relaxed uppercase">{selectedAgent.u}</p>
-                </div>
+              <div className="grid grid-cols-3 gap-8">
+                {[{ label: "O QUE FAZ", text: selectedAgent.f, color: "text-cyan-400" }, { label: "O QUE RESOLVE", text: selectedAgent.r, color: "text-[#00ff88]" }, { label: "ONDE USAR", text: selectedAgent.u, color: "text-[#7000ff]" }].map((box, i) => (
+                  <div key={i} className="glass-card p-10 border-white/10 bg-white/[0.02] min-h-[250px] flex flex-col"><h4 className={`text-[10px] font-black uppercase tracking-[4px] ${box.color} mb-6`}>{box.label}</h4><p className="text-sm font-bold text-gray-300 leading-relaxed uppercase flex-1">{box.text}</p></div>
+                ))}
               </div>
-
-              {/* TERMINAL DE COMANDO INTEGRADO */}
-              <div className="glass-card !p-0 overflow-hidden border-cyan-500/20">
-                <div className="bg-cyan-500/10 p-4 border-b border-cyan-500/20 flex items-center justify-between">
-                  <div className="flex items-center gap-3"><TerminalIcon size={14} className="text-cyan-400" /><span className="text-[9px] font-black uppercase tracking-widest text-cyan-400">Terminal de Comando Tático</span></div>
-                  <div className="flex gap-1"><div className="w-2 h-2 rounded-full bg-red-500/20"></div><div className="w-2 h-2 rounded-full bg-yellow-500/20"></div><div className="w-2 h-2 rounded-full bg-green-500/20"></div></div>
-                </div>
-                <div className="p-8 space-y-6">
-                  <div className="bg-black/60 rounded-xl p-6 font-mono text-[11px] text-cyan-500/70 border border-white/5 h-40 overflow-y-auto">
-                    <p>&gt; Sistema {selectedAgent.name.toLowerCase()} sincronizado...</p>
-                    <p>&gt; Aguardando ordens do Jarvis Supremo para execução...</p>
-                    <div className="w-1 h-4 bg-cyan-500 animate-pulse inline-block mt-4"></div>
-                  </div>
-                  <button onClick={() => setInput(`Ativar Protocolo ${selectedAgent.name}: Realizar análise profunda agora.`)} className="w-full py-4 bg-cyan-400 text-black rounded-xl text-[12px] font-black uppercase tracking-widest hover:scale-[1.01] transition-all">EXECUTAR AGENTE NO CAMPO</button>
-                </div>
+              <div className="glass-card !p-0 overflow-hidden border-cyan-500/20 bg-cyan-500/[0.01]">
+                <div className="bg-cyan-500/10 p-5 border-b border-cyan-500/20 flex items-center justify-between"><div className="flex items-center gap-3"><TerminalIcon size={16} className="text-cyan-400" /><span className="text-[10px] font-black uppercase tracking-widest text-cyan-400">Terminal Tático Alpha</span></div></div>
+                <div className="p-10 space-y-8"><div className="bg-black/60 rounded-2xl p-8 font-mono text-xs text-cyan-500/70 border border-white/5 h-48 overflow-y-auto"><p>&gt; Sistema {selectedAgent.name.toLowerCase()} integrado...</p><p>&gt; Sincronização neural concluída. Aguardando comando...</p><div className="w-1.5 h-5 bg-cyan-500 animate-pulse inline-block mt-4"></div></div><button onClick={() => setInput(`Ativar ${selectedAgent.name}: Executar análise de campo imediata.`)} className="w-full py-5 bg-cyan-500 text-black rounded-2xl text-[13px] font-black uppercase tracking-[4px] hover:scale-[1.01] transition-all shadow-2xl shadow-cyan-500/20">EXECUTAR MISSÃO SOBERANA</button></div>
               </div>
             </div>
           )}
@@ -269,21 +261,20 @@ export default function NexusPuristV12() {
       {/* ── CHAT ── */}
       <aside className="border-l border-white/5 bg-black/40 flex flex-col overflow-hidden">
         <div className="p-8 border-b border-white/5 bg-white/[0.02] flex items-center gap-4">
-          <div className="w-12 h-12 bg-cyan-500 rounded-2xl flex items-center justify-center shadow-xl shadow-cyan-500/20"><MessageSquare className="text-black" size={24} /></div>
-          <h3 className="text-xs font-black uppercase tracking-[0.2em] italic text-white leading-none">Jarvis Supremo</h3>
+          <div className="w-14 h-14 bg-cyan-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-cyan-500/20"><MessageSquare className="text-black" size={28} /></div>
+          <div><h3 className="text-sm font-black uppercase tracking-[0.2em] italic text-white leading-none">Jarvis Supremo</h3><p className="text-[9px] text-[#00ff88] font-black uppercase mt-1 animate-pulse">Neural Sync On</p></div>
         </div>
-        <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide">
+        <div className="flex-1 overflow-y-auto p-8 space-y-8 scrollbar-hide">
           {messages.map((msg, i) => (
             <div key={i} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'} animate-in fade-in slide-in-from-bottom-2`}>
-              <div className={`max-w-[90%] p-5 rounded-2xl text-[11px] font-bold shadow-2xl whitespace-pre-wrap ${msg.role === 'user' ? 'bg-cyan-500 text-black italic' : 'bg-white/5 text-gray-300 border border-white/10'}`}>{msg.content}</div>
+              <div className={`max-w-[95%] p-6 rounded-[25px] text-[11px] font-bold shadow-2xl whitespace-pre-wrap ${msg.role === 'user' ? 'bg-cyan-500 text-black italic' : 'bg-white/5 text-gray-300 border border-white/10'}`}>{msg.content}</div>
             </div>
           ))}
         </div>
-        <form onSubmit={handleSendMessage} className="p-8 bg-black/50 border-t border-white/5 flex gap-3">
-          <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Comando..." className="flex-1 bg-white/[0.04] border border-white/10 rounded-2xl px-6 py-4 text-[11px] text-white focus:outline-none" /><button type="submit" className="bg-cyan-500 text-black p-4 rounded-2xl hover:scale-110 active:scale-90 transition-all"><Zap size={22} /></button>
+        <form onSubmit={handleSendMessage} className="p-8 bg-black/50 border-t border-white/5 flex gap-4">
+          <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Comando Supremo..." className="flex-1 bg-white/[0.04] border border-white/10 rounded-2xl px-6 py-5 text-[12px] text-white focus:outline-none focus:border-cyan-500/50 font-bold" /><button type="submit" className="bg-cyan-500 text-black p-5 rounded-2xl hover:scale-110 active:scale-90 transition-all shadow-2xl shadow-cyan-500/30"><Zap size={24} /></button>
         </form>
       </aside>
-
     </div>
   );
 }
