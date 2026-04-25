@@ -1,117 +1,139 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_KEY || "");
+// =====================================================================
+// JARVIS SUPREMO — Orquestrador Central
+// Usa REST direto ao Gemini (mesmo método do gestor-alpha-web que funciona)
+// Sem SDK @google/generative-ai para evitar falha de inicialização
+// =====================================================================
 
 export async function POST(req) {
   try {
-    const { messages, metrics, adsets, accounts, currentAccount } = await req.json();
+    const { messages, metrics, adsets, currentAccount } = await req.json();
 
     const apiKey = process.env.GOOGLE_GEMINI_KEY;
-    if (!apiKey || apiKey === "REPLACE_WITH_ACTUAL_IF_DIFFERENT") {
+    const gestorUrl = process.env.GESTOR_ALPHA_URL || "http://localhost:3000";
+
+    if (!apiKey) {
       return NextResponse.json({
-        response: "⚠️ JARVIS OFFLINE: Chave GOOGLE_GEMINI_KEY não configurada. Configure nas Environment Variables da Vercel ou no .env.local para ativar o orquestrador.",
+        response: "⚠️ JARVIS OFFLINE: Variável GOOGLE_GEMINI_KEY não configurada. Adicione nas Environment Variables da Vercel.",
         action: null,
       });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // ── 1. Tentar buscar relatório tático do Agente Sentinela (gestor-alpha-web) ──
+    let sentinelStatus = "Agente Sentinela: não conectado (URL local indisponível em produção)";
+    try {
+      const sentinelRes = await fetch(`${gestorUrl}/api/sentinel`, {
+        signal: AbortSignal.timeout(4000), // 4s timeout
+      });
+      if (sentinelRes.ok) {
+        sentinelStatus = "✅ Agente Sentinela: ONLINE — relatório enviado via Telegram";
+      }
+    } catch {
+      sentinelStatus = `Agente Sentinela: offline ou inacessível em ${gestorUrl}`;
+    }
 
-    // Contexto completo do ecossistema
-    const ecosystemContext = `
-=== ECOSSISTEMA DE AGENTES DISPONÍVEIS ===
+    // ── 2. Montar contexto completo do ecossistema ──
+    const safeMetrics = {
+      spend: metrics?.spend ?? 0,
+      sales: metrics?.sales ?? 0,
+      roas: metrics?.roas ?? 0,
+      cpa: metrics?.cpa ?? 0,
+      totalCheckouts: metrics?.totalCheckouts ?? 0,
+      totalCarts: metrics?.totalCarts ?? 0,
+      ctr: metrics?.ctr ?? 0,
+      cpm: metrics?.cpm ?? 0,
+    };
 
-1. AGENTE ALPHA SENTINEL (gestor-alpha-web):
-   - Monitora adsets a cada 15 minutos
-   - Envia relatórios táticos via Telegram
-   - Regra de ouro: Pausa adsets com gasto > R$35 e zero vendas
-   - Status atual: PROTEGENDO (${new Date().toLocaleString('pt-BR')})
-
-2. META ADS MANAGER (jarvis-aiox-hub/api/meta):
-   - Lê métricas de múltiplas contas em tempo real
-   - Filtra por campanha e período
-   - Ações disponíveis: pausar adset, ajustar orçamento
-
-3. FOXCONECT HUB:
-   - Central de distribuição de leads
-   - Status: Em desenvolvimento (próxima fase)
-
-=== DADOS AO VIVO DO SISTEMA ===
-
-CONTA ATIVA: ${currentAccount || "Não selecionada"}
-INVESTIMENTO: R$ ${metrics?.spend?.toFixed(2) || "0.00"}
-VENDAS: ${metrics?.sales || 0}
-FATURAMENTO: R$ ${(metrics?.spend * metrics?.roas)?.toFixed(2) || "0.00"}
-ROAS: ${metrics?.roas?.toFixed(2) || "0.00"}x
-CPA: R$ ${metrics?.cpa || "0.00"}
-CHECKOUTS: ${metrics?.totalCheckouts || 0}
-CARRINHOS: ${metrics?.totalCarts || 0}
-CTR: ${metrics?.ctr?.toFixed(2) || "0.00"}%
-CPM: R$ ${metrics?.cpm?.toFixed(2) || "0.00"}
-
-=== ANÁLISE DE CONJUNTOS (ADSETS) ===
-${(adsets || []).map((a, i) => 
-  `[${i+1}] ${a.name} | Gasto: R$${a.spend?.toFixed(2)} | Vendas: ${a.sales} | ROAS: ${a.roas}x | CPA: R$${a.cpa} | Status: ${a.status}`
-).join('\n') || "Nenhum adset carregado ainda."}
-    `.trim();
+    const adsetLines = (adsets || [])
+      .map((a, i) =>
+        `[${i + 1}] ${a.name} | Gasto: R$${(a.spend ?? 0).toFixed(2)} | Vendas: ${a.sales ?? 0} | ROAS: ${a.roas ?? 0}x | CPA: R$${a.cpa ?? 0} | Status: ${a.status ?? "?"}`
+      )
+      .join("\n") || "Nenhum adset carregado. Selecione uma conta e clique em atualizar.";
 
     const systemPrompt = `Você é o JARVIS SUPREMO — o orquestrador central de inteligência artificial do sistema Lowticket Gregori.
 
 IDENTIDADE:
-- Você não é um chatbot. Você é o CÉREBRO ESTRATÉGICO do Comandante Gregori Carniel.
+- Você é o CÉREBRO ESTRATÉGICO do Comandante Gregori Carniel.
 - Você tem visão total sobre todos os agentes e métricas do ecossistema.
 - Você é direto, tático e obcecado com lucro e escala.
+- Responda SEMPRE em português brasileiro.
 
-CAPACIDADES:
-- Analisar métricas Meta Ads em tempo real
-- Diagnosticar funis de venda (criativo, página, checkout)
-- Recomendar pausas e escalas com justificativa
-- Coordenar o Agente Alpha Sentinel
-- Propor ações executáveis na Meta API
+AGENTES DO ECOSSISTEMA:
+1. AGENTE ALPHA SENTINEL (gestor-alpha-web): Monitora adsets a cada 15min, envia relatórios táticos via Telegram. Status: ${sentinelStatus}
+2. META ADS MANAGER: Lê e executa ações em adsets (pausar, ajustar orçamento) em tempo real.
+3. FOXCONECT HUB: Central de leads — em desenvolvimento.
 
-REGRAS DE DIAGNÓSTICO:
-- CTR > 1.5% mas zero vendas → problema na PÁGINA DE VENDAS ou CHECKOUT
-- CTR < 0.8% → problema no CRIATIVO (vídeo/imagem)
-- Gasto > R$35 sem venda → PAUSAR IMEDIATAMENTE
-- ROAS > 2.5x → ESCALAR 20% do orçamento
-- CPA muito alto → testar novos públicos
+DADOS AO VIVO — CONTA: ${currentAccount || "Não selecionada"}
+- Investimento: R$ ${safeMetrics.spend.toFixed(2)}
+- Vendas: ${safeMetrics.sales}
+- Faturamento: R$ ${(safeMetrics.spend * safeMetrics.roas).toFixed(2)}
+- ROAS: ${safeMetrics.roas.toFixed(2)}x
+- CPA: R$ ${safeMetrics.cpa.toFixed ? safeMetrics.cpa.toFixed(2) : safeMetrics.cpa}
+- Checkouts: ${safeMetrics.totalCheckouts}
+- Carrinhos: ${safeMetrics.totalCarts}
+- CTR: ${safeMetrics.ctr.toFixed ? safeMetrics.ctr.toFixed(2) : safeMetrics.ctr}%
+- CPM: R$ ${safeMetrics.cpm.toFixed ? safeMetrics.cpm.toFixed(2) : safeMetrics.cpm}
 
-FORMATO DE RESPOSTA OBRIGATÓRIO:
-- Use ### TÍTULOS EM MAIÚSCULO para separar seções
-- Use **negrito** para números e métricas importantes
-- Use emojis para facilitar leitura rápida no celular
-- Duas linhas em branco entre seções
-- NUNCA texto corrido sem quebras
+ADSETS:
+${adsetLines}
+
+REGRAS DE DIAGNÓSTICO (aplicar automaticamente):
+- CTR > 1.5% + zero vendas → PROBLEMA NA PÁGINA/CHECKOUT
+- CTR < 0.8% → PROBLEMA NO CRIATIVO
+- Gasto > R$35 sem venda → RECOMENDAR PAUSA
+- ROAS > 2.5x → RECOMENDAR ESCALA de 20%
+- CPA alto → Testar novos públicos
+
+FORMATO OBRIGATÓRIO:
+- Títulos em ### MAIÚSCULO
+- **negrito** para números e métricas
+- Emojis para leitura rápida
+- Separação clara entre seções
 
 AÇÕES EXECUTÁVEIS:
-Quando o Comandante pedir uma ação direta (pausar, escalar, ajustar), você DEVE incluir no final da resposta uma linha especial no formato:
-[AÇÃO]: { "type": "pause_adset" | "adjust_budget", "adsetId": "ID", "adsetName": "Nome", "budgetMultiplier": 1.2 }
-Isso permite que o sistema execute a ordem automaticamente após confirmação.
+Se o Comandante pedir uma ação (pausar, escalar), inclua EXATAMENTE esta linha no final:
+[AÇÃO]: {"type":"pause_adset","adsetId":"ID_AQUI","adsetName":"Nome do Conjunto"}
+ou
+[AÇÃO]: {"type":"adjust_budget","adsetId":"ID_AQUI","adsetName":"Nome","budgetMultiplier":1.2}`;
 
-${ecosystemContext}
-
-Responda sempre como Jarvis — inteligente, estratégico e focado em resultados.`;
-
-    // Monta histórico de conversa
-    const history = (messages || []).slice(0, -1).map(m => ({
+    // ── 3. Montar histórico de conversa ──
+    const conversationHistory = (messages || []).map((m) => ({
       role: m.role === "assistant" ? "model" : "user",
       parts: [{ text: m.content }],
     }));
 
-    const lastMessage = messages?.[messages.length - 1]?.content || "";
+    // Garante que começa com "user" (requisito do Gemini)
+    const contents = [
+      { role: "user", parts: [{ text: systemPrompt }] },
+      { role: "model", parts: [{ text: "JARVIS SUPREMO ONLINE. Sensores calibrados. Aguardando ordens, Comandante." }] },
+      ...conversationHistory,
+    ];
 
-    const chat = model.startChat({
-      history: [
-        { role: "user", parts: [{ text: systemPrompt }] },
-        { role: "model", parts: [{ text: "JARVIS SUPREMO ONLINE. Todos os sensores calibrados. Aguardando ordens, Comandante." }] },
-        ...history,
-      ],
-    });
+    // ── 4. Chamar Gemini via REST (igual ao gestor-alpha-web — comprovadamente funcional) ──
+    const geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents }),
+      }
+    );
 
-    const result = await chat.sendMessage(lastMessage);
-    const text = result.response.text();
+    const geminiData = await geminiRes.json();
 
-    // Extrai ação estruturada se presente
+    if (geminiData.error) {
+      return NextResponse.json({
+        response: `⚠️ JARVIS — Erro Gemini: ${geminiData.error.message}`,
+        action: null,
+      });
+    }
+
+    const text =
+      geminiData.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "Resposta vazia do Gemini. Tente novamente.";
+
+    // ── 5. Extrair ação estruturada se presente ──
     let action = null;
     const actionMatch = text.match(/\[AÇÃO\]:\s*(\{[^}]+\})/);
     if (actionMatch) {
@@ -124,7 +146,7 @@ Responda sempre como Jarvis — inteligente, estratégico e focado em resultados
   } catch (error) {
     console.error("Erro no Jarvis:", error);
     return NextResponse.json({
-      response: `⚠️ JARVIS: Falha momentânea nos neurônios — ${error.message}. Reiniciando protocolos...`,
+      response: `⚠️ JARVIS — Falha: ${error.message}`,
       action: null,
     });
   }
