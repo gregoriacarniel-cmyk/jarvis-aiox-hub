@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import { 
   Zap, MessageSquare, TrendingUp, Target, ShoppingCart, 
   RefreshCw, Cpu, BrainCircuit, Activity, Wallet, Calendar, Search, ArrowRight, CheckCircle2, ShieldCheck, Layers, Terminal as TerminalIcon,
-  BarChart3, MousePointer2, Eye, Percent, Power, DollarSign
+  BarChart3, MousePointer2, Eye, Percent, Power, DollarSign, Link as LinkIcon, Monitor
 } from "lucide-react";
 import { AGENT_REGISTRY, GROUP_CONFIG } from "@/app/lib/agentRegistry";
 
-export default function NexusSupremoV12Aligned() {
+export default function NexusSupremoV12Final() {
   const [activeProject, setActiveProject] = useState("");
   const [activeTab, setActiveTab] = useState("traffic"); 
   const [mounted, setMounted] = useState(false);
@@ -174,34 +174,37 @@ export default function NexusSupremoV12Aligned() {
                 <div className="space-y-2"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Período Tático</p><div className="flex gap-2 px-4 py-2">{['today', 'yesterday', 'last_7d', 'last_30d'].map(p => (<button key={p} onClick={() => setSelectedDate(p)} className={`px-4 py-2 rounded-lg text-[9px] font-black uppercase transition-all ${selectedDate === p ? 'bg-cyan-500 text-black shadow-lg shadow-cyan-500/20' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}>{p === 'today' ? 'Hoje' : p === 'yesterday' ? 'Ontem' : p === 'last_7d' ? '7D' : '30D'}</button>))}</div></div>
               </div>
 
-              {/* CARDS SUPREMO 2.0 (GRADE COMPLETA) */}
-              <div className="grid grid-cols-3 gap-6">
+              {/* CARDS SUPREMO 2.0 (INCLUINDO CONNECT RATE) */}
+              <div className="grid grid-cols-4 gap-6">
                 {[
                   { label: "Investimento", value: `R$ ${data?.metrics?.spend?.toFixed(2) || "0,00"}`, color: "text-white", icon: Wallet },
-                  { label: "Faturamento Alpha", value: `R$ ${data?.metrics?.salesValue?.toFixed(2) || "0,00"}`, color: "text-[#00ff88]", icon: DollarSign },
-                  { label: "ROAS Supremo", value: `${data?.metrics?.roas?.toFixed(2) || "0.00"}x`, color: "text-[#7000ff]", icon: TrendingUp },
-                  { label: "Vendas (Puras)", value: data?.metrics?.sales || "0", color: "text-[#00ff88]", icon: ShoppingCart },
+                  { label: "Vendas Alpha", value: data?.metrics?.sales || "0", color: "text-[#00ff88]", icon: ShoppingCart },
                   { label: "CPA Médio", value: `R$ ${data?.metrics?.cpa || "0,00"}`, color: "text-red-500", icon: Target },
-                  { label: "Checkouts (IC)", value: data?.metrics?.totalCheckouts || "0", color: "text-yellow-400", icon: ShieldCheck },
-                  { label: "Alcance Real", value: data?.metrics?.totalReach?.toLocaleString() || "0", color: "text-blue-400", icon: Eye },
+                  { label: "Taxa de Conexão", value: data?.metrics?.connectRate || "0.0%", color: "text-cyan-400", icon: LinkIcon },
+                  { label: "Faturamento", value: `R$ ${data?.metrics?.salesValue?.toFixed(2) || "0,00"}`, color: "text-[#00ff88]", icon: DollarSign },
+                  { label: "ROAS Supremo", value: `${data?.metrics?.roas?.toFixed(2) || "0.00"}x`, color: "text-[#7000ff]", icon: TrendingUp },
+                  { label: "Visualizações (LPV)", value: data?.metrics?.totalLPV?.toLocaleString() || "0", color: "text-blue-400", icon: Monitor },
+                  { label: "Cliques no Link", value: data?.metrics?.totalLinkClicks?.toLocaleString() || "0", color: "text-yellow-400", icon: MousePointer2 },
+                  { label: "Alcance Real", value: data?.metrics?.totalReach?.toLocaleString() || "0", color: "text-orange-400", icon: Eye },
                   { label: "Frequência", value: data?.metrics?.avgFrequency || "0.00", color: "text-purple-400", icon: RefreshCw },
+                  { label: "Checkouts (IC)", value: data?.metrics?.totalCheckouts || "0", color: "text-pink-400", icon: ShieldCheck },
                   { label: "Carrinhos (ATC)", value: data?.metrics?.totalCarts || "0", color: "text-cyan-400", icon: ShoppingCart },
                 ].map((stat, i) => (
-                  <div key={i} className="glass-card p-8 group hover:border-cyan-500/30 transition-all shadow-xl">
-                    <div className="flex items-center justify-between mb-4"><stat.icon size={18} className="text-gray-600 group-hover:text-cyan-400 transition-colors" /><p className="text-[10px] uppercase font-black tracking-widest text-gray-500">{stat.label}</p></div>
-                    <h3 className={`text-4xl font-black tracking-tighter ${stat.color} drop-shadow-2xl`}>{stat.value}</h3>
+                  <div key={i} className="glass-card p-6 group hover:border-cyan-500/30 transition-all shadow-xl">
+                    <div className="flex items-center justify-between mb-4"><stat.icon size={16} className="text-gray-600 group-hover:text-cyan-400 transition-colors" /><p className="text-[8px] uppercase font-black tracking-widest text-gray-500">{stat.label}</p></div>
+                    <h3 className={`text-2xl font-black tracking-tighter ${stat.color} drop-shadow-2xl`}>{stat.value}</h3>
                   </div>
                 ))}
               </div>
 
-              {/* TABELA DE GUERRA (ALINHADA) */}
+              {/* TABELA DE GUERRA (ALINHADA COM CONNECT RATE) */}
               <div className="glass-card !p-0 overflow-hidden border-white/10 shadow-2xl">
-                <div className="p-6 bg-white/[0.02] border-b border-white/5 flex items-center justify-between"><div className="flex items-center gap-3"><Activity className="text-cyan-400 animate-pulse" size={18} /><span className="text-[11px] font-black uppercase tracking-widest text-white">Auditoria de Conjuntos Alpha (ABO/CBO)</span></div><span className="text-[9px] font-black text-gray-600 uppercase">Sincronia Zero-Delay</span></div>
+                <div className="p-6 bg-white/[0.02] border-b border-white/5 flex items-center justify-between"><div className="flex items-center gap-3"><Activity className="text-cyan-400 animate-pulse" size={18} /><span className="text-[11px] font-black uppercase tracking-widest text-white">Auditoria de Conjuntos Alpha (Connect Rate Sync)</span></div><span className="text-[9px] font-black text-gray-600 uppercase">Sincronia Zero-Delay</span></div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-[11px]">
                     <thead className="bg-white/[0.04] text-gray-500 uppercase font-black tracking-widest border-b border-white/5">
                       <tr>
-                        <th className="p-5">Conjunto</th><th className="p-5 text-center">Status</th><th className="p-5 text-center">Gasto</th><th className="p-5 text-center">Vendas</th><th className="p-5 text-center">Valor Gerado</th><th className="p-5 text-center">ROAS</th><th className="p-5 text-center">CTR</th><th className="p-5 text-center">CPM</th><th className="p-5 text-right">Ação</th>
+                        <th className="p-5">Conjunto</th><th className="p-5 text-center">Status</th><th className="p-5 text-center">Gasto</th><th className="p-5 text-center">Vendas</th><th className="p-5 text-center">Connect %</th><th className="p-5 text-center">CPA</th><th className="p-5 text-center">ROAS</th><th className="p-5 text-center">CTR</th><th className="p-5 text-right">Ação</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5">
@@ -211,10 +214,10 @@ export default function NexusSupremoV12Aligned() {
                           <td className="p-5 text-center"><span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase ${ad.status === 'ACTIVE' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-500'}`}>{ad.status}</span></td>
                           <td className="p-5 text-center font-bold text-gray-500">R$ {ad.spend?.toFixed(2)}</td>
                           <td className="p-5 text-center text-[#00ff88] font-black text-base">{ad.sales}</td>
-                          <td className="p-5 text-center font-bold text-gray-200">R$ {ad.salesValue?.toFixed(2) || '0,00'}</td>
+                          <td className="p-5 text-center font-black text-cyan-400">{ad.connectRate}</td>
+                          <td className="p-5 text-center font-bold text-red-400">R$ {ad.cpa}</td>
                           <td className="p-5 text-center font-black text-[#7000ff]">{ad.roas}x</td>
                           <td className="p-5 text-center font-bold text-gray-500">{ad.ctr}</td>
-                          <td className="p-5 text-center font-bold text-gray-500">R$ {ad.cpm}</td>
                           <td className="p-5 text-right"><button className="p-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-lg"><Power size={14} /></button></td>
                         </tr>
                       ))}
@@ -225,7 +228,7 @@ export default function NexusSupremoV12Aligned() {
             </div>
           )}
 
-          {/* MODO HUB & CARDS PURISTAS (FROTA COMPLETA) */}
+          {/* MODO HUB & CARDS PURISTAS */}
           {activeTab !== "traffic" && !selectedAgent && (
             <div className="grid grid-cols-3 gap-8 animate-in slide-in-from-bottom-4 duration-500">
               {Object.values(AGENT_REGISTRY).filter(a => a.group === activeTab).map((agent) => (
