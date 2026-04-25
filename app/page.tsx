@@ -1,6 +1,6 @@
 "use client";
 
-/* FORCE DEPLOY V1.2.2 - INTELLIGENT CONNECT RATE INDICATORS */
+/* SUPREMO RESTORATION V14.0 - FULL FIDELITY GESTOR & HORMOSI */
 import { useState, useEffect } from "react";
 import { 
   Zap, MessageSquare, TrendingUp, Target, ShoppingCart, 
@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { AGENT_REGISTRY, GROUP_CONFIG } from "@/app/lib/agentRegistry";
 
-export default function NexusSupremoV12Intelligent() {
+export default function NexusSupremoV14() {
   const [activeProject, setActiveProject] = useState("");
   const [activeTab, setActiveTab] = useState("traffic"); 
   const [mounted, setMounted] = useState(false);
@@ -90,13 +90,6 @@ export default function NexusSupremoV12Intelligent() {
     } catch (err) { console.error(err); }
   };
 
-  const getConnectRateColor = (rateStr: string) => {
-    const rate = parseFloat(rateStr || "0");
-    if (rate >= 80) return "text-[#00ff88]";
-    if (rate >= 70) return "text-yellow-400";
-    return "text-red-500";
-  };
-
   if (!mounted) return <div className="bg-[#050505] min-h-screen" />;
 
   if (!activeProject) {
@@ -142,16 +135,14 @@ export default function NexusSupremoV12Intelligent() {
         <div className="flex-1 overflow-y-auto p-4 space-y-8 scrollbar-hide">
           <div className="space-y-3">
             <h3 className="px-4 text-[9px] font-black uppercase tracking-[3px] text-cyan-500">COMANDO MASTER</h3>
-            {["mente-maestro", "gestor-trafego"].map((id) => {
-              const agent = (AGENT_REGISTRY as any)[id];
-              const isActive = selectedAgentId === id || (id === "gestor-trafego" && activeTab === "traffic");
-              return (
-                <button key={id} onClick={() => { if(id === "gestor-trafego"){ setActiveTab("traffic"); setSelectedAgentId(null); } else { setSelectedAgentId(id); setActiveTab(agent.group); } }} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${isActive ? 'bg-white/[0.05] border-white/10 shadow-xl' : 'hover:bg-white/[0.02] border-transparent'}`}>
-                  <span className="text-2xl">{agent.icon}</span>
-                  <div className="text-left"><p className={`text-[12px] font-black tracking-tight ${isActive ? 'text-white' : 'text-gray-500'}`}>{agent.name}</p><p className="text-[8px] text-gray-700 font-black uppercase">Soberano</p></div>
-                </button>
-              );
-            })}
+            <button onClick={() => { setSelectedAgentId("mente-maestro"); setActiveTab("mente-maestro"); }} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${selectedAgentId === "mente-maestro" ? 'bg-white/[0.05] border-white/10 shadow-xl' : 'hover:bg-white/[0.02] border-transparent'}`}>
+              <span className="text-2xl">🧠</span>
+              <div className="text-left"><p className={`text-[12px] font-black tracking-tight ${selectedAgentId === "mente-maestro" ? 'text-white' : 'text-gray-500'}`}>MENTE MAESTRO</p><p className="text-[8px] text-gray-700 font-black uppercase">Soberano</p></div>
+            </button>
+            <button onClick={() => { setActiveTab("traffic"); setSelectedAgentId(null); }} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${activeTab === "traffic" ? 'bg-white/[0.05] border-white/10 shadow-xl' : 'hover:bg-white/[0.02] border-transparent'}`}>
+              <span className="text-2xl">🚀</span>
+              <div className="text-left"><p className={`text-[12px] font-black tracking-tight ${activeTab === "traffic" ? 'text-white' : 'text-gray-500'}`}>GESTOR DE TRÁFEGO ALPHA</p><p className="text-[8px] text-gray-700 font-black uppercase">Soberano</p></div>
+            </button>
           </div>
         </div>
       </aside>
@@ -168,7 +159,7 @@ export default function NexusSupremoV12Intelligent() {
           </div>
           <div className="flex items-center gap-4">
             {activeTab === "traffic" && <button onClick={fetchData} className="flex items-center gap-2 px-6 py-3 glass-card hover:border-cyan-500/50 transition-all text-[10px] font-black text-cyan-400 uppercase tracking-widest"><RefreshCw className={loading ? "animate-spin" : ""} size={14} /> Atualizar Dados</button>}
-            {selectedAgent && <button onClick={() => setSelectedAgentId(null)} className="px-6 py-3 rounded-xl bg-white/5 text-[9px] font-black uppercase tracking-[3px] text-gray-500 hover:text-white border border-white/5 transition-all">Retornar ao Hub</button>}
+            {(selectedAgent || activeTab !== "traffic") && <button onClick={() => { setActiveTab("traffic"); setSelectedAgentId(null); }} className="px-6 py-3 rounded-xl bg-white/5 text-[9px] font-black uppercase tracking-[3px] text-gray-500 hover:text-white border border-white/5 transition-all">Retornar ao Hub</button>}
           </div>
         </header>
 
@@ -182,13 +173,13 @@ export default function NexusSupremoV12Intelligent() {
                 <div className="space-y-2"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Período Tático</p><div className="flex gap-2 px-4 py-2">{['today', 'yesterday', 'last_7d', 'last_30d'].map(p => (<button key={p} onClick={() => setSelectedDate(p)} className={`px-4 py-2 rounded-lg text-[9px] font-black uppercase transition-all ${selectedDate === p ? 'bg-cyan-500 text-black shadow-lg shadow-cyan-500/20' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}>{p === 'today' ? 'Hoje' : p === 'yesterday' ? 'Ontem' : p === 'last_7d' ? '7D' : '30D'}</button>))}</div></div>
               </div>
 
-              {/* CARDS SUPREMO 2.0 (GRADE INTELIGENTE) */}
+              {/* CARDS SUPREMO 2.0 */}
               <div className="grid grid-cols-4 gap-6">
                 {[
                   { label: "Investimento", value: `R$ ${data?.metrics?.spend?.toFixed(2) || "0,00"}`, color: "text-white", icon: Wallet },
                   { label: "Vendas Alpha", value: data?.metrics?.sales || "0", color: "text-[#00ff88]", icon: ShoppingCart },
                   { label: "CPA Médio", value: `R$ ${data?.metrics?.cpa || "0,00"}`, color: "text-red-500", icon: Target },
-                  { label: "Taxa de Conexão", value: data?.metrics?.connectRate || "0.0%", color: getConnectRateColor(data?.metrics?.connectRate), icon: LinkIcon },
+                  { label: "Connect Rate", value: data?.metrics?.connectRate || "0.0%", color: (parseFloat(data?.metrics?.connectRate) >= 80 ? "text-[#00ff88]" : parseFloat(data?.metrics?.connectRate) >= 70 ? "text-yellow-400" : "text-red-500"), icon: LinkIcon },
                   { label: "Faturamento", value: `R$ ${data?.metrics?.salesValue?.toFixed(2) || "0,00"}`, color: "text-[#00ff88]", icon: DollarSign },
                   { label: "ROAS Supremo", value: `${data?.metrics?.roas?.toFixed(2) || "0.00"}x`, color: "text-[#7000ff]", icon: TrendingUp },
                   { label: "Visualizações (LPV)", value: data?.metrics?.totalLPV?.toLocaleString() || "0", color: "text-blue-400", icon: Monitor },
@@ -199,18 +190,15 @@ export default function NexusSupremoV12Intelligent() {
                   { label: "Carrinhos (ATC)", value: data?.metrics?.totalCarts || "0", color: "text-cyan-400", icon: ShoppingCart },
                 ].map((stat, i) => (
                   <div key={i} className="glass-card p-6 group hover:border-cyan-500/30 transition-all shadow-xl relative overflow-hidden">
-                    {stat.label === "Taxa de Conexão" && parseFloat(stat.value) < 70 && stat.value !== "0.0%" && (
-                      <div className="absolute top-0 right-0 p-2 text-red-500/30 animate-pulse"><AlertTriangle size={14} /></div>
-                    )}
                     <div className="flex items-center justify-between mb-4"><stat.icon size={16} className="text-gray-600 group-hover:text-cyan-400 transition-colors" /><p className="text-[8px] uppercase font-black tracking-widest text-gray-500">{stat.label}</p></div>
                     <h3 className={`text-2xl font-black tracking-tighter ${stat.color} drop-shadow-2xl`}>{stat.value}</h3>
                   </div>
                 ))}
               </div>
 
-              {/* TABELA DE GUERRA (ALINHADA COM CONNECT RATE) */}
+              {/* TABELA DE GUERRA */}
               <div className="glass-card !p-0 overflow-hidden border-white/10 shadow-2xl">
-                <div className="p-6 bg-white/[0.02] border-b border-white/5 flex items-center justify-between"><div className="flex items-center gap-3"><Activity className="text-cyan-400 animate-pulse" size={18} /><span className="text-[11px] font-black uppercase tracking-widest text-white">Auditoria de Conjuntos Alpha (Inteligência de Página)</span></div><span className="text-[9px] font-black text-gray-600 uppercase">Sincronia Zero-Delay</span></div>
+                <div className="p-6 bg-white/[0.02] border-b border-white/5 flex items-center justify-between"><div className="flex items-center gap-3"><Activity className="text-cyan-400 animate-pulse" size={18} /><span className="text-[11px] font-black uppercase tracking-widest text-white">Auditoria de Conjuntos Alpha (DNA Sync)</span></div></div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-[11px]">
                     <thead className="bg-white/[0.04] text-gray-500 uppercase font-black tracking-widest border-b border-white/5">
@@ -225,7 +213,7 @@ export default function NexusSupremoV12Intelligent() {
                           <td className="p-5 text-center"><span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase ${ad.status === 'ACTIVE' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-500'}`}>{ad.status}</span></td>
                           <td className="p-5 text-center font-bold text-gray-500">R$ {ad.spend?.toFixed(2)}</td>
                           <td className="p-5 text-center text-[#00ff88] font-black text-base">{ad.sales}</td>
-                          <td className={`p-5 text-center font-black ${getConnectRateColor(ad.connectRate)}`}>{ad.connectRate}</td>
+                          <td className={`p-5 text-center font-black ${parseFloat(ad.connectRate) >= 80 ? 'text-[#00ff88]' : parseFloat(ad.connectRate) >= 70 ? 'text-yellow-400' : 'text-red-500'}`}>{ad.connectRate}</td>
                           <td className="p-5 text-center font-bold text-red-400">R$ {ad.cpa}</td>
                           <td className="p-5 text-center font-black text-[#7000ff]">{ad.roas}x</td>
                           <td className="p-5 text-center font-bold text-gray-500">{ad.ctr}</td>
@@ -239,7 +227,7 @@ export default function NexusSupremoV12Intelligent() {
             </div>
           )}
 
-          {/* MODO HUB & CARDS PURISTAS */}
+          {/* HUB DE AGENTES */}
           {activeTab !== "traffic" && !selectedAgent && (
             <div className="grid grid-cols-3 gap-8 animate-in slide-in-from-bottom-4 duration-500">
               {Object.values(AGENT_REGISTRY).filter(a => a.group === activeTab).map((agent) => (
@@ -253,11 +241,68 @@ export default function NexusSupremoV12Intelligent() {
             </div>
           )}
 
-          {selectedAgent && (
+          {/* DASHBOARD DO HORMOZI (RESTAURAÇÃO TOTAL) */}
+          {selectedAgent && selectedAgentId === "m1" && (
+            <div className="space-y-12 animate-in zoom-in-95 duration-700">
+              <div className="flex items-center justify-between border-b border-white/5 pb-10">
+                <div className="flex items-center gap-10">
+                  <div className="w-32 h-32 bg-white/5 rounded-[45px] flex items-center justify-center text-6xl border border-white/10 shadow-2xl relative transition-all duration-1000">
+                    🧬 {isExecuting && <div className="absolute inset-0 rounded-[45px] border-2 border-cyan-500 animate-ping opacity-50" />}
+                  </div>
+                  <div>
+                    <h2 className="text-6xl font-black text-white italic uppercase tracking-tighter leading-none">ALEX HORMOZI</h2>
+                    <p className="text-[10px] text-cyan-400 font-black uppercase tracking-[0.5em] mt-3 italic">ESTRATEGISTA MASTER — 100M OFFERS</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-8">
+                {[
+                  { label: "FORÇA DA OFERTA", val: 85, color: "text-[#00ff88]" },
+                  { label: "MULTIPLICADOR LTV", val: 72, color: "text-cyan-400" },
+                  { label: "ÍNDICE DE ESCALA", val: 64, color: "text-[#7000ff]" }
+                ].map((g, i) => (
+                  <div key={i} className="glass-card p-10 flex flex-col items-center text-center space-y-6">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{g.label}</p>
+                    <div className="relative w-32 h-32 flex items-center justify-center">
+                      <svg className="w-full h-full transform -rotate-90"><circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="10" fill="transparent" className="text-white/5" /><circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="10" fill="transparent" strokeDasharray="364.4" strokeDashoffset={364.4 - (364.4 * g.val) / 100} className={`${g.color} transition-all duration-1000`} /></svg>
+                      <span className={`absolute text-2xl font-black ${g.color}`}>{g.val}%</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-2 gap-8">
+                <div className="glass-card p-10 space-y-6 border-l-4 border-cyan-500">
+                  <h3 className="text-[11px] font-black text-cyan-500 uppercase tracking-[4px] italic">CORE STRATEGY</h3>
+                  <p className="text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">ESTRATÉGIA DE 100M OFFERS E CRIAÇÃO DE OFERTAS SEM RESISTÊNCIA.</p>
+                </div>
+                <div className="glass-card p-10 space-y-6 border-l-4 border-[#00ff88]">
+                  <h3 className="text-[11px] font-black text-[#00ff88] uppercase tracking-[4px] italic">MARKET ANOMALIES</h3>
+                  <p className="text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">GARANTE QUE NINGUÉM CONSIGA DIZER NÃO PARA O VALOR QUE VOCÊ ENTREGA.</p>
+                </div>
+              </div>
+
+              <div className="glass-card p-10 space-y-8 bg-black/60 border-cyan-500/20">
+                <h3 className="text-[11px] font-black text-white uppercase tracking-[5px] text-center italic">PILLARS OF EXECUTION</h3>
+                <div className="space-y-6">
+                  {["ENGENHARIA DE OFERTA", "MAXIMUN LTV", "ESCALA DE $100M"].map((p, i) => (
+                    <div key={i} className="flex items-center justify-between p-6 border border-white/5 rounded-2xl bg-white/[0.02]">
+                      <span className="text-[11px] font-black text-gray-400 tracking-widest">{p}</span>
+                      <CheckCircle2 className="text-cyan-400" size={18} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* DASHBOARD PADRÃO PARA OUTROS AGENTES */}
+          {selectedAgent && selectedAgentId !== "m1" && (
             <div className="max-w-5xl mx-auto space-y-12 animate-in zoom-in-95 duration-500">
               <div className="flex items-center gap-10 border-b border-white/5 pb-10">
                 <div className="w-32 h-32 bg-white/5 rounded-[45px] flex items-center justify-center text-6xl border border-white/10 shadow-2xl">{selectedAgent.icon}</div>
-                <div><h2 className="text-5xl font-black text-white italic uppercase tracking-tighter">{selectedAgent.name}</h2><p className="text-[12px] text-cyan-400 font-black uppercase tracking-[0.6em] mt-3 italic">Unidade de Inteligência Purista</p></div>
+                <div><h2 className="text-5xl font-black text-white italic uppercase tracking-tighter">{selectedAgent.name}</h2><p className="text-[12px] text-cyan-400 font-black uppercase tracking-[0.6em] mt-3 italic">Unidade de Inteligência Alpha</p></div>
               </div>
               <div className="grid grid-cols-3 gap-8">
                 {[{ label: "O QUE FAZ", text: selectedAgent.f, color: "text-cyan-400" }, { label: "O QUE RESOLVE", text: selectedAgent.r, color: "text-[#00ff88]" }, { label: "ONDE USAR", text: selectedAgent.u, color: "text-[#7000ff]" }].map((box, i) => (
@@ -266,7 +311,7 @@ export default function NexusSupremoV12Intelligent() {
               </div>
               <div className="glass-card !p-0 overflow-hidden border-cyan-500/20 bg-cyan-500/[0.01] shadow-2xl">
                 <div className="bg-cyan-500/10 p-5 border-b border-cyan-500/20 flex items-center justify-between"><div className="flex items-center gap-3"><TerminalIcon size={16} className="text-cyan-400" /><span className="text-[10px] font-black uppercase tracking-widest text-cyan-400">Terminal Tático Alpha</span></div></div>
-                <div className="p-10 space-y-8"><div className="bg-black/60 rounded-2xl p-8 font-mono text-xs text-cyan-500/70 border border-white/5 h-48 overflow-y-auto"><p>&gt; Sistema {selectedAgent.name.toLowerCase()} integrado...</p><p>&gt; Sincronização neural concluída. Aguardando comando...</p><div className="w-1.5 h-5 bg-cyan-500 animate-pulse inline-block mt-4"></div></div><button onClick={() => setInput(`Ativar ${selectedAgent.name}: Executar análise de campo imediata.`)} className="w-full py-5 bg-cyan-500 text-black rounded-2xl text-[13px] font-black uppercase tracking-[4px] hover:scale-[1.01] transition-all shadow-2xl shadow-cyan-500/20">EXECUTAR MISSÃO SOBERANA</button></div>
+                <div className="p-10 space-y-8"><div className="bg-black/60 rounded-2xl p-8 font-mono text-xs text-cyan-500/70 border border-white/5 h-48 overflow-y-auto"><p>&gt; Sistema {selectedAgent.name.toLowerCase()} integrado...</p></div></div>
               </div>
             </div>
           )}
