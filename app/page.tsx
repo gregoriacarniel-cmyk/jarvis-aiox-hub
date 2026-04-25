@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import { 
   Zap, MessageSquare, TrendingUp, Target, ShoppingCart, 
-  RefreshCw, Cpu, BrainCircuit, Activity, Wallet, Calendar, Search, ArrowRight, CheckCircle2, ShieldCheck, Layers
+  RefreshCw, Cpu, BrainCircuit, Activity, Wallet, Calendar, Search, ArrowRight, CheckCircle2, ShieldCheck, Layers, Terminal as TerminalIcon
 } from "lucide-react";
 import { AGENT_REGISTRY, GROUP_CONFIG } from "@/app/lib/agentRegistry";
 
-export default function NexusDashboardV12() {
+export default function NexusPuristV12() {
   const [activeProject, setActiveProject] = useState("");
   const [activeTab, setActiveTab] = useState("traffic"); 
   const [mounted, setMounted] = useState(false);
@@ -89,7 +89,7 @@ export default function NexusDashboardV12() {
 
   if (!mounted) return <div className="bg-[#050505] min-h-screen" />;
 
-  // --- PORTAL DE SELEÇÃO ---
+  // --- SELEÇÃO DE PROJETO ---
   if (!activeProject) {
     return (
       <div className="min-h-screen bg-[#050505] flex items-center justify-center p-8 relative overflow-hidden font-['Outfit']">
@@ -121,7 +121,7 @@ export default function NexusDashboardV12() {
       <aside className="border-r border-white/5 bg-black/40 flex flex-col overflow-hidden">
         <div className="p-6 border-b border-white/5 space-y-6">
           <button onClick={() => { setActiveTab("traffic"); setSelectedAgentId(null); }} className="flex items-center gap-3 w-full group">
-            <div className="w-10 h-10 bg-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/20"><Zap size={20} className="text-black" /></div>
+            <div className="w-10 h-10 bg-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-all"><Zap size={20} className="text-black" /></div>
             <div className="text-left"><h2 className="text-[11px] font-black uppercase tracking-widest text-white italic">Métricas Master</h2></div>
           </button>
           <div className="flex flex-col gap-2">
@@ -167,14 +167,14 @@ export default function NexusDashboardV12() {
           {activeTab === "traffic" && (
             <div className="space-y-8">
               <div className="grid grid-cols-3 gap-4 p-2 glass-card border-white/5 bg-white/[0.02]">
-                <select value={selectedAccount} onChange={(e) => setSelectedAccount(e.target.value)} className="bg-transparent text-[10px] font-black uppercase text-white p-4 focus:outline-none cursor-pointer">
+                <select value={selectedAccount} onChange={(e) => setSelectedAccount(e.target.value)} className="bg-transparent text-[10px] font-black uppercase text-white p-4 focus:outline-none">
                   {accounts.map(acc => (<option key={acc.id} value={acc.id} className="bg-[#050505]">{acc.name}</option>))}
                 </select>
-                <select value={selectedCampaign} onChange={(e) => setSelectedCampaign(e.target.value)} className="bg-transparent text-[10px] font-black uppercase text-white p-4 border-x border-white/5 focus:outline-none cursor-pointer">
+                <select value={selectedCampaign} onChange={(e) => setSelectedCampaign(e.target.value)} className="bg-transparent text-[10px] font-black uppercase text-white p-4 border-x border-white/5 focus:outline-none">
                   <option value="" className="bg-[#050505]">Todas as Campanhas</option>
                   {campaigns.map(camp => (<option key={camp.id} value={camp.id} className="bg-[#050505]">{camp.name}</option>))}
                 </select>
-                <select value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="bg-transparent text-[10px] font-black uppercase text-white p-4 focus:outline-none cursor-pointer">
+                <select value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="bg-transparent text-[10px] font-black uppercase text-white p-4 focus:outline-none">
                   <option value="today" className="bg-[#050505]">Hoje</option>
                   <option value="yesterday" className="bg-[#050505]">Ontem</option>
                   <option value="last_7d" className="bg-[#050505]">7 Dias</option>
@@ -199,34 +199,51 @@ export default function NexusDashboardV12() {
                 <button key={agent.id} onClick={() => setSelectedAgentId(agent.id)} className="glass-card p-8 text-left hover:border-cyan-500/40 transition-all group">
                   <span className="text-4xl mb-4 block">{agent.icon}</span>
                   <h3 className="text-lg font-black text-white uppercase italic mb-2">{agent.name}</h3>
-                  <div className="mt-4 text-[9px] font-black uppercase text-cyan-400">Ver Dashboard →</div>
+                  <div className="mt-4 text-[9px] font-black uppercase text-cyan-400 italic">Identificar Agente →</div>
                 </button>
               ))}
             </div>
           )}
 
           {selectedAgent && (
-            <div className="space-y-8 animate-in zoom-in-95 duration-500">
-              <div className="grid grid-cols-3 gap-8">
-                <div className="glass-card p-8 flex flex-col items-center text-center">
-                  <div className="w-24 h-24 bg-white/5 rounded-[35px] flex items-center justify-center text-5xl border border-white/10 mb-6">{selectedAgent.icon}</div>
-                  <h2 className="text-2xl font-black text-white italic uppercase">{selectedAgent.name}</h2>
-                  <p className="text-[10px] text-gray-500 font-bold mt-4 italic">"{selectedAgent.description}"</p>
+            <div className="space-y-12 animate-in zoom-in-95 duration-500">
+              <div className="flex items-center gap-8">
+                <div className="w-24 h-24 bg-white/5 rounded-[35px] flex items-center justify-center text-5xl border border-white/10">{selectedAgent.icon}</div>
+                <div>
+                  <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">{selectedAgent.name}</h2>
+                  <p className="text-[10px] text-cyan-400 font-black uppercase tracking-[0.4em] mt-2 italic">Nexus Purist v12.0 ● Unidade Ativa</p>
                 </div>
-                <div className="col-span-2 space-y-6">
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="glass-card p-6"><p className="text-[8px] font-black text-gray-600 mb-2">PRECISÃO</p><h4 className="text-xl font-black text-[#00ff88]">CIRÚRGICA</h4></div>
-                    <div className="glass-card p-6"><p className="text-[8px] font-black text-gray-600 mb-2">STATUS</p><h4 className="text-xl font-black text-cyan-400">ATIVO</h4></div>
-                    <div className="glass-card p-6"><p className="text-[8px] font-black text-gray-600 mb-2">FASE</p><h4 className="text-xl font-black text-white">ESTRATÉGIA</h4></div>
+              </div>
+
+              {/* DNA PURISTA: O QUE FAZ / RESOLVE / USA */}
+              <div className="grid grid-cols-3 gap-6">
+                <div className="glass-card p-8 border-white/10 bg-white/[0.02]">
+                  <h4 className="text-[9px] font-black uppercase tracking-[3px] text-cyan-400 mb-4">O QUE FAZ</h4>
+                  <p className="text-[11px] font-bold text-gray-400 leading-relaxed uppercase">{selectedAgent.f}</p>
+                </div>
+                <div className="glass-card p-8 border-white/10 bg-white/[0.02]">
+                  <h4 className="text-[9px] font-black uppercase tracking-[3px] text-[#00ff88] mb-4">O QUE RESOLVE</h4>
+                  <p className="text-[11px] font-bold text-gray-400 leading-relaxed uppercase">{selectedAgent.r}</p>
+                </div>
+                <div className="glass-card p-8 border-white/10 bg-white/[0.02]">
+                  <h4 className="text-[9px] font-black uppercase tracking-[3px] text-[#7000ff] mb-4">ONDE USAR</h4>
+                  <p className="text-[11px] font-bold text-gray-400 leading-relaxed uppercase">{selectedAgent.u}</p>
+                </div>
+              </div>
+
+              {/* TERMINAL DE COMANDO INTEGRADO */}
+              <div className="glass-card !p-0 overflow-hidden border-cyan-500/20">
+                <div className="bg-cyan-500/10 p-4 border-b border-cyan-500/20 flex items-center justify-between">
+                  <div className="flex items-center gap-3"><TerminalIcon size={14} className="text-cyan-400" /><span className="text-[9px] font-black uppercase tracking-widest text-cyan-400">Terminal de Comando Tático</span></div>
+                  <div className="flex gap-1"><div className="w-2 h-2 rounded-full bg-red-500/20"></div><div className="w-2 h-2 rounded-full bg-yellow-500/20"></div><div className="w-2 h-2 rounded-full bg-green-500/20"></div></div>
+                </div>
+                <div className="p-8 space-y-6">
+                  <div className="bg-black/60 rounded-xl p-6 font-mono text-[11px] text-cyan-500/70 border border-white/5 h-40 overflow-y-auto">
+                    <p>&gt; Sistema {selectedAgent.name.toLowerCase()} sincronizado...</p>
+                    <p>&gt; Aguardando ordens do Jarvis Supremo para execução...</p>
+                    <div className="w-1 h-4 bg-cyan-500 animate-pulse inline-block mt-4"></div>
                   </div>
-                  <div className="glass-card p-8">
-                    <h3 className="text-[10px] font-black text-gray-500 mb-6 tracking-[3px]">FASES DE EXECUÇÃO</h3>
-                    <div className="space-y-4">
-                      {selectedAgent.phases.map((p: string, i: number) => (
-                        <div key={i} className="flex items-center gap-4"><div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-[10px] font-black text-cyan-400">0{i+1}</div><p className="text-[11px] font-black text-white uppercase">{p}</p></div>
-                      ))}
-                    </div>
-                  </div>
+                  <button onClick={() => setInput(`Ativar Protocolo ${selectedAgent.name}: Realizar análise profunda agora.`)} className="w-full py-4 bg-cyan-400 text-black rounded-xl text-[12px] font-black uppercase tracking-widest hover:scale-[1.01] transition-all">EXECUTAR AGENTE NO CAMPO</button>
                 </div>
               </div>
             </div>
@@ -238,7 +255,7 @@ export default function NexusDashboardV12() {
       <aside className="border-l border-white/5 bg-black/40 flex flex-col overflow-hidden">
         <div className="p-8 border-b border-white/5 bg-white/[0.02] flex items-center gap-4">
           <div className="w-12 h-12 bg-cyan-500 rounded-2xl flex items-center justify-center shadow-xl shadow-cyan-500/20"><MessageSquare className="text-black" size={24} /></div>
-          <h3 className="text-xs font-black uppercase tracking-[0.2em] italic text-white">Jarvis Supremo</h3>
+          <h3 className="text-xs font-black uppercase tracking-[0.2em] italic text-white leading-none">Jarvis Supremo</h3>
         </div>
         <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide">
           {messages.map((msg, i) => (
@@ -248,7 +265,7 @@ export default function NexusDashboardV12() {
           ))}
         </div>
         <form onSubmit={handleSendMessage} className="p-8 bg-black/50 border-t border-white/5 flex gap-3">
-          <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Comando..." className="flex-1 bg-white/[0.04] border border-white/10 rounded-2xl px-6 py-4 text-[11px] text-white focus:outline-none focus:border-cyan-500/50" /><button type="submit" className="bg-cyan-500 text-black p-4 rounded-2xl hover:scale-110 active:scale-90 transition-all"><Zap size={22} /></button>
+          <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Comando..." className="flex-1 bg-white/[0.04] border border-white/10 rounded-2xl px-6 py-4 text-[11px] text-white focus:outline-none" /><button type="submit" className="bg-cyan-500 text-black p-4 rounded-2xl hover:scale-110 active:scale-90 transition-all"><Zap size={22} /></button>
         </form>
       </aside>
 
