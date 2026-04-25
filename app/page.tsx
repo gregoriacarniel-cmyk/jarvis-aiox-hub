@@ -143,9 +143,24 @@ export default function NexusPuristV12() {
             {["mente-maestro", "gestor-trafego"].map((id) => {
               const agent = (AGENT_REGISTRY as any)[id];
               return (
-                <button key={id} onClick={() => { setSelectedAgentId(id); setActiveTab(agent.group); }} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${selectedAgentId === id ? 'bg-white/[0.05] border-white/10' : 'hover:bg-white/[0.02] border-transparent'}`}>
+                <button 
+                  key={id} 
+                  onClick={() => { 
+                    if (id === "gestor-trafego") {
+                      setActiveTab("traffic");
+                      setSelectedAgentId(null);
+                    } else {
+                      setSelectedAgentId(id); 
+                      setActiveTab(agent.group); 
+                    }
+                  }} 
+                  className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${selectedAgentId === id || (id === "gestor-trafego" && activeTab === "traffic") ? 'bg-white/[0.05] border-white/10' : 'hover:bg-white/[0.02] border-transparent'}`}
+                >
                   <span className="text-2xl">{agent.icon}</span>
-                  <div className="text-left"><p className={`text-[12px] font-black tracking-tight ${selectedAgentId === id ? 'text-white' : 'text-gray-500'}`}>{agent.name}</p></div>
+                  <div className="text-left">
+                    <p className={`text-[12px] font-black tracking-tight ${selectedAgentId === id || (id === "gestor-trafego" && activeTab === "traffic") ? 'text-white' : 'text-gray-500'}`}>{agent.name}</p>
+                    <p className="text-[8px] text-gray-700 font-black uppercase">Soberano</p>
+                  </div>
                 </button>
               );
             })}
