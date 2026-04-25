@@ -242,8 +242,9 @@ export default function NexusSupremoV14() {
           )}
 
           {/* DASHBOARD DO HORMOZI (RESTAURAÇÃO TOTAL) */}
-          {selectedAgent && selectedAgentId === "m1" && (
+          {selectedAgentId === "m1" && (
             <div className="space-y-12 animate-in zoom-in-95 duration-700">
+
               <div className="flex items-center justify-between border-b border-white/5 pb-10">
                 <div className="flex items-center gap-10">
                   <div className="w-32 h-32 bg-white/5 rounded-[45px] flex items-center justify-center text-6xl border border-white/10 shadow-2xl relative transition-all duration-1000">
