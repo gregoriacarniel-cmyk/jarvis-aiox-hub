@@ -28,6 +28,17 @@ export const AGENT_REGISTRY = {
   "stealth-mouse": { id: "stealth-mouse", name: "STEALTH MOUSE", group: "Inteligência Mega Brain", icon: "🖱️", description: "Simulação humana e camuflagem de rastro de bot.", specialties: ["segurança", "antidetect", "camuflagem"], phases: ["Analisando risco", "Camuflando", "Testando segurança", "Relatório"] },
 };
 
+export const getAgent = (id) => {
+  return AGENT_REGISTRY[id.toLowerCase()];
+};
+
+export const ALL_AGENTS = Object.values(AGENT_REGISTRY);
+export const AGENTS_BY_GROUP = ALL_AGENTS.reduce((acc, agent) => {
+  if (!acc[agent.group]) acc[agent.group] = [];
+  acc[agent.group].push(agent);
+  return acc;
+}, {});
+
 export const GROUP_CONFIG = {
   "Mentes Clonadas": { color: "#ffcc00", icon: "🧬" },
   "Conclave": { color: "#ff3c3c", icon: "⚖️" },
