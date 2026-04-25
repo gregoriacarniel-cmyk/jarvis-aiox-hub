@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Zap, ShieldCheck, MessageSquare, TrendingUp, Target, ShoppingCart, CreditCard, Users, RefreshCw, BarChart3, Globe, Layers, Cpu, LayoutDashboard, BrainCircuit, Network, ChevronDown, Rocket, CheckCircle2, ArrowRight, MousePointer2, Eye, Activity, Wallet, Calendar, Filter } from "lucide-react";
+import { Zap, ShieldCheck, MessageSquare, TrendingUp, Target, ShoppingCart, CreditCard, Users, RefreshCw, BarChart3, Globe, Layers, Cpu, LayoutDashboard, BrainCircuit, Network, ChevronDown, Rocket, CheckCircle2, ArrowRight, MousePointer2, Eye, Activity, Wallet, Calendar, Filter, Search, ChevronRight } from "lucide-react";
+import { AGENTS_BY_GROUP, GROUP_COLORS, ALL_AGENTS } from "@/app/lib/agentRegistry";
 
 export default function LowticketGregoriHub() {
   const [activeTab, setActiveTab] = useState("traffic");
@@ -24,6 +25,8 @@ export default function LowticketGregoriHub() {
   const [executingAction, setExecutingAction] = useState(false);
   const [actionLog, setActionLog] = useState<string[]>([]);
   const [activeAgent, setActiveAgent] = useState<any>(null);
+  const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
+  const [agentSearch, setAgentSearch] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -148,72 +151,131 @@ export default function LowticketGregoriHub() {
   }
 
   return (
-    <div className="nexus-container">
-      {/* Sidebar */}
-      <aside className="sidebar">
+    <div className="nexus-container grid grid-cols-[300px_1fr_400px] h-screen overflow-hidden bg-[#050505]">
+      {/* ── FLEET SIDEBAR (NEW) ────────────────────────────────────────── */}
+      <aside className="border-r border-white/5 bg-black/40 flex flex-col h-full overflow-hidden">
         <div className="p-8 border-b border-white/5">
-          <button onClick={() => setActiveProject("")} className="flex items-center gap-4 group">
-            <div className="w-10 h-10 bg-[#00f2ff] rounded-xl flex items-center justify-center glow-cyan shadow-lg shadow-cyan-500/20 group-hover:rotate-12 transition-transform"><Zap size={22} className="text-black" /></div>
-            <div className="text-left"><span className="text-[9px] font-black uppercase tracking-widest text-[#00f2ff] block mb-1 opacity-60">Trocar Unidade</span><h1 className="text-sm font-black tracking-tighter italic leading-none text-white uppercase">{activeProject}</h1></div>
-          </button>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10">
+              <Cpu className="text-cyan-400" size={20} />
+            </div>
+            <div>
+              <h2 className="text-xs font-black uppercase tracking-[0.2em] text-white leading-none italic">Frota Nexus</h2>
+              <p className="text-[9px] text-gray-600 font-bold uppercase tracking-widest mt-1">63 Agentes Ativos</p>
+            </div>
+          </div>
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={14} />
+            <input 
+              value={agentSearch}
+              onChange={(e) => setAgentSearch(e.target.value)}
+              placeholder="Buscar agente..." 
+              className="w-full bg-white/[0.03] border border-white/5 rounded-xl py-3 pl-10 pr-4 text-[10px] text-gray-400 focus:outline-none focus:border-cyan-500/30 transition-all font-bold"
+            />
+          </div>
         </div>
-        <nav className="flex-1 p-5 space-y-3 mt-6">
-          <button onClick={() => setActiveTab("traffic")} className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-[12px] font-black uppercase tracking-widest transition-all ${activeTab === 'traffic' ? 'bg-[#00f2ff] text-black shadow-xl shadow-cyan-500/20' : 'text-gray-500 hover:bg-white/5 hover:text-gray-300'}`}><BarChart3 size={20} /> Tráfego Alpha</button>
-          <button onClick={() => setActiveTab("agents")} className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-[12px] font-black uppercase tracking-widest transition-all ${activeTab === 'agents' ? 'bg-[#00f2ff] text-black shadow-xl shadow-cyan-500/20' : 'text-gray-500 hover:bg-white/5 hover:text-gray-300'}`}><BrainCircuit size={20} /> Agentes IA</button>
-          <div className="pt-10 px-4 text-[9px] font-black uppercase tracking-[0.3em] text-gray-600 mb-2">Sistemas Externos</div>
-          <button onClick={() => setActiveTab("fox")} className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-[12px] font-black uppercase tracking-widest transition-all ${activeTab === 'fox' ? 'bg-[#7000ff] text-white shadow-xl shadow-purple-500/20' : 'text-gray-500 hover:bg-white/5 hover:text-gray-300'}`}><Network size={20} /> FoxConect Hub</button>
-        </nav>
-        <div className="p-8 border-t border-white/5 bg-white/[0.01] flex items-center gap-4"><div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" /><span className="text-[10px] font-black text-gray-500 uppercase tracking-widest"> Jarvis Alpha: Online</span></div>
+
+        <div className="flex-1 overflow-y-auto p-4 space-y-8 scrollbar-hide">
+          {Object.entries(AGENTS_BY_GROUP).map(([group, agents]: [string, any]) => {
+            const filteredAgents = agents.filter((a: any) => 
+              a.name.toLowerCase().includes(agentSearch.toLowerCase()) || 
+              a.group.toLowerCase().includes(agentSearch.toLowerCase())
+            );
+            
+            if (filteredAgents.length === 0) return null;
+
+            return (
+              <div key={group} className="space-y-3">
+                <h3 className="px-4 text-[9px] font-black uppercase tracking-[0.3em] text-gray-700 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full" style={{backgroundColor: (GROUP_COLORS as any)[group]?.color}}></span>
+                  {group}
+                </h3>
+                <div className="space-y-1">
+                  {filteredAgents.map((agent: any) => (
+                    <button 
+                      key={agent.id} 
+                      onClick={() => {
+                        setSelectedAgentId(agent.id);
+                        setActiveTab("agent-dashboard");
+                      }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all group ${selectedAgentId === agent.id ? 'bg-white/[0.05] border border-white/10' : 'hover:bg-white/[0.02] border border-transparent'}`}
+                    >
+                      <span className="text-lg grayscale group-hover:grayscale-0 transition-all">{agent.icon}</span>
+                      <div className="text-left flex-1">
+                        <p className={`text-[11px] font-black tracking-tight ${selectedAgentId === agent.id ? 'text-white' : 'text-gray-500 group-hover:text-gray-300'}`}>{agent.name}</p>
+                        <p className="text-[8px] text-gray-700 font-bold uppercase">{agent.group}</p>
+                      </div>
+                      {selectedAgentId === agent.id && <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.6)]"></div>}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="p-6 border-t border-white/5 bg-white/[0.01]">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-[9px] font-black text-gray-600 uppercase tracking-widest italic">AIOX Neural Sync: 100%</span>
+          </div>
+        </div>
+      </aside>
+
+      {/* ── CENTRAL CONSOLE ───────────────────────────────────────────── */}
+      <aside className="w-20 border-r border-white/5 bg-black/60 flex flex-col items-center py-8 gap-6">
+        <button onClick={() => setActiveProject("")} className="w-12 h-12 bg-cyan-500 rounded-2xl flex items-center justify-center glow-cyan shadow-lg shadow-cyan-500/20 active:scale-90 transition-all"><Zap size={24} className="text-black" /></button>
+        <div className="w-10 h-px bg-white/10"></div>
+        <button onClick={() => setActiveTab("traffic")} className={`p-3 rounded-xl transition-all ${activeTab === 'traffic' ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-500/20' : 'text-gray-600 hover:text-white'}`}><LayoutDashboard size={24} /></button>
+        <button onClick={() => setActiveTab("fox")} className={`p-3 rounded-xl transition-all ${activeTab === 'fox' ? 'text-purple-400 bg-purple-500/10 border border-purple-500/20' : 'text-gray-600 hover:text-white'}`}><Network size={24} /></button>
       </aside>
 
       {/* Main Content Area */}
-      <main className="main-content">
-        <header className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-xl font-black uppercase tracking-[0.2em] text-white italic">{activeTab === 'traffic' ? 'CENTRAL DE MÉTRICAS SUPREMA' : 'DASHBOARD'}</h2>
-              <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-widest mt-1">SISTEMA ATIVO: {activeProject}</p>
-            </div>
-            <button onClick={fetchData} className="p-4 glass-card hover:border-cyan-500/50 transition-all group active:scale-90"><RefreshCw className={`${loading ? "animate-spin" : ""} text-cyan-400`} size={24} /></button>
-          </div>
-
-          {/* BARRA DE COMANDO (FILTROS) */}
-          {activeTab === "traffic" && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-2 glass-card bg-white/[0.02] border-white/5">
-              <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500/50 group-hover:text-cyan-400 transition-colors"><Users size={16} /></div>
-                <select value={selectedAccount} onChange={(e) => setSelectedAccount(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase tracking-widest text-white pl-12 pr-4 py-4 focus:outline-none appearance-none cursor-pointer">
-                  {accounts.map((acc, i) => (<option key={i} value={acc.id} className="bg-[#050505]">{acc.name} ({acc.id})</option>))}
-                </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-600"><ChevronDown size={14} /></div>
-              </div>
-              
-              <div className="relative group border-x border-white/5">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500/50 group-hover:text-cyan-400 transition-colors"><Filter size={16} /></div>
-                <select value={selectedCampaign} onChange={(e) => setSelectedCampaign(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase tracking-widest text-white pl-12 pr-4 py-4 focus:outline-none appearance-none cursor-pointer">
-                  <option value="" className="bg-[#050505]">Todas as Campanhas</option>
-                  {campaigns.map((camp, i) => (<option key={i} value={camp.id} className="bg-[#050505]">{camp.name}</option>))}
-                </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-600"><ChevronDown size={14} /></div>
-              </div>
-
-              <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500/50 group-hover:text-cyan-400 transition-colors"><Calendar size={16} /></div>
-                <select value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase tracking-widest text-white pl-12 pr-4 py-4 focus:outline-none appearance-none cursor-pointer">
-                  <option value="today" className="bg-[#050505]">Hoje</option>
-                  <option value="yesterday" className="bg-[#050505]">Ontem</option>
-                  <option value="last_7d" className="bg-[#050505]">Últimos 7 Dias</option>
-                  <option value="last_30d" className="bg-[#050505]">Últimos 30 Dias</option>
-                  <option value="maximum" className="bg-[#050505]">Período Máximo</option>
-                </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-600"><ChevronDown size={14} /></div>
-              </div>
-            </div>
-          )}
-        </header>
-
+      <main className="flex-1 overflow-y-auto scrollbar-hide flex flex-col">
         {activeTab === "traffic" ? (
-          <div className="space-y-8 animate-in fade-in duration-500">
+          <div className="p-10 space-y-8 animate-in fade-in duration-500">
+            <header className="mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-black uppercase tracking-[0.2em] text-white italic">CENTRAL DE MÉTRICAS SUPREMA</h2>
+                  <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-widest mt-1">SISTEMA ATIVO: {activeProject}</p>
+                </div>
+                <button onClick={fetchData} className="p-4 glass-card hover:border-cyan-500/50 transition-all group active:scale-90"><RefreshCw className={`${loading ? "animate-spin" : ""} text-cyan-400`} size={24} /></button>
+              </div>
+
+              {/* BARRA DE COMANDO (FILTROS) */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-2 glass-card bg-white/[0.02] border-white/5">
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500/50 group-hover:text-cyan-400 transition-colors"><Users size={16} /></div>
+                  <select value={selectedAccount} onChange={(e) => setSelectedAccount(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase tracking-widest text-white pl-12 pr-4 py-4 focus:outline-none appearance-none cursor-pointer">
+                    {accounts.map((acc, i) => (<option key={i} value={acc.id} className="bg-[#050505]">{acc.name} ({acc.id})</option>))}
+                  </select>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-600"><ChevronDown size={14} /></div>
+                </div>
+                
+                <div className="relative group border-x border-white/5">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500/50 group-hover:text-cyan-400 transition-colors"><Filter size={16} /></div>
+                  <select value={selectedCampaign} onChange={(e) => setSelectedCampaign(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase tracking-widest text-white pl-12 pr-4 py-4 focus:outline-none appearance-none cursor-pointer">
+                    <option value="" className="bg-[#050505]">Todas as Campanhas</option>
+                    {campaigns.map((camp, i) => (<option key={i} value={camp.id} className="bg-[#050505]">{camp.name}</option>))}
+                  </select>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-600"><ChevronDown size={14} /></div>
+                </div>
+
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500/50 group-hover:text-cyan-400 transition-colors"><Calendar size={16} /></div>
+                  <select value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase tracking-widest text-white pl-12 pr-4 py-4 focus:outline-none appearance-none cursor-pointer">
+                    <option value="today" className="bg-[#050505]">Hoje</option>
+                    <option value="yesterday" className="bg-[#050505]">Ontem</option>
+                    <option value="last_7d" className="bg-[#050505]">Últimos 7 Dias</option>
+                    <option value="last_30d" className="bg-[#050505]">Últimos 30 Dias</option>
+                    <option value="maximum" className="bg-[#050505]">Período Máximo</option>
+                  </select>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-600"><ChevronDown size={14} /></div>
+                </div>
+              </div>
+            </header>
+
             {/* MÉTRICAS MASTER */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
               {[
@@ -271,13 +333,62 @@ export default function LowticketGregoriHub() {
               </table>
             </div>
           </div>
+        ) : activeTab === "agent-dashboard" ? (
+          <div className="p-10 space-y-8 animate-in fade-in zoom-in duration-500 h-full flex flex-col">
+            {ALL_AGENTS.filter(a => a.id === selectedAgentId).map((agent) => (
+              <div key={agent.id} className="flex-1 flex flex-col">
+                <header className="flex items-center gap-6 mb-12">
+                  <div className="w-24 h-24 bg-white/5 rounded-[40px] flex items-center justify-center text-5xl border border-white/10 shadow-2xl shadow-cyan-500/10">{agent.icon}</div>
+                  <div>
+                    <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">{agent.name}</h2>
+                    <p className="text-[12px] text-cyan-400 font-black uppercase tracking-[0.4em] mt-2">{agent.group} ● UNIDADE OPERACIONAL</p>
+                  </div>
+                </header>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1">
+                  <div className="glass-card p-10 space-y-6">
+                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white italic border-b border-white/5 pb-4">Especialização</h3>
+                    <p className="text-[14px] text-gray-400 font-bold leading-relaxed">{agent.description}</p>
+                    <div className="pt-8 grid grid-cols-2 gap-4">
+                      <div className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl">
+                        <p className="text-[8px] text-gray-600 font-black uppercase mb-1">Status</p>
+                        <p className="text-[10px] text-green-400 font-black">Síncrono</p>
+                      </div>
+                      <div className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl">
+                        <p className="text-[8px] text-gray-600 font-black uppercase mb-1">Carga Neural</p>
+                        <p className="text-[10px] text-white font-black">1.5 Flash</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="glass-card p-10 space-y-6 flex flex-col">
+                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white italic border-b border-white/5 pb-4">Terminal de Comando</h3>
+                    <div className="flex-1 bg-black/40 rounded-2xl p-6 font-mono text-[10px] text-cyan-500/70 border border-white/5 space-y-2">
+                      <p>&gt; Inicializando protocolos {agent.name.toLowerCase()}...</p>
+                      <p>&gt; Mapeando contexto de tráfego Meta Ads...</p>
+                      <p>&gt; ROAS detectado: {data?.metrics?.roas?.toFixed(2) || "0.00"}x</p>
+                      <p>&gt; Conexão estabelecida.</p>
+                      <div className="w-1 h-4 bg-cyan-500 animate-pulse inline-block"></div>
+                    </div>
+                    <button 
+                      onClick={() => setInput(`Ativar ${agent.name}: faça uma análise focada na sua especialidade.`)}
+                      className="w-full py-4 bg-cyan-500 text-black rounded-2xl text-[12px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-cyan-500/20"
+                    >
+                      Disparar Ordem
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
-          <div className="glass-card flex flex-col items-center justify-center p-32 text-center border-purple-500/20">
+          <div className="flex-1 flex flex-col items-center justify-center p-32 text-center border-purple-500/20">
             <Network className="text-purple-500 animate-pulse mb-8" size={60} />
             <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter">FOXCONECT HUB</h2>
             <p className="text-[10px] text-gray-600 font-black uppercase tracking-[0.4em] mt-4">Unidade de Distribuição de Leads em Standby</p>
           </div>
         )}
+      </main>
       </main>
 
       {/* Jarvis Panel */}
