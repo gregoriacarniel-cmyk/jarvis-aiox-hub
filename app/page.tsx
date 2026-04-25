@@ -1,15 +1,15 @@
 "use client";
 
-/* FORCE DEPLOY V1.2.1 - CONNECT RATE & SALES FIX */
+/* FORCE DEPLOY V1.2.2 - INTELLIGENT CONNECT RATE INDICATORS */
 import { useState, useEffect } from "react";
 import { 
   Zap, MessageSquare, TrendingUp, Target, ShoppingCart, 
   RefreshCw, Cpu, BrainCircuit, Activity, Wallet, Calendar, Search, ArrowRight, CheckCircle2, ShieldCheck, Layers, Terminal as TerminalIcon,
-  BarChart3, MousePointer2, Eye, Percent, Power, DollarSign, Link as LinkIcon, Monitor
+  BarChart3, MousePointer2, Eye, Percent, Power, DollarSign, Link as LinkIcon, Monitor, AlertTriangle
 } from "lucide-react";
 import { AGENT_REGISTRY, GROUP_CONFIG } from "@/app/lib/agentRegistry";
 
-export default function NexusSupremoV12FinalAligned() {
+export default function NexusSupremoV12Intelligent() {
   const [activeProject, setActiveProject] = useState("");
   const [activeTab, setActiveTab] = useState("traffic"); 
   const [mounted, setMounted] = useState(false);
@@ -88,6 +88,13 @@ export default function NexusSupremoV12FinalAligned() {
       const aiRes = await res.json();
       setMessages(prev => [...prev, { role: "assistant", content: aiRes.response, agent: aiRes.agentUsed }]);
     } catch (err) { console.error(err); }
+  };
+
+  const getConnectRateColor = (rateStr: string) => {
+    const rate = parseFloat(rateStr || "0");
+    if (rate >= 80) return "text-[#00ff88]";
+    if (rate >= 70) return "text-yellow-400";
+    return "text-red-500";
   };
 
   if (!mounted) return <div className="bg-[#050505] min-h-screen" />;
@@ -175,13 +182,13 @@ export default function NexusSupremoV12FinalAligned() {
                 <div className="space-y-2"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Período Tático</p><div className="flex gap-2 px-4 py-2">{['today', 'yesterday', 'last_7d', 'last_30d'].map(p => (<button key={p} onClick={() => setSelectedDate(p)} className={`px-4 py-2 rounded-lg text-[9px] font-black uppercase transition-all ${selectedDate === p ? 'bg-cyan-500 text-black shadow-lg shadow-cyan-500/20' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}>{p === 'today' ? 'Hoje' : p === 'yesterday' ? 'Ontem' : p === 'last_7d' ? '7D' : '30D'}</button>))}</div></div>
               </div>
 
-              {/* CARDS SUPREMO 2.0 (GRADE ATUALIZADA) */}
+              {/* CARDS SUPREMO 2.0 (GRADE INTELIGENTE) */}
               <div className="grid grid-cols-4 gap-6">
                 {[
                   { label: "Investimento", value: `R$ ${data?.metrics?.spend?.toFixed(2) || "0,00"}`, color: "text-white", icon: Wallet },
                   { label: "Vendas Alpha", value: data?.metrics?.sales || "0", color: "text-[#00ff88]", icon: ShoppingCart },
                   { label: "CPA Médio", value: `R$ ${data?.metrics?.cpa || "0,00"}`, color: "text-red-500", icon: Target },
-                  { label: "Connect Rate", value: data?.metrics?.connectRate || "0.0%", color: "text-cyan-400", icon: LinkIcon },
+                  { label: "Taxa de Conexão", value: data?.metrics?.connectRate || "0.0%", color: getConnectRateColor(data?.metrics?.connectRate), icon: LinkIcon },
                   { label: "Faturamento", value: `R$ ${data?.metrics?.salesValue?.toFixed(2) || "0,00"}`, color: "text-[#00ff88]", icon: DollarSign },
                   { label: "ROAS Supremo", value: `${data?.metrics?.roas?.toFixed(2) || "0.00"}x`, color: "text-[#7000ff]", icon: TrendingUp },
                   { label: "Visualizações (LPV)", value: data?.metrics?.totalLPV?.toLocaleString() || "0", color: "text-blue-400", icon: Monitor },
@@ -191,7 +198,10 @@ export default function NexusSupremoV12FinalAligned() {
                   { label: "Checkouts (IC)", value: data?.metrics?.totalCheckouts || "0", color: "text-pink-400", icon: ShieldCheck },
                   { label: "Carrinhos (ATC)", value: data?.metrics?.totalCarts || "0", color: "text-cyan-400", icon: ShoppingCart },
                 ].map((stat, i) => (
-                  <div key={i} className="glass-card p-6 group hover:border-cyan-500/30 transition-all shadow-xl">
+                  <div key={i} className="glass-card p-6 group hover:border-cyan-500/30 transition-all shadow-xl relative overflow-hidden">
+                    {stat.label === "Taxa de Conexão" && parseFloat(stat.value) < 70 && stat.value !== "0.0%" && (
+                      <div className="absolute top-0 right-0 p-2 text-red-500/30 animate-pulse"><AlertTriangle size={14} /></div>
+                    )}
                     <div className="flex items-center justify-between mb-4"><stat.icon size={16} className="text-gray-600 group-hover:text-cyan-400 transition-colors" /><p className="text-[8px] uppercase font-black tracking-widest text-gray-500">{stat.label}</p></div>
                     <h3 className={`text-2xl font-black tracking-tighter ${stat.color} drop-shadow-2xl`}>{stat.value}</h3>
                   </div>
@@ -200,7 +210,7 @@ export default function NexusSupremoV12FinalAligned() {
 
               {/* TABELA DE GUERRA (ALINHADA COM CONNECT RATE) */}
               <div className="glass-card !p-0 overflow-hidden border-white/10 shadow-2xl">
-                <div className="p-6 bg-white/[0.02] border-b border-white/5 flex items-center justify-between"><div className="flex items-center gap-3"><Activity className="text-cyan-400 animate-pulse" size={18} /><span className="text-[11px] font-black uppercase tracking-widest text-white">Auditoria de Conjuntos Alpha (V25.0 Full)</span></div><span className="text-[9px] font-black text-gray-600 uppercase">Sincronia Zero-Delay</span></div>
+                <div className="p-6 bg-white/[0.02] border-b border-white/5 flex items-center justify-between"><div className="flex items-center gap-3"><Activity className="text-cyan-400 animate-pulse" size={18} /><span className="text-[11px] font-black uppercase tracking-widest text-white">Auditoria de Conjuntos Alpha (Inteligência de Página)</span></div><span className="text-[9px] font-black text-gray-600 uppercase">Sincronia Zero-Delay</span></div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-[11px]">
                     <thead className="bg-white/[0.04] text-gray-500 uppercase font-black tracking-widest border-b border-white/5">
@@ -215,7 +225,7 @@ export default function NexusSupremoV12FinalAligned() {
                           <td className="p-5 text-center"><span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase ${ad.status === 'ACTIVE' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-500'}`}>{ad.status}</span></td>
                           <td className="p-5 text-center font-bold text-gray-500">R$ {ad.spend?.toFixed(2)}</td>
                           <td className="p-5 text-center text-[#00ff88] font-black text-base">{ad.sales}</td>
-                          <td className="p-5 text-center font-black text-cyan-400">{ad.connectRate}</td>
+                          <td className={`p-5 text-center font-black ${getConnectRateColor(ad.connectRate)}`}>{ad.connectRate}</td>
                           <td className="p-5 text-center font-bold text-red-400">R$ {ad.cpa}</td>
                           <td className="p-5 text-center font-black text-[#7000ff]">{ad.roas}x</td>
                           <td className="p-5 text-center font-bold text-gray-500">{ad.ctr}</td>
