@@ -13,92 +13,106 @@ export async function GET(request) {
   }
 
   try {
+    const API_VERSION = 'v25.0'; // Upgrade para a versão mais estável
+
     // 1. LISTAR CONTAS DE ANÚNCIOS
     if (type === 'accounts') {
-      const res = await fetch(`https://graph.facebook.com/v19.0/me/adaccounts?fields=name,id&access_token=${token}`);
+      const res = await fetch(`https://graph.facebook.com/${API_VERSION}/me/adaccounts?fields=name,id&access_token=${token}`);
       const data = await res.json();
       return NextResponse.json(data);
     }
 
     // 2. LISTAR CAMPANHAS DE UMA CONTA
     if (type === 'campaigns' && accountId) {
-      const res = await fetch(`https://graph.facebook.com/v19.0/${accountId}/campaigns?fields=name,status&access_token=${token}`);
+      const res = await fetch(`https://graph.facebook.com/${API_VERSION}/${accountId}/campaigns?fields=name,status&limit=50&access_token=${token}`);
       const data = await res.json();
       return NextResponse.json(data);
     }
 
-    // 3. BUSCAR INSIGHTS DETALHADOS (MÉTRICAS SUPREMO 2.0)
+    // 3. BUSCAR INSIGHTS DETALHADOS (MAPEAMENTO SUPREMO V25)
     if (type === 'insights' && accountId) {
       const targetId = campaignId || accountId;
       
-      // Insights Consolidados (Adicionando Reach e Frequency)
-      const insightRes = await fetch(
-        `https://graph.facebook.com/v19.0/${targetId}/insights?fields=spend,purchase_roas,actions,action_values,clicks,impressions,cpc,cpm,cpp,ctr,reach,frequency&date_preset=${datePreset}&access_token=${token}`
-      );
-      const insightData = await insightRes.json();
+      // Insights de Adsets com granularidade máxima
+      const url = `https://graph.facebook.com/${API_VERSION}/${targetId}/insights?fields=adset_id,adset_name,spend,reach,frequency,cpm,ctr,cpc,actions,action_values,purchase_roas&level=adset&date_preset=${datePreset}&access_token=${token}`;
       
-      // Detalhes dos Adsets (Adicionando CTR e CPM por conjunto)
-      const adsetRes = await fetch(
-        `https://graph.facebook.com/v19.0/${targetId}/adsets?fields=name,status,insights.date_preset(${datePreset}){spend,purchase_roas,actions,action_values,ctr,cpm}&access_token=${token}`
-      );
-      const adsetData = await adsetRes.json();
+      const res = await fetch(url);
+      const rawData = await res.json();
 
-      const stats = insightData.data?.[0] || {};
-      
-      const getActionValue = (type) => {
-        return stats.actions?.find(a => a.action_type === type)?.value || 0;
-      };
+      if (rawData.error) throw new Error(rawData.error.message);
 
-      const getActionRevenue = (type) => {
-        return stats.action_values?.find(a => a.action_type === type)?.value || 0;
-      };
-      
-      const sales = getActionValue('offsite_conversion.fb_pixel_purchase') || getActionValue('purchase') || getActionValue('onsite_conversion.fb_pixel_purchase');
-      const revenue = getActionRevenue('offsite_conversion.fb_pixel_purchase') || getActionRevenue('purchase') || getActionRevenue('onsite_conversion.fb_pixel_purchase');
-      const checkouts = getActionValue('offsite_conversion.fb_pixel_initiate_checkout') || getActionValue('initiate_checkout');
-      const carts = getActionValue('offsite_conversion.fb_pixel_add_to_cart') || getActionValue('add_to_cart');
+      let totalSpend = 0;
+      let totalSalesCount = 0;
+      let totalSalesValue = 0;
+      let totalCarts = 0;
+      let totalCheckouts = 0;
+      let totalReach = 0;
+      let totalFreq = 0;
 
-      const calculatedRoas = stats.spend > 0 ? (revenue / parseFloat(stats.spend)) : 0;
+      const adsets = (rawData.data || []).map(ad => {
+        const spend = parseFloat(ad.spend || 0);
+        
+        // Mapeamento de Vendas (Purchase)
+        const sales = parseInt(ad.actions?.find(a => 
+          a.action_type === 'purchase' || 
+          a.action_type === 'offsite_conversion.fb_pixel_purchase' ||
+          a.action_type === 'onsite_conversion.fb_pixel_purchase'
+        )?.value || 0);
+
+        // Mapeamento de Valor de Venda (Revenue)
+        const revenue = parseFloat(ad.action_values?.find(a => 
+          a.action_type === 'purchase' || 
+          a.action_type === 'offsite_conversion.fb_pixel_purchase' ||
+          a.action_type === 'onsite_conversion.fb_pixel_purchase'
+        )?.value || 0);
+
+        // Checkouts e Carts
+        const checkouts = parseInt(ad.actions?.find(a => 
+          a.action_type === 'initiate_checkout' || 
+          a.action_type === 'offsite_conversion.fb_pixel_initiate_checkout'
+        )?.value || 0);
+
+        const carts = parseInt(ad.actions?.find(a => 
+          a.action_type === 'add_to_cart' || 
+          a.action_type === 'offsite_conversion.fb_pixel_add_to_cart'
+        )?.value || 0);
+
+        totalSpend += spend;
+        totalSalesCount += sales;
+        totalSalesValue += revenue;
+        totalCarts += carts;
+        totalCheckouts += checkouts;
+        totalReach += parseInt(ad.reach || 0);
+        totalFreq += parseFloat(ad.frequency || 0);
+
+        return {
+          name: ad.adset_name || `Conjunto ${ad.adset_id}`,
+          status: 'ACTIVE', // Insights só vêm de adsets ativos ou com gasto
+          spend: spend,
+          sales: sales,
+          salesValue: revenue,
+          roas: spend > 0 ? (revenue / spend).toFixed(2) : "0.00",
+          cpa: sales > 0 ? (spend / sales).toFixed(2) : "0.00",
+          ctr: parseFloat(ad.ctr || 0).toFixed(2) + "%",
+          cpm: parseFloat(ad.cpm || 0).toFixed(2)
+        };
+      });
+
+      const avgFrequency = adsets.length > 0 ? (totalFreq / adsets.length).toFixed(2) : "0.00";
 
       return NextResponse.json({
         metrics: {
-          spend: parseFloat(stats.spend || 0),
-          sales: parseInt(sales),
-          salesValue: parseFloat(revenue || 0),
-          roas: parseFloat(calculatedRoas || 0),
-          totalCheckouts: parseInt(checkouts),
-          totalCarts: parseInt(carts),
-          totalReach: parseInt(stats.reach || 0),
-          avgFrequency: parseFloat(stats.frequency || 0).toFixed(2),
-          cpm: parseFloat(stats.cpm || 0).toFixed(2),
-          ctr: parseFloat(stats.ctr || 0).toFixed(2) + "%",
-          cpc: parseFloat(stats.cpc || 0).toFixed(2),
-          clicks: parseInt(stats.clicks || 0),
-          impressions: parseInt(stats.impressions || 0),
-          cpa: sales > 0 ? (parseFloat(stats.spend || 0) / sales).toFixed(2) : "0.00"
+          spend: totalSpend,
+          sales: totalSalesCount,
+          salesValue: totalSalesValue,
+          roas: totalSpend > 0 ? (totalSalesValue / totalSpend) : 0,
+          cpa: totalSalesCount > 0 ? (totalSpend / totalSalesCount).toFixed(2) : "0.00",
+          totalCheckouts: totalCheckouts,
+          totalCarts: totalCarts,
+          totalReach: totalReach,
+          avgFrequency: avgFrequency
         },
-        adsets: adsetData.data?.map(ad => {
-          const adInsights = ad.insights?.data?.[0] || {};
-          
-          const getAdAction = (type) => parseInt(adInsights.actions?.find(a => a.action_type === type)?.value || 0);
-          const getAdVal = (type) => parseFloat(adInsights.action_values?.find(a => a.action_type === type)?.value || 0);
-
-          const adSales = getAdAction('offsite_conversion.fb_pixel_purchase') || getAdAction('purchase') || getAdAction('onsite_conversion.fb_pixel_purchase');
-          const adRevenue = getAdVal('offsite_conversion.fb_pixel_purchase') || getAdVal('purchase') || getAdVal('onsite_conversion.fb_pixel_purchase');
-          const adSpend = parseFloat(adInsights.spend || 0);
-
-          return {
-            name: ad.name,
-            status: ad.status,
-            spend: adSpend,
-            sales: adSales,
-            salesValue: adRevenue,
-            roas: adSpend > 0 ? (adRevenue / adSpend).toFixed(2) : "0.00",
-            ctr: parseFloat(adInsights.ctr || 0).toFixed(2) + "%",
-            cpm: parseFloat(adInsights.cpm || 0).toFixed(2),
-            cpa: adSales > 0 ? (adSpend / adSales).toFixed(2) : "0.00"
-          };
-        }) || []
+        adsets: adsets
       });
     }
 
