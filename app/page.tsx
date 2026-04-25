@@ -23,6 +23,7 @@ export default function LowticketGregoriHub() {
   const [pendingAction, setPendingAction] = useState<any>(null);
   const [executingAction, setExecutingAction] = useState(false);
   const [actionLog, setActionLog] = useState<string[]>([]);
+  const [activeAgent, setActiveAgent] = useState<any>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -87,7 +88,8 @@ export default function LowticketGregoriHub() {
         }),
       });
       const aiRes = await res.json();
-      setMessages(prev => [...prev, { role: "assistant", content: aiRes.response }]);
+      setMessages(prev => [...prev, { role: "assistant", content: aiRes.response, agent: aiRes.agentUsed }]);
+      if (aiRes.agentUsed) setActiveAgent(aiRes.agentUsed);
       if (aiRes.action) {
         setPendingAction(aiRes.action);
       }
@@ -282,7 +284,7 @@ export default function LowticketGregoriHub() {
       <aside className="jarvis-panel">
         <div className="p-8 border-b border-white/5 bg-white/[0.03] flex items-center gap-4">
           <div className="w-12 h-12 bg-[#00f2ff] rounded-2xl flex items-center justify-center glow-cyan shadow-xl shadow-cyan-500/20"><MessageSquare className="text-black" size={24} /></div>
-          <div><h3 className="text-xs font-black uppercase tracking-[0.2em] italic text-white leading-none">Jarvis Supremo</h3><p className="text-[10px] text-[#00ff88] font-bold uppercase tracking-tighter mt-1 animate-pulse">Orquestrador Ativo ● Gemini Online</p></div>
+          <div><h3 className="text-xs font-black uppercase tracking-[0.2em] italic text-white leading-none">Jarvis Supremo</h3><p className="text-[10px] text-[#00ff88] font-bold uppercase tracking-tighter mt-1 animate-pulse">{activeAgent ? `${activeAgent.icon} ${activeAgent.name} Ativo` : "Orquestrador Ativo ● Gemini Online"}</p></div>
         </div>
 
         {/* Action Pending Banner */}
@@ -321,10 +323,15 @@ export default function LowticketGregoriHub() {
                 <BrainCircuit className="text-cyan-400" size={32} />
               </div>
               <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600">Jarvis Aguardando Ordens</p>
-              <p className="text-[9px] text-gray-700 font-bold">Conectado ao Gemini ● Métricas ao Vivo</p>
+              <p className="text-[9px] text-gray-700 font-bold">🧠 {Object.keys({}).length || 44} Agentes Online ● Gemini ● Meta Ads</p>
+              <div className="grid grid-cols-2 gap-2 mt-4 text-left">
+                {["📊 analise meus adsets","🚀 qual agente devo usar?","💰 como escalar meu ROAS?","🛡️ tem algum adset para pausar?"].map((hint,i) => (
+                  <button key={i} onClick={() => setInput(hint)} className="p-2 rounded-xl bg-white/[0.03] border border-white/5 text-[9px] text-gray-500 hover:text-white hover:border-cyan-500/30 transition-all text-left font-bold">{hint}</button>
+                ))}
+              </div>
             </div>
           )}
-          {messages.map((msg, i) => (<div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2`}><div className={`max-w-[90%] p-5 rounded-2xl text-[11px] leading-relaxed font-bold shadow-2xl whitespace-pre-wrap ${msg.role === 'user' ? 'bg-[#00f2ff] text-black italic' : 'bg-white/5 text-gray-300 border border-white/10'}`}>{msg.content}</div></div>))}
+          {messages.map((msg, i) => (<div key={i} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'} animate-in fade-in slide-in-from-bottom-2`}>{msg.agent && msg.role === 'assistant' && (<p className="text-[8px] font-black uppercase tracking-widest mb-1 ml-1" style={{color: '#00ff88'}}>{msg.agent.icon} {msg.agent.name}</p>)}<div className={`max-w-[90%] p-5 rounded-2xl text-[11px] leading-relaxed font-bold shadow-2xl whitespace-pre-wrap ${msg.role === 'user' ? 'bg-[#00f2ff] text-black italic' : 'bg-white/5 text-gray-300 border border-white/10'}`}>{msg.content}</div></div>))}
         </div>
         <form onSubmit={handleSendMessage} className="p-8 bg-black/50 border-t border-white/5 flex gap-3">
           <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Disparar ordem estratégica..." className="flex-1 bg-white/[0.04] border border-white/10 rounded-2xl px-6 py-4 text-[12px] text-white focus:outline-none focus:border-cyan-500/50 font-bold" /><button type="submit" className="bg-[#00f2ff] text-black p-4 rounded-2xl hover:scale-110 active:scale-90 transition-all shadow-xl shadow-cyan-500/30"><Zap size={22} /></button>
