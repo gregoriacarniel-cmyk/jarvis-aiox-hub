@@ -127,10 +127,10 @@ export default function NexusSupremoV26() {
       {/* SIDEBAR */}
       <aside className="border-r border-white/5 bg-black/40 flex flex-col overflow-hidden">
         <div className="p-6 border-b border-white/5 space-y-6">
-          <button onClick={() => { setActiveTab("traffic"); setSelectedAgentId(null); }} className="flex items-center gap-4 w-full group">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${activeTab === "traffic" ? "bg-cyan-500 shadow-xl shadow-cyan-500/20" : "bg-white/5"}`}><BarChart3 size={24} className={activeTab === "traffic" ? "text-black" : "text-gray-500"} /></div>
-            <div className="text-left"><h2 className="text-[12px] font-black uppercase tracking-widest text-white italic">Métricas Master</h2><p className="text-[8px] text-cyan-400 font-black uppercase">Supremo 2.0</p></div>
-          </button>
+            <button onClick={() => { setActiveTab("traffic"); setSelectedAgentId(null); }} className="flex items-center gap-4 w-full group">
+              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${activeTab === "traffic" ? "bg-cyan-500 shadow-xl shadow-cyan-500/20" : "bg-white/5"}`}><BarChart3 size={24} className={activeTab === "traffic" ? "text-black" : "text-gray-500"} /></div>
+              <div className="text-left"><h2 className="text-[12px] font-black uppercase tracking-widest text-white italic">GESTOR DE TRÁFEGO ALPHA</h2><p className="text-[8px] text-cyan-400 font-black uppercase">Supremo 2.0</p></div>
+            </button>
           <div className="flex flex-col gap-2 pt-2">
             {Object.keys(GROUP_CONFIG).map((group) => (
               <button key={group} onClick={() => { setActiveTab(group); setSelectedAgentId(null); }} className={`w-full text-left p-4 rounded-2xl text-[10px] font-black tracking-widest transition-all border ${activeTab === group ? "bg-white/10 text-white border-white/20" : "text-gray-600 border-transparent hover:bg-white/5"}`} style={{ color: activeTab === group ? (GROUP_CONFIG as any)[group].color : "" }}>{(GROUP_CONFIG as any)[group].icon} {group.toUpperCase()}</button>
