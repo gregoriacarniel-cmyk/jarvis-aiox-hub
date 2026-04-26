@@ -1,6 +1,6 @@
 "use client";
 
-/* SUPREMO V17.0 - TOTAL SOVEREIGN DASHBOARD (CLONES + CONCLAVE) */
+/* SUPREMO V18.0 - TOTAL SOVEREIGN DASHBOARD (CLONES + CONCLAVE + MEGA BRAIN) */
 import { useState, useEffect } from "react";
 import { 
   Zap, MessageSquare, TrendingUp, Target, ShoppingCart, 
@@ -9,59 +9,35 @@ import {
 } from "lucide-react";
 import { AGENT_REGISTRY, GROUP_CONFIG } from "@/app/lib/agentRegistry";
 
-// CONFIGURAÇÃO DE MÉTRICAS PERSONALIZADAS (MENTES CLONADAS + CONCLAVE)
+// CONFIGURAÇÃO DE MÉTRICAS PERSONALIZADAS (MENTES CLONADAS + CONCLAVE + MEGA BRAIN)
 const SOVEREIGN_METRICS: any = {
   // --- MENTES CLONADAS ---
-  "m1": { 
-    gauges: [{ label: "FORÇA DA OFERTA", val: 85, color: "text-[#00ff88]" }, { label: "MULTIPLICADOR LTV", val: 72, color: "text-cyan-400" }, { label: "ÍNDICE DE ESCALA", val: 64, color: "text-[#7000ff]" }],
-    strategy: ["ESTRATÉGIA DE 100M OFFERS E CRIAÇÃO DE OFERTAS SEM RESISTÊNCIA.", "GARANTE QUE NINGUÉM CONSIGA DIZER NÃO PARA O VALOR QUE VOCÊ ENTREGA."],
-    pillars: ["ENGENHARIA DE OFERTA", "MAXIMUN LTV", "ESCALA DE $100M"]
-  },
-  "m2": { 
-    gauges: [{ label: "DESARME INICIAL", val: 92, color: "text-[#00ff88]" }, { label: "CONEXÃO EMOCIONAL", val: 88, color: "text-cyan-400" }, { label: "FECHAMENTO NEPQ", val: 95, color: "text-[#7000ff]" }],
-    strategy: ["ENGENHARIA DE VENDAS NEPQ QUE FAZ O LEAD SE VENDER SOZINHO.", "ELIMINA A REJEIÇÃO E TRANSFORMA VENDAS EM FECHAMENTOS NATURAIS."],
-    pillars: ["PERGUNTAS DE SITUAÇÃO", "DESARME PSICOLÓGICO", "FECHAMENTO SEM PRESSÃO"]
-  },
-  "m3": { 
-    gauges: [{ label: "HIGH-TICKET SCORE", val: 90, color: "text-[#00ff88]" }, { label: "SETTING PRECISION", val: 85, color: "text-cyan-400" }, { label: "CLOSING RATE", val: 82, color: "text-[#7000ff]" }],
-    strategy: ["FECHAMENTO HIGH-TICKET E GESTÃO DE CLOSERS DE ALTA PERFORMANCE.", "TRANSFORMA LEADS FRIOS EM PAGAMENTOS IMEDIATOS VIA CHAT."],
-    pillars: ["QUALIFICAÇÃO BRUTAL", "VIRTUAL CLOSING", "REVENUE ACCELERATION"]
-  },
-  "m4": { 
-    gauges: [{ label: "MAGNETISMO", val: 95, color: "text-[#00ff88]" }, { label: "AUTORIDADE PREÇO", val: 98, color: "text-cyan-400" }, { label: "RESPOSTA DIRETA", val: 92, color: "text-[#7000ff]" }],
-    strategy: ["MARKETING DE RESPOSTA DIRETA FOCADO EM AUTORIDADE MAGNÉTICA.", "GARANTE O CONTROLE DO PREÇO E ATRAI CLIENTES QUE PAGAM MAIS."],
-    pillars: ["POSITIONING POWER", "DIRECT RESPONSE DNA", "PRICE COMMAND"]
-  },
-  "m11": { 
-    gauges: [{ label: "FUNNEL STRENGTH", val: 97, color: "text-[#00ff88]" }, { label: "VALUE LADDER", val: 98, color: "text-cyan-400" }, { label: "OTM INDEX", val: 92, color: "text-[#7000ff]" }],
-    strategy: ["ARQUITETURA DE FUNIS E ESCADAS DE VALOR INFINITAS.", "MAXIMIZA O LUCRO VITALÍCIO DE CADA CLIENTE."],
-    pillars: ["FUNNEL HACKING", "VALUE ASCENSION", "DREAM 100 STRATEGY"]
-  },
+  "m1": { gauges: [{ label: "FORÇA DA OFERTA", val: 85, color: "text-[#00ff88]" }, { label: "MULTIPLICADOR LTV", val: 72, color: "text-cyan-400" }, { label: "ÍNDICE DE ESCALA", val: 64, color: "text-[#7000ff]" }], strategy: ["ESTRATÉGIA DE 100M OFFERS E CRIAÇÃO DE OFERTAS SEM RESISTÊNCIA.", "GARANTE QUE NINGUÉM CONSIGA DIZER NÃO PARA O VALOR QUE VOCÊ ENTREGA."], pillars: ["ENGENHARIA DE OFERTA", "MAXIMUN LTV", "ESCALA DE $100M"] },
+  "m2": { gauges: [{ label: "DESARME INICIAL", val: 92, color: "text-[#00ff88]" }, { label: "CONEXÃO EMOCIONAL", val: 88, color: "text-cyan-400" }, { label: "FECHAMENTO NEPQ", val: 95, color: "text-[#7000ff]" }], strategy: ["ENGENHARIA DE VENDAS NEPQ QUE FAZ O LEAD SE VENDER SOZINHO.", "ELIMINA A REJEIÇÃO E TRANSFORMA VENDAS EM FECHAMENTOS NATURAIS."], pillars: ["PERGUNTAS DE SITUAÇÃO", "DESARME PSICOLÓGICO", "FECHAMENTO SEM PRESSÃO"] },
   
-  // --- CONCLAVE (AGORA SOBERANO) ---
-  "c1": { 
-    gauges: [{ label: "VARREDURA MERCADO", val: 96, color: "text-[#00ff88]" }, { label: "PRECISÃO DE ALVO", val: 94, color: "text-cyan-400" }, { label: "MINERAÇÃO DADOS", val: 92, color: "text-[#7000ff]" }],
-    strategy: ["MAPEAMENTO DE MECANISMOS ÚNICOS E ANOMALIAS DE CONCORRÊNCIA.", "IDENTIFICAÇÃO DE PONTOS DE INFLEXÃO EM MERCADOS SATURADOS."],
-    pillars: ["INTELIGÊNCIA COMPETITIVA", "PATTERN RECOGNITION", "MARKET MINING"]
+  // --- CONCLAVE ---
+  "c1": { gauges: [{ label: "VARREDURA MERCADO", val: 96, color: "text-[#00ff88]" }, { label: "PRECISÃO DE ALVO", val: 94, color: "text-cyan-400" }, { label: "MINERAÇÃO DADOS", val: 92, color: "text-[#7000ff]" }], strategy: ["MAPEAMENTO DE MECANISMOS ÚNICOS E ANOMALIAS DE CONCORRÊNCIA.", "IDENTIFICAÇÃO DE PONTOS DE INFLEXÃO EM MERCADOS SATURADOS."], pillars: ["INTELIGÊNCIA COMPETITIVA", "PATTERN RECOGNITION", "MARKET MINING"] },
+  "c2": { gauges: [{ label: "SINCRONIA REDE", val: 98, color: "text-[#00ff88]" }, { label: "LATÊNCIA ALPHA", val: 99, color: "text-cyan-400" }, { label: "FLUXO INTEL", val: 97, color: "text-[#7000ff]" }], strategy: ["GESTÃO DE INFRAESTRUTURA NEURAL E CONEXÃO ENTRE AGENTES.", "GARANTE QUE O FLUXO DE DADOS SUPREMO NUNCA SOFRA INTERRUPÇÕES."], pillars: ["NETWORK INTEGRITY", "NEURAL SYNC", "DATA FLOW MASTER"] },
+
+  // --- MEGA BRAIN (NOVO UPGRADE) ---
+  "b1": { 
+    gauges: [{ label: "VARREDURA NEURAL", val: 97, color: "text-[#00ff88]" }, { label: "LÓGICA PURA", val: 95, color: "text-cyan-400" }, { label: "DEEP SCAN", val: 93, color: "text-[#7000ff]" }], 
+    strategy: ["PROCESSAMENTO DE DADOS EM NÍVEL NEURAL PARA IDENTIFICAÇÃO DE OPORTUNIDADES.", "ANÁLISE PROFUNDA DE COMPORTAMENTO DO CONSUMIDOR."], 
+    pillars: ["NEURAL MAPPING", "DATA MINING", "LOGIC VALIDATION"] 
   },
-  "c2": { 
-    gauges: [{ label: "SINCRONIA REDE", val: 98, color: "text-[#00ff88]" }, { label: "LATÊNCIA ALPHA", val: 99, color: "text-cyan-400" }, { label: "FLUXO INTEL", val: 97, color: "text-[#7000ff]" }],
-    strategy: ["GESTÃO DE INFRAESTRUTURA NEURAL E CONEXÃO ENTRE AGENTES.", "GARANTE QUE O FLUXO DE DADOS SUPREMO NUNCA SOFRA INTERRUPÇÕES."],
-    pillars: ["NETWORK INTEGRITY", "NEURAL SYNC", "DATA FLOW MASTER"]
+  "b2": { 
+    gauges: [{ label: "SYNC SINAPSE", val: 98, color: "text-[#00ff88]" }, { label: "FLUXO CORTEX", val: 96, color: "text-cyan-400" }, { label: "EFICIÊNCIA DADOS", val: 94, color: "text-[#7000ff]" }], 
+    strategy: ["COORDENAÇÃO DE FLUXOS DE DADOS ENTRE OS NÚCLEOS DO SISTEMA.", "GARANTE QUE A INFORMAÇÃO CHEGUE AO AGENTE CERTO NO TEMPO ALPHA."], 
+    pillars: ["SYNAPSE SYNC", "DATA ARCHITECTURE", "ALPHA FLOW"] 
   },
-  "c3": { 
-    gauges: [{ label: "ZENITH POWER", val: 95, color: "text-[#00ff88]" }, { label: "ALPHA CONTROL", val: 93, color: "text-cyan-400" }, { label: "PEAK PERFORMANCE", val: 96, color: "text-[#7000ff]" }],
-    strategy: ["OTIMIZAÇÃO DE PERFORMANCE NO NÍVEL ZENITH (PONTO MAIS ALTO).", "CONTROLE DE EXECUÇÃO EM TEMPO REAL PARA MÁXIMA EFICIÊNCIA."],
-    pillars: ["PEAK EXECUTION", "STRATEGIC OVERWATCH", "ZENITH PROTOCOL"]
-  },
-  "c8": { 
-    gauges: [{ label: "EFICIÊNCIA ATAQUE", val: 94, color: "text-[#00ff88]" }, { label: "RECUPERAÇÃO LEAD", val: 97, color: "text-cyan-400" }, { label: "CONVERSÃO TÁTICA", val: 92, color: "text-[#7000ff]" }],
-    strategy: ["RESTAURAÇÃO DE FLUXOS DE VENDAS E RECUPERAÇÃO DE LEADS PERDIDOS.", "EXECUÇÃO DE ATAQUES TÁTICOS EM CARRINHOS ABANDONADOS."],
-    pillars: ["RECOVERY OPS", "TACTICAL CONVERSION", "VALKYRIE STRIKE"]
+  "b3": { 
+    gauges: [{ label: "CORTEX PRIME", val: 99, color: "text-[#00ff88]" }, { label: "DECISÃO TÁTICA", val: 97, color: "text-cyan-400" }, { label: "NÚCLEO ALPHA", val: 98, color: "text-[#7000ff]" }], 
+    strategy: ["CENTRAL DE PROCESSAMENTO E TOMADA DE DECISÃO TÁTICA DO MEGA BRAIN.", "MAPEIA O CAMINHO MAIS CURTO PARA A CONVERSÃO DE ALTA ESCALA."], 
+    pillars: ["CORE PROCESSING", "DECISION ENGINE", "SCALE LOGIC"] 
   }
 };
 
-export default function NexusSupremoV17() {
+export default function NexusSupremoV18() {
   const [activeProject, setActiveProject] = useState("");
   const [activeTab, setActiveTab] = useState("traffic"); 
   const [mounted, setMounted] = useState(false);
@@ -152,7 +128,7 @@ export default function NexusSupremoV17() {
       <div className="min-h-screen bg-[#050505] flex items-center justify-center p-8 relative overflow-hidden font-['Outfit']">
         <div className="max-w-4xl w-full space-y-12 relative z-10 text-center">
           <div className="space-y-4">
-            <h1 className="text-6xl font-black tracking-tighter italic text-white leading-none">NEXUS <span className="text-cyan-400">SUPREMO</span> V17</h1>
+            <h1 className="text-6xl font-black tracking-tighter italic text-white leading-none">NEXUS <span className="text-cyan-400">SUPREMO</span> V18</h1>
             <p className="text-[10px] uppercase font-black tracking-[1em] text-gray-600">Gregori Alpha | Sistema de Comando Soberano</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -269,7 +245,7 @@ export default function NexusSupremoV17() {
             </div>
           )}
 
-          {/* DASHBOARD SOBERANO (MENTES CLONADAS + CONCLAVE) */}
+          {/* DASHBOARD SOBERANO (CLONES + CONCLAVE + MEGA BRAIN) */}
           {isSovereignLayout && customMetrics && (
             <div className="space-y-12 animate-in zoom-in-95 duration-700">
               <div className="flex items-center justify-between border-b border-white/5 pb-10">
