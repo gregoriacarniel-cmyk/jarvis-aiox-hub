@@ -56,7 +56,7 @@ export async function POST(req) {
 
     // 4. Retorno para o Dashboard (Mantendo compatibilidade de design)
     return NextResponse.json({
-      response: `[SISTEMA V31.1 ONLINE]\n\n[${jarvisResult.agente}] ${jarvisResult.resumo}\n\n${jarvisResult.resultado}`,
+      response: `[${jarvisResult.agente}] ${jarvisResult.resumo}\n\n${jarvisResult.resultado}`,
       agentUsed: { name: jarvisResult.agente, icon: "🛡️" },
       fullResult: jarvisResult
     });

@@ -96,7 +96,12 @@ export default function NexusSupremoV30() {
         }),
       });
       const aiRes = await res.json();
-      setMessages(prev => [...prev, { role: "assistant", content: aiRes.response, agent: aiRes.agentUsed }]);
+      setMessages(prev => [...prev, { 
+        role: "assistant", 
+        content: aiRes.response, 
+        agent: aiRes.agentUsed,
+        fullResult: aiRes.fullResult 
+      }]);
       setTimeout(() => setIsExecuting(false), 3000);
     } catch (err) { console.error(err); setIsExecuting(false); }
   };
