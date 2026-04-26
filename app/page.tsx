@@ -126,7 +126,7 @@ export default function NexusSupremoV19() {
   }
 
   const selectedAgent = selectedAgentId ? (AGENT_REGISTRY as any)[selectedAgentId] : null;
-  const isSovereignGroup = selectedAgent && ["mentes clonadas", "conclave", "mega brain"].includes(selectedAgent.group.toLowerCase());
+  const isSovereignGroup = selectedAgent && ["mentes clonadas", "conclave", "mega brain", "inteligência mega brain"].includes(selectedAgent.group.toLowerCase());
   
   // MÉTRICAS SOBERANAS (PERSONALIZADAS OU UNIVERSAIS)
   const customMetrics = selectedAgentId ? SOVEREIGN_METRICS[selectedAgentId] : null;
