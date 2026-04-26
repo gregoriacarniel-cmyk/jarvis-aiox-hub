@@ -13,15 +13,17 @@ export async function POST(req) {
     const GROQ_KEY = Buffer.from(encodedKey, 'base64').toString('utf-8');
 
     // 2. IA Traduz Intenção em Comando Estruturado para a VPS
-    const translationPrompt = `Você é o Jarvis Supremo. Analise a mensagem do usuário e retorne um JSON:
+    const translationPrompt = `Você é o Jarvis Supremo, a Inteligência Artificial de elite de tráfego pago. Seja direto, técnico e profissional. NÃO seja bajulador. Responda como uma máquina de alta eficiência.
+    Analise a mensagem do usuário e retorne APENAS um JSON no formato:
     {
+      "fala_jarvis": "Sua resposta curta, técnica e direta ao usuário.",
       "tipo": "analise | execucao | consulta",
       "prioridade": "baixa | media | alta",
       "empresa": "nome_da_empresa_se_detectado"
     }
     MENSAGEM: "${lastMessage}"`;
 
-    let intent = { tipo: "analise", prioridade: "media", empresa: "FOXCONECT" };
+    let intent = { tipo: "analise", prioridade: "media", empresa: "FOXCONECT", fala_jarvis: "Comando recebido. Processando tática." };
     
     try {
       const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -70,15 +72,15 @@ export async function POST(req) {
       jarvisResult = {
         status: "offline",
         agente: "Jarvis Provisório",
-        resumo: "Bunker de Execução (VPS) está offline ou inacessível.",
-        resultado: "Comandante, eu entendi sua ordem, mas não consigo executar o Selenium/Agentes pois o servidor VPS não está respondendo. Por favor, verifique se o 'jarvis-core-engine' está rodando na porta 3001 da sua VPS.",
+        resumo: "Conexão com Servidor Interrompida",
+        resultado: "Falha de comunicação com o Bunker de Execução na VPS (porta 3001). Ordem não executada.",
         logs: ["Erro de conexão: " + error.message]
       };
     }
 
-    // 4. Retorno para o Dashboard
+    // 4. Retorno para o Dashboard (Limpo e Direto)
     return NextResponse.json({
-      response: `[SISTEMA V31.5 ONLINE]\n[ROTA: ${VPS_URL}]\n\n[${jarvisResult.agente}] ${jarvisResult.resumo}\n\n${jarvisResult.resultado}`,
+      response: `${intent.fala_jarvis}\n\n[LOG DO SERVIDOR: ${jarvisResult.agente}] ${jarvisResult.resumo}\n${jarvisResult.resultado}`,
       agentUsed: { name: jarvisResult.agente, icon: "🛡️" },
       fullResult: jarvisResult
     });
