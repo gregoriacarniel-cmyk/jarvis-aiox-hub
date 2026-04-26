@@ -78,7 +78,7 @@ export async function POST(req) {
 
     // 4. Retorno para o Dashboard
     return NextResponse.json({
-      response: `[SISTEMA V31.2 ONLINE]\n[ROTA: ${VPS_URL}]\n\n[${jarvisResult.agente}] ${jarvisResult.resumo}\n\n${jarvisResult.resultado}`,
+      response: `[SISTEMA V31.5 ONLINE]\n[ROTA: ${VPS_URL}]\n\n[${jarvisResult.agente}] ${jarvisResult.resumo}\n\n${jarvisResult.resultado}`,
       agentUsed: { name: jarvisResult.agente, icon: "🛡️" },
       fullResult: jarvisResult
     });
