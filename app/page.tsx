@@ -84,7 +84,7 @@ export default function NexusSupremoV30() {
     const sanitizedMessages = messages.map(m => ({ role: m.role, content: m.content }));
 
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch("/api/jarvis-v31", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
