@@ -52,7 +52,10 @@ export async function POST(req) {
     try {
       const vpsRes = await fetch(`${VPS_URL}/jarvis/task`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true" 
+        },
         body: JSON.stringify({
           user_id: "GREGORI_ALPHA",
           empresa: intent.empresa || "FOXCONECT",
