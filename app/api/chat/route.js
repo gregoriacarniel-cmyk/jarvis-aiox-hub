@@ -45,8 +45,8 @@ export async function POST(req) {
       console.log("Falha na IA, usando padrão tático.");
     }
 
-    // 3. Chamada à API Central do Jarvis (VPS)
-    const VPS_URL = process.env.JARVIS_CORE_URL || "http://localhost:3001";
+    // 3. Chamada à API Central do Jarvis (TÚNEL NGROK ATIVO)
+    const VPS_URL = "https://upchuck-latrine-washtub.ngrok-free.dev";
     let jarvisResult;
 
     try {
