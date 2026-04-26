@@ -12,16 +12,25 @@ export async function POST(req) {
     const encodedKey = "Z3NrXzBPU3lCdnV3d3pjcmhqVElxc2RuV0dyeWIzRlltNEZITEp4RXV2Tk0zSWR0U1M2OENGZ3Y=";
     const GROQ_KEY = Buffer.from(encodedKey, 'base64').toString('utf-8');
 
-    // 2. IA Traduz Intenção em Comando Estruturado para a VPS
-    const translationPrompt = `Você é o Jarvis Supremo, a Inteligência Artificial de elite de tráfego pago. Seja direto, técnico e profissional. NÃO seja bajulador. Responda como uma máquina de alta eficiência.
-    Analise a mensagem do usuário e retorne APENAS um JSON no formato:
+    // 2. IA Traduz Intenção e Gera Resposta
+    const systemPrompt = `Você é o Jarvis Supremo, a Inteligência Artificial de elite de tráfego pago. Seja direto, técnico e profissional. NÃO seja bajulador. Responda como uma máquina de alta eficiência.
+    Você deve analisar a mensagem do usuário (considerando o histórico) e retornar APENAS um JSON neste formato exato:
     {
-      "fala_jarvis": "Sua resposta curta, técnica e direta ao usuário.",
+      "fala_jarvis": "Sua resposta curta, técnica e direta ao usuário, lembrando do contexto.",
       "tipo": "analise | execucao | consulta",
       "prioridade": "baixa | media | alta",
       "empresa": "nome_da_empresa_se_detectado"
-    }
-    MENSAGEM: "${lastMessage}"`;
+    }`;
+
+    // Construindo o histórico de memória para a IA (removendo os logs técnicos passados para não poluir a mente dela)
+    const groqMessages = [
+      { role: "system", content: systemPrompt },
+      ...messages.slice(0, -1).map(m => ({
+        role: m.role,
+        content: m.content ? m.content.split('\n\n[LOG DO SERVIDOR:')[0] : ""
+      })),
+      { role: "user", content: lastMessage }
+    ];
 
     let intent = { tipo: "analise", prioridade: "media", empresa: "FOXCONECT", fala_jarvis: "Comando recebido. Processando tática." };
     
@@ -34,7 +43,7 @@ export async function POST(req) {
         },
         body: JSON.stringify({
           model: "llama-3.3-70b-versatile",
-          messages: [{ role: "system", content: translationPrompt }],
+          messages: groqMessages,
           response_format: { type: "json_object" }
         })
       });
