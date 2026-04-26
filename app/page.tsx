@@ -209,8 +209,56 @@ export default function NexusSupremoV19() {
                   </div>
                 ))}
               </div>
+              {/* TABELA DE GUERRA */}
+              <div className="glass-card !p-0 overflow-hidden border-white/10 shadow-2xl">
+                <div className="p-6 bg-white/[0.02] border-b border-white/5 flex items-center justify-between"><div className="flex items-center gap-3"><Activity className="text-cyan-400 animate-pulse" size={18} /><span className="text-[11px] font-black uppercase tracking-widest text-white">Auditoria de Conjuntos Alpha (DNA Sync)</span></div></div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-[11px]">
+                    <thead className="bg-white/[0.04] text-gray-500 uppercase font-black tracking-widest border-b border-white/5">
+                      <tr>
+                        <th className="p-5">Conjunto</th><th className="p-5 text-center">Status</th><th className="p-5 text-center">Gasto</th><th className="p-5 text-center">Vendas</th><th className="p-5 text-center">Connect %</th><th className="p-5 text-center">CPA</th><th className="p-5 text-center">ROAS</th><th className="p-5 text-center">CTR</th><th className="p-5 text-right">Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {data?.adsets?.map((ad: any, i: number) => (
+                        <tr key={i} className="hover:bg-white/[0.02] transition-colors group">
+                          <td className="p-5 font-black text-gray-200 uppercase italic group-hover:text-cyan-400">{ad.name}</td>
+                          <td className="p-5 text-center"><span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase ${ad.status === 'ACTIVE' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-500'}`}>{ad.status}</span></td>
+                          <td className="p-5 text-center font-bold text-gray-500">R$ {ad.spend?.toFixed(2)}</td>
+                          <td className="p-5 text-center text-[#00ff88] font-black text-base">{ad.sales}</td>
+                          <td className={`p-5 text-center font-black ${parseFloat(ad.connectRate) >= 80 ? 'text-[#00ff88]' : parseFloat(ad.connectRate) >= 70 ? 'text-yellow-400' : 'text-red-500'}`}>{ad.connectRate}</td>
+                          <td className="p-5 text-center font-bold text-red-400">R$ {ad.cpa}</td>
+                          <td className="p-5 text-center font-black text-[#7000ff]">{ad.roas}x</td>
+                          <td className="p-5 text-center font-bold text-gray-500">{ad.ctr}</td>
+                          <td className="p-5 text-right"><button className="p-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-lg"><Power size={14} /></button></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* CRIATIVOS DE ALTA PERFORMANCE */}
+              <div className="space-y-6">
+                <h3 className="text-[11px] font-black text-white uppercase tracking-[5px] italic">CRIATIVOS DE ALTA PERFORMANCE</h3>
+                <div className="grid grid-cols-4 gap-6">
+                  {[1, 2, 3, 4].map((c) => (
+                    <div key={c} className="glass-card p-4 space-y-4 group">
+                      <div className="aspect-square bg-white/5 rounded-xl border border-white/5 overflow-hidden relative">
+                        <div className="absolute inset-0 flex items-center justify-center text-gray-700 font-black text-[10px] uppercase">Preview Criativo {c}</div>
+                        <div className="absolute top-2 right-2 px-2 py-1 bg-[#00ff88]/20 rounded text-[#00ff88] text-[8px] font-black">WINNER</div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest">CTR: 2.45%</span>
+                        <TrendingUp size={12} className="text-[#00ff88]" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
+
 
           {/* HUB DE AGENTES */}
           {activeTab !== "traffic" && !selectedAgent && (
