@@ -187,8 +187,9 @@ export default function NexusSupremoV16() {
   }
 
   const selectedAgent = selectedAgentId ? (AGENT_REGISTRY as any)[selectedAgentId] : null;
-  const isCloneGroup = selectedAgent && selectedAgent.group === "mentes clonadas";
   const customMetrics = selectedAgentId ? CLONE_METRICS[selectedAgentId] : null;
+  const isCloneGroup = !!customMetrics; 
+
 
   return (
     <div className="grid grid-cols-[300px_1fr_400px] h-screen overflow-hidden bg-[#050505] font-['Outfit']">
