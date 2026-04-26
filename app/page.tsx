@@ -298,21 +298,62 @@ export default function NexusSupremoV14() {
             </div>
           )}
 
-          {/* DASHBOARD PADRÃO PARA OUTROS AGENTES */}
+          {/* DASHBOARD PADRÃO PARA OUTROS AGENTES (COM TELINHA LATERAL) */}
           {selectedAgent && selectedAgentId !== "m1" && (
-            <div className="max-w-5xl mx-auto space-y-12 animate-in zoom-in-95 duration-500">
-              <div className="flex items-center gap-10 border-b border-white/5 pb-10">
-                <div className="w-32 h-32 bg-white/5 rounded-[45px] flex items-center justify-center text-6xl border border-white/10 shadow-2xl">{selectedAgent.icon}</div>
-                <div><h2 className="text-5xl font-black text-white italic uppercase tracking-tighter">{selectedAgent.name}</h2><p className="text-[12px] text-cyan-400 font-black uppercase tracking-[0.6em] mt-3 italic">Unidade de Inteligência Alpha</p></div>
+            <div className="grid grid-cols-[1fr_380px] gap-8 animate-in zoom-in-95 duration-500 h-[calc(100vh-180px)]">
+              {/* COLUNA ESQUERDA: TERMINAL OPERACIONAL */}
+              <div className="flex flex-col space-y-8 overflow-hidden">
+                <div className="flex items-center gap-8 border-b border-white/5 pb-6">
+                  <div className="w-20 h-20 bg-white/5 rounded-[30px] flex items-center justify-center text-4xl border border-white/10 shadow-xl">{selectedAgent.icon}</div>
+                  <div><h2 className="text-4xl font-black text-white italic uppercase tracking-tighter leading-none">{selectedAgent.name}</h2><p className="text-[10px] text-cyan-400 font-black uppercase tracking-[0.4em] mt-2 italic">Operador Alpha</p></div>
+                </div>
+                
+                <div className="glass-card !p-0 overflow-hidden border-cyan-500/20 bg-cyan-500/[0.01] shadow-2xl flex-1 flex flex-col">
+                  <div className="bg-cyan-500/10 p-4 border-b border-cyan-500/20 flex items-center justify-between">
+                    <div className="flex items-center gap-3"><TerminalIcon size={14} className="text-cyan-400" /><span className="text-[9px] font-black uppercase tracking-widest text-cyan-400">Terminal Tático Alpha</span></div>
+                    <div className="flex gap-1"><div className="w-2 h-2 rounded-full bg-red-500/50" /><div className="w-2 h-2 rounded-full bg-yellow-500/50" /><div className="w-2 h-2 rounded-full bg-green-500/50" /></div>
+                  </div>
+                  <div className="p-8 flex-1 flex flex-col">
+                    <div className="bg-black/60 rounded-2xl p-6 font-mono text-xs text-cyan-500/70 border border-white/5 flex-1 overflow-y-auto">
+                      <p className="mb-2">&gt; Inicializando núcleo {selectedAgent.name.toLowerCase()}...</p>
+                      <p className="mb-2 text-white/40">&gt; Sincronizando com Jarvis Supremo...</p>
+                      <p className="mb-2">&gt; Aguardando ordens táticas de escala...</p>
+                      <div className="w-1.5 h-4 bg-cyan-500 animate-pulse inline-block mt-2"></div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="grid grid-cols-3 gap-8">
-                {[{ label: "O QUE FAZ", text: selectedAgent.f, color: "text-cyan-400" }, { label: "O QUE RESOLVE", text: selectedAgent.r, color: "text-[#00ff88]" }, { label: "ONDE USAR", text: selectedAgent.u, color: "text-[#7000ff]" }].map((box, i) => (
-                  <div key={i} className="glass-card p-10 border-white/10 bg-white/[0.02] min-h-[250px] flex flex-col shadow-xl"><h4 className={`text-[10px] font-black uppercase tracking-[4px] ${box.color} mb-6`}>{box.label}</h4><p className="text-sm font-bold text-gray-300 leading-relaxed uppercase flex-1">{box.text}</p></div>
-                ))}
-              </div>
-              <div className="glass-card !p-0 overflow-hidden border-cyan-500/20 bg-cyan-500/[0.01] shadow-2xl">
-                <div className="bg-cyan-500/10 p-5 border-b border-cyan-500/20 flex items-center justify-between"><div className="flex items-center gap-3"><TerminalIcon size={16} className="text-cyan-400" /><span className="text-[10px] font-black uppercase tracking-widest text-cyan-400">Terminal Tático Alpha</span></div></div>
-                <div className="p-10 space-y-8"><div className="bg-black/60 rounded-2xl p-8 font-mono text-xs text-cyan-500/70 border border-white/5 h-48 overflow-y-auto"><p>&gt; Sistema {selectedAgent.name.toLowerCase()} integrado...</p></div></div>
+
+              {/* COLUNA DIREITA: TELINHA LATERAL (DNA PURISTA) */}
+              <div className="flex flex-col gap-6 overflow-y-auto pr-2 scrollbar-hide">
+                <div className="p-6 glass-card bg-white/[0.03] border-cyan-500/10 shadow-2xl">
+                  <h3 className="text-[11px] font-black text-white uppercase tracking-[5px] mb-8 italic border-b border-white/5 pb-4">DNA PURISTA</h3>
+                  <div className="space-y-8">
+                    {[
+                      { label: "O QUE FAZ", text: selectedAgent.f, color: "bg-cyan-500", textColor: "text-cyan-400" },
+                      { label: "O QUE RESOLVE", text: selectedAgent.r, color: "bg-[#00ff88]", textColor: "text-[#00ff88]" },
+                      { label: "ONDE USAR", text: selectedAgent.u, color: "bg-[#7000ff]", textColor: "text-[#7000ff]" }
+                    ].map((box, i) => (
+                      <div key={i} className="space-y-3 group">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-1 h-4 ${box.color} rounded-full`} />
+                          <span className={`text-[9px] font-black uppercase tracking-[3px] ${box.textColor}`}>{box.label}</span>
+                        </div>
+                        <div className="p-5 rounded-2xl bg-white/5 border border-white/5 group-hover:border-white/10 transition-all">
+                          <p className="text-[11px] font-bold text-gray-300 leading-relaxed uppercase">{box.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="glass-card p-6 border-white/5 bg-white/[0.02]">
+                  <h4 className="text-[8px] font-black text-gray-600 uppercase tracking-widest mb-4">STATUS DE SINCRONIA</h4>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black text-green-400 uppercase">ATIVO</span>
+                    <Activity size={14} className="text-green-500 animate-pulse" />
+                  </div>
+                </div>
               </div>
             </div>
           )}
