@@ -1,6 +1,6 @@
 "use client";
 
-/* SUPREMO RESTORATION V14.0 - FULL FIDELITY GESTOR & HORMOSI */
+/* SUPREMO V16.0 - GLOBAL SOVEREIGN DASHBOARD FOR MENTES CLONADAS */
 import { useState, useEffect } from "react";
 import { 
   Zap, MessageSquare, TrendingUp, Target, ShoppingCart, 
@@ -9,7 +9,76 @@ import {
 } from "lucide-react";
 import { AGENT_REGISTRY, GROUP_CONFIG } from "@/app/lib/agentRegistry";
 
-export default function NexusSupremoV14() {
+// CONFIGURAÇÃO DE MÉTRICAS PERSONALIZADAS PARA MENTES CLONADAS
+const CLONE_METRICS: any = {
+  "m1": { // Hormozi
+    gauges: [{ label: "FORÇA DA OFERTA", val: 85, color: "text-[#00ff88]" }, { label: "MULTIPLICADOR LTV", val: 72, color: "text-cyan-400" }, { label: "ÍNDICE DE ESCALA", val: 64, color: "text-[#7000ff]" }],
+    strategy: ["ESTRATÉGIA DE 100M OFFERS E CRIAÇÃO DE OFERTAS SEM RESISTÊNCIA.", "GARANTE QUE NINGUÉM CONSIGA DIZER NÃO PARA O VALOR QUE VOCÊ ENTREGA."],
+    pillars: ["ENGENHARIA DE OFERTA", "MAXIMUN LTV", "ESCALA DE $100M"]
+  },
+  "m2": { // Jeremy Miner
+    gauges: [{ label: "DESARME INICIAL", val: 92, color: "text-[#00ff88]" }, { label: "CONEXÃO EMOCIONAL", val: 88, color: "text-cyan-400" }, { label: "FECHAMENTO NEPQ", val: 95, color: "text-[#7000ff]" }],
+    strategy: ["ENGENHARIA DE VENDAS NEPQ QUE FAZ O LEAD SE VENDER SOZINHO.", "ELIMINA A REJEIÇÃO E TRANSFORMA VENDAS EM FECHAMENTOS NATURAIS."],
+    pillars: ["PERGUNTAS DE SITUAÇÃO", "DESARME PSICOLÓGICO", "FECHAMENTO SEM PRESSÃO"]
+  },
+  "m3": { // Cole Gordon
+    gauges: [{ label: "HIGH-TICKET SCORE", val: 90, color: "text-[#00ff88]" }, { label: "SETTING PRECISION", val: 85, color: "text-cyan-400" }, { label: "CLOSING RATE", val: 82, color: "text-[#7000ff]" }],
+    strategy: ["FECHAMENTO HIGH-TICKET E GESTÃO DE CLOSERS DE ALTA PERFORMANCE.", "TRANSFORMA LEADS FRIOS EM PAGAMENTOS IMEDIATOS VIA CHAT."],
+    pillars: ["QUALIFICAÇÃO BRUTAL", "VIRTUAL CLOSING", "REVENUE ACCELERATION"]
+  },
+  "m4": { // Dan Kennedy
+    gauges: [{ label: "MAGNETISMO", val: 95, color: "text-[#00ff88]" }, { label: "AUTORIDADE PREÇO", val: 98, color: "text-cyan-400" }, { label: "RESPOSTA DIRETA", val: 92, color: "text-[#7000ff]" }],
+    strategy: ["MARKETING DE RESPOSTA DIRETA FOCADO EM AUTORIDADE MAGNÉTICA.", "GARANTE O CONTROLE DO PREÇO E ATRAI CLIENTES QUE PAGAM MAIS."],
+    pillars: ["POSITIONING POWER", "DIRECT RESPONSE DNA", "PRICE COMMAND"]
+  },
+  "m5": { // Gary Halbert
+    gauges: [{ label: "DESEJO VORAZ", val: 98, color: "text-[#00ff88]" }, { label: "URGÊNCIA REAL", val: 95, color: "text-cyan-400" }, { label: "CONVERSÃO COPY", val: 94, color: "text-[#7000ff]" }],
+    strategy: ["ESCRITA EMOCIONAL DIRETA QUE OBRIGA O LEAD A AGIR AGORA.", "CRIA DESEJO VORAZ E URGÊNCIA REAL EM QUALQUER OFERTA."],
+    pillars: ["EMOTIONAL TRIGGERS", "STARVING CROWD", "KILLER COPY"]
+  },
+  "m6": { // Eugene Schwartz
+    gauges: [{ label: "AWARENESS LEVEL", val: 94, color: "text-[#00ff88]" }, { label: "SOPHISTICATION", val: 91, color: "text-cyan-400" }, { label: "MARKET FIT", val: 89, color: "text-[#7000ff]" }],
+    strategy: ["MAPEAMENTO DOS 5 NÍVEIS DE CONSCIÊNCIA DO MERCADO.", "FALA EXATAMENTE O QUE O LEAD PRECISA OUVIR NA FASE CERTA."],
+    pillars: ["CONSCIOUSNESS MAP", "MARKET STAGES", "BREAKTHROUGH COPY"]
+  },
+  "m7": { // David Ogilvy
+    gauges: [{ label: "BIG IDEA SCORE", val: 96, color: "text-[#00ff88]" }, { label: "BRAND LOYALTY", val: 94, color: "text-cyan-400" }, { label: "PRESTIGE INDEX", val: 97, color: "text-[#7000ff]" }],
+    strategy: ["CONSTRUÇÃO DE BIG IDEAS E BRAND STORYTELLING MUNDIAL.", "ELEVA O PRODUTO DE COMMODITIE PARA LENDA DOMINANTE."],
+    pillars: ["CREATIVE EXCELLENCE", "BRAND SOVEREIGNTY", "STORYTELLING MASTER"]
+  },
+  "m8": { // Robert Cialdini
+    gauges: [{ label: "INFLUÊNCIA REAL", val: 98, color: "text-[#00ff88]" }, { label: "SOCIAL PROOF", val: 95, color: "text-cyan-400" }, { label: "GATILHOS DNA", val: 92, color: "text-[#7000ff]" }],
+    strategy: ["INJEÇÃO CIENTÍFICA DE GATILHOS DE INFLUÊNCIA E PROVA SOCIAL.", "USA O CÉREBRO SOCIAL DO LEAD PARA VALIDAR A COMPRA."],
+    pillars: ["6 PRINCIPLES SYNC", "SOCIAL VALIDATION", "AUTHORITY TRIGGER"]
+  },
+  "m9": { // Jordan Belford
+    gauges: [{ label: "LINHA RETA", val: 95, color: "text-[#00ff88]" }, { label: "TONALIDADE", val: 92, color: "text-cyan-400" }, { label: "CERTEZA TOTAL", val: 97, color: "text-[#7000ff]" }],
+    strategy: ["PERSUASÃO EM LINHA RETA E CONTROLE TONAL DO FECHAMENTO.", "MANTÉM O LEAD NO TRILHO DA VENDA ATÉ O SIM INEVITÁVEL."],
+    pillars: ["STRAIGHT LINE DNA", "TONAL MASTERY", "ACTION THRESHOLD"]
+  },
+  "m10": { // Jim Edwards
+    gauges: [{ label: "VELOCIDADE COPY", val: 98, color: "text-[#00ff88]" }, { label: "AUTOMAÇÃO SCRIPT", val: 96, color: "text-cyan-400" }, { label: "EFICIÊNCIA MASSA", val: 93, color: "text-[#7000ff]" }],
+    strategy: ["AUTOMAÇÃO DE SCRIPTS DE COPY DE ALTA VELOCIDADE.", "PRODUZ COPY QUE FUNCIONA EM MASSA EM TEMPO RECORDE."],
+    pillars: ["SCRIPT AUTOMATION", "SPEED TO MARKET", "SCALABLE COPY"]
+  },
+  "m11": { // Russell Brunson
+    gauges: [{ label: "FUNNEL STRENGTH", val: 97, color: "text-[#00ff88]" }, { label: "VALUE LADDER", val: 98, color: "text-cyan-400" }, { label: "OTM INDEX", val: 92, color: "text-[#7000ff]" }],
+    strategy: ["ARQUITETURA DE FUNIS E ESCADAS DE VALOR INFINITAS.", "MAXIMIZA O LUCRO VITALÍCIO DE CADA CLIENTE."],
+    pillars: ["FUNNEL HACKING", "VALUE ASCENSION", "DREAM 100 STRATEGY"]
+  },
+  "m12": { // Frank Kern
+    gauges: [{ label: "CONEXÃO COOL", val: 94, color: "text-[#00ff88]" }, { label: "BEHAVIOR SYNC", val: 92, color: "text-cyan-400" }, { label: "VENDAS CHARME", val: 90, color: "text-[#7000ff]" }],
+    strategy: ["BEHAVIOR MARKETING E VENDAS BASEADAS EM ESTILO DE VIDA.", "CRIA CONEXÃO INSTANTÂNEA ATRAVÉS DE PERSONA CONFIAVEL."],
+    pillars: ["LIFESTYLE SALES", "BEHAVIORAL TRIGGERS", "COOL AUTHORITY"]
+  },
+  "m13": { // Stefan Georgie
+    gauges: [{ label: "RMBC PRECISION", val: 96, color: "text-[#00ff88]" }, { label: "VSL RETENTION", val: 98, color: "text-cyan-400" }, { label: "SCALE POTENTIAL", val: 94, color: "text-[#7000ff]" }],
+    strategy: ["METODOLOGIA RMBC PARA CRIAÇÃO DE VSLS DE 7-8 DÍGITOS.", "GARANTE A MELHOR RETENÇÃO DO MUNDO NO VÍDEO DE VENDAS."],
+    pillars: ["RMBC METHODOLOGY", "RETENTION FOCUS", "VSL ARCHITECTURE"]
+  }
+};
+
+export default function NexusSupremoV16() {
   const [activeProject, setActiveProject] = useState("");
   const [activeTab, setActiveTab] = useState("traffic"); 
   const [mounted, setMounted] = useState(false);
@@ -29,7 +98,6 @@ export default function NexusSupremoV14() {
   const [isExecuting, setIsExecuting] = useState(false);
 
   useEffect(() => {
-
     setMounted(true);
     if (activeProject) fetchAccounts();
   }, [activeProject]);
@@ -79,7 +147,6 @@ export default function NexusSupremoV14() {
     if (selectedAgentId) setIsExecuting(true);
     try {
       const res = await fetch("/api/chat", {
-
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -94,7 +161,6 @@ export default function NexusSupremoV14() {
       setTimeout(() => setIsExecuting(false), 3000);
     } catch (err) { console.error(err); setIsExecuting(false); }
   };
-
 
   if (!mounted) return <div className="bg-[#050505] min-h-screen" />;
 
@@ -121,6 +187,8 @@ export default function NexusSupremoV14() {
   }
 
   const selectedAgent = selectedAgentId ? (AGENT_REGISTRY as any)[selectedAgentId] : null;
+  const isCloneGroup = selectedAgent && selectedAgent.group === "mentes clonadas";
+  const customMetrics = selectedAgentId ? CLONE_METRICS[selectedAgentId] : null;
 
   return (
     <div className="grid grid-cols-[300px_1fr_400px] h-screen overflow-hidden bg-[#050505] font-['Outfit']">
@@ -247,28 +315,23 @@ export default function NexusSupremoV14() {
             </div>
           )}
 
-          {/* DASHBOARD DO HORMOZI (RESTAURAÇÃO TOTAL) */}
-          {selectedAgentId === "m1" && (
+          {/* DASHBOARD SOBERANO (MENTES CLONADAS) */}
+          {isCloneGroup && customMetrics && (
             <div className="space-y-12 animate-in zoom-in-95 duration-700">
-
               <div className="flex items-center justify-between border-b border-white/5 pb-10">
                 <div className="flex items-center gap-10">
                   <div className="w-32 h-32 bg-white/5 rounded-[45px] flex items-center justify-center text-6xl border border-white/10 shadow-2xl relative transition-all duration-1000">
-                    🧬 {isExecuting && <div className="absolute inset-0 rounded-[45px] border-2 border-cyan-500 animate-ping opacity-50" />}
+                    {selectedAgent.icon} {isExecuting && <div className="absolute inset-0 rounded-[45px] border-2 border-cyan-500 animate-ping opacity-50" />}
                   </div>
                   <div>
-                    <h2 className="text-6xl font-black text-white italic uppercase tracking-tighter leading-none">ALEX HORMOZI</h2>
-                    <p className="text-[10px] text-cyan-400 font-black uppercase tracking-[0.5em] mt-3 italic">ESTRATEGISTA MASTER — 100M OFFERS</p>
+                    <h2 className="text-6xl font-black text-white italic uppercase tracking-tighter leading-none">{selectedAgent.name}</h2>
+                    <p className="text-[10px] text-cyan-400 font-black uppercase tracking-[0.5em] mt-3 italic">MENTE CLONADA — OPERADOR SOBERANO</p>
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-8">
-                {[
-                  { label: "FORÇA DA OFERTA", val: 85, color: "text-[#00ff88]" },
-                  { label: "MULTIPLICADOR LTV", val: 72, color: "text-cyan-400" },
-                  { label: "ÍNDICE DE ESCALA", val: 64, color: "text-[#7000ff]" }
-                ].map((g, i) => (
+                {customMetrics.gauges.map((g: any, i: number) => (
                   <div key={i} className="glass-card p-10 flex flex-col items-center text-center space-y-6">
                     <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{g.label}</p>
                     <div className="relative w-32 h-32 flex items-center justify-center">
@@ -282,18 +345,18 @@ export default function NexusSupremoV14() {
               <div className="grid grid-cols-2 gap-8">
                 <div className="glass-card p-10 space-y-6 border-l-4 border-cyan-500">
                   <h3 className="text-[11px] font-black text-cyan-500 uppercase tracking-[4px] italic">CORE STRATEGY</h3>
-                  <p className="text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">ESTRATÉGIA DE 100M OFFERS E CRIAÇÃO DE OFERTAS SEM RESISTÊNCIA.</p>
+                  <p className="text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">{customMetrics.strategy[0]}</p>
                 </div>
                 <div className="glass-card p-10 space-y-6 border-l-4 border-[#00ff88]">
-                  <h3 className="text-[11px] font-black text-[#00ff88] uppercase tracking-[4px] italic">MARKET ANOMALIES</h3>
-                  <p className="text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">GARANTE QUE NINGUÉM CONSIGA DIZER NÃO PARA O VALOR QUE VOCÊ ENTREGA.</p>
+                  <h3 className="text-[11px] font-black text-[#00ff88] uppercase tracking-[4px] italic">MARKET INTELLIGENCE</h3>
+                  <p className="text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">{customMetrics.strategy[1]}</p>
                 </div>
               </div>
 
               <div className="glass-card p-10 space-y-8 bg-black/60 border-cyan-500/20">
                 <h3 className="text-[11px] font-black text-white uppercase tracking-[5px] text-center italic">PILLARS OF EXECUTION</h3>
                 <div className="space-y-6">
-                  {["ENGENHARIA DE OFERTA", "MAXIMUN LTV", "ESCALA DE $100M"].map((p, i) => (
+                  {customMetrics.pillars.map((p: any, i: number) => (
                     <div key={i} className="flex items-center justify-between p-6 border border-white/5 rounded-2xl bg-white/[0.02]">
                       <span className="text-[11px] font-black text-gray-400 tracking-widest">{p}</span>
                       <CheckCircle2 className="text-cyan-400" size={18} />
@@ -305,7 +368,7 @@ export default function NexusSupremoV14() {
           )}
 
           {/* DASHBOARD PADRÃO PARA OUTROS AGENTES (COM TELINHA LATERAL) */}
-          {selectedAgent && selectedAgentId !== "m1" && (
+          {selectedAgent && !isCloneGroup && (
             <div className="grid grid-cols-[1fr_380px] gap-8 animate-in zoom-in-95 duration-500 h-[calc(100vh-180px)]">
               {/* COLUNA ESQUERDA: TERMINAL OPERACIONAL */}
               <div className="flex flex-col space-y-8 overflow-hidden">
