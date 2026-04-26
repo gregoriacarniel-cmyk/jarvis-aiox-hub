@@ -144,6 +144,10 @@ export default function NexusSupremoV26() {
               <span className="text-2xl">🧠</span>
               <div className="text-left"><p className={`text-[12px] font-black tracking-tight ${selectedAgentId === "mente-maestro" ? 'text-white' : 'text-gray-500'}`}>MENTE MAESTRO</p></div>
             </button>
+            <button onClick={() => { setActiveTab("traffic"); setSelectedAgentId(null); }} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${activeTab === "traffic" ? 'bg-white/[0.05] border-white/10 shadow-xl' : 'hover:bg-white/[0.02] border-transparent'}`}>
+              <span className="text-2xl">🚀</span>
+              <div className="text-left"><p className={`text-[12px] font-black tracking-tight ${activeTab === "traffic" ? 'text-white' : 'text-gray-500'}`}>GESTOR DE TRÁFEGO ALPHA</p></div>
+            </button>
           </div>
         </div>
       </aside>
