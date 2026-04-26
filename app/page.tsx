@@ -26,8 +26,10 @@ export default function NexusSupremoV14() {
   const [input, setInput] = useState("");
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState("");
+  const [isExecuting, setIsExecuting] = useState(false);
 
   useEffect(() => {
+
     setMounted(true);
     if (activeProject) fetchAccounts();
   }, [activeProject]);
@@ -74,8 +76,10 @@ export default function NexusSupremoV14() {
     const userMsg = { role: "user", content: input };
     setMessages(prev => [...prev, userMsg]);
     setInput("");
+    if (selectedAgentId) setIsExecuting(true);
     try {
       const res = await fetch("/api/chat", {
+
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -87,8 +91,10 @@ export default function NexusSupremoV14() {
       });
       const aiRes = await res.json();
       setMessages(prev => [...prev, { role: "assistant", content: aiRes.response, agent: aiRes.agentUsed }]);
-    } catch (err) { console.error(err); }
+      setTimeout(() => setIsExecuting(false), 3000);
+    } catch (err) { console.error(err); setIsExecuting(false); }
   };
+
 
   if (!mounted) return <div className="bg-[#050505] min-h-screen" />;
 
