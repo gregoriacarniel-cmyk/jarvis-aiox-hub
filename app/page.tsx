@@ -1,6 +1,6 @@
 "use client";
 
-/* SUPREMO V18.0 - TOTAL SOVEREIGN DASHBOARD (CLONES + CONCLAVE + MEGA BRAIN) */
+/* SUPREMO V19.0 - TOTAL UNIFIED SOVEREIGN DASHBOARD */
 import { useState, useEffect } from "react";
 import { 
   Zap, MessageSquare, TrendingUp, Target, ShoppingCart, 
@@ -9,35 +9,15 @@ import {
 } from "lucide-react";
 import { AGENT_REGISTRY, GROUP_CONFIG } from "@/app/lib/agentRegistry";
 
-// CONFIGURAÇÃO DE MÉTRICAS PERSONALIZADAS (MENTES CLONADAS + CONCLAVE + MEGA BRAIN)
+// CONFIGURAÇÃO DE MÉTRICAS PERSONALIZADAS (LÍDERES)
 const SOVEREIGN_METRICS: any = {
-  // --- MENTES CLONADAS ---
   "m1": { gauges: [{ label: "FORÇA DA OFERTA", val: 85, color: "text-[#00ff88]" }, { label: "MULTIPLICADOR LTV", val: 72, color: "text-cyan-400" }, { label: "ÍNDICE DE ESCALA", val: 64, color: "text-[#7000ff]" }], strategy: ["ESTRATÉGIA DE 100M OFFERS E CRIAÇÃO DE OFERTAS SEM RESISTÊNCIA.", "GARANTE QUE NINGUÉM CONSIGA DIZER NÃO PARA O VALOR QUE VOCÊ ENTREGA."], pillars: ["ENGENHARIA DE OFERTA", "MAXIMUN LTV", "ESCALA DE $100M"] },
   "m2": { gauges: [{ label: "DESARME INICIAL", val: 92, color: "text-[#00ff88]" }, { label: "CONEXÃO EMOCIONAL", val: 88, color: "text-cyan-400" }, { label: "FECHAMENTO NEPQ", val: 95, color: "text-[#7000ff]" }], strategy: ["ENGENHARIA DE VENDAS NEPQ QUE FAZ O LEAD SE VENDER SOZINHO.", "ELIMINA A REJEIÇÃO E TRANSFORMA VENDAS EM FECHAMENTOS NATURAIS."], pillars: ["PERGUNTAS DE SITUAÇÃO", "DESARME PSICOLÓGICO", "FECHAMENTO SEM PRESSÃO"] },
-  
-  // --- CONCLAVE ---
   "c1": { gauges: [{ label: "VARREDURA MERCADO", val: 96, color: "text-[#00ff88]" }, { label: "PRECISÃO DE ALVO", val: 94, color: "text-cyan-400" }, { label: "MINERAÇÃO DADOS", val: 92, color: "text-[#7000ff]" }], strategy: ["MAPEAMENTO DE MECANISMOS ÚNICOS E ANOMALIAS DE CONCORRÊNCIA.", "IDENTIFICAÇÃO DE PONTOS DE INFLEXÃO EM MERCADOS SATURADOS."], pillars: ["INTELIGÊNCIA COMPETITIVA", "PATTERN RECOGNITION", "MARKET MINING"] },
-  "c2": { gauges: [{ label: "SINCRONIA REDE", val: 98, color: "text-[#00ff88]" }, { label: "LATÊNCIA ALPHA", val: 99, color: "text-cyan-400" }, { label: "FLUXO INTEL", val: 97, color: "text-[#7000ff]" }], strategy: ["GESTÃO DE INFRAESTRUTURA NEURAL E CONEXÃO ENTRE AGENTES.", "GARANTE QUE O FLUXO DE DADOS SUPREMO NUNCA SOFRA INTERRUPÇÕES."], pillars: ["NETWORK INTEGRITY", "NEURAL SYNC", "DATA FLOW MASTER"] },
-
-  // --- MEGA BRAIN (NOVO UPGRADE) ---
-  "b1": { 
-    gauges: [{ label: "VARREDURA NEURAL", val: 97, color: "text-[#00ff88]" }, { label: "LÓGICA PURA", val: 95, color: "text-cyan-400" }, { label: "DEEP SCAN", val: 93, color: "text-[#7000ff]" }], 
-    strategy: ["PROCESSAMENTO DE DADOS EM NÍVEL NEURAL PARA IDENTIFICAÇÃO DE OPORTUNIDADES.", "ANÁLISE PROFUNDA DE COMPORTAMENTO DO CONSUMIDOR."], 
-    pillars: ["NEURAL MAPPING", "DATA MINING", "LOGIC VALIDATION"] 
-  },
-  "b2": { 
-    gauges: [{ label: "SYNC SINAPSE", val: 98, color: "text-[#00ff88]" }, { label: "FLUXO CORTEX", val: 96, color: "text-cyan-400" }, { label: "EFICIÊNCIA DADOS", val: 94, color: "text-[#7000ff]" }], 
-    strategy: ["COORDENAÇÃO DE FLUXOS DE DADOS ENTRE OS NÚCLEOS DO SISTEMA.", "GARANTE QUE A INFORMAÇÃO CHEGUE AO AGENTE CERTO NO TEMPO ALPHA."], 
-    pillars: ["SYNAPSE SYNC", "DATA ARCHITECTURE", "ALPHA FLOW"] 
-  },
-  "b3": { 
-    gauges: [{ label: "CORTEX PRIME", val: 99, color: "text-[#00ff88]" }, { label: "DECISÃO TÁTICA", val: 97, color: "text-cyan-400" }, { label: "NÚCLEO ALPHA", val: 98, color: "text-[#7000ff]" }], 
-    strategy: ["CENTRAL DE PROCESSAMENTO E TOMADA DE DECISÃO TÁTICA DO MEGA BRAIN.", "MAPEIA O CAMINHO MAIS CURTO PARA A CONVERSÃO DE ALTA ESCALA."], 
-    pillars: ["CORE PROCESSING", "DECISION ENGINE", "SCALE LOGIC"] 
-  }
+  "b1": { gauges: [{ label: "VARREDURA NEURAL", val: 97, color: "text-[#00ff88]" }, { label: "LÓGICA PURA", val: 95, color: "text-cyan-400" }, { label: "DEEP SCAN", val: 93, color: "text-[#7000ff]" }], strategy: ["PROCESSAMENTO DE DADOS EM NÍVEL NEURAL PARA IDENTIFICAÇÃO DE OPORTUNIDADES.", "ANÁLISE PROFUNDA DE COMPORTAMENTO DO CONSUMIDOR."], pillars: ["NEURAL MAPPING", "DATA MINING", "LOGIC VALIDATION"] }
 };
 
-export default function NexusSupremoV18() {
+export default function NexusSupremoV19() {
   const [activeProject, setActiveProject] = useState("");
   const [activeTab, setActiveTab] = useState("traffic"); 
   const [mounted, setMounted] = useState(false);
@@ -128,7 +108,7 @@ export default function NexusSupremoV18() {
       <div className="min-h-screen bg-[#050505] flex items-center justify-center p-8 relative overflow-hidden font-['Outfit']">
         <div className="max-w-4xl w-full space-y-12 relative z-10 text-center">
           <div className="space-y-4">
-            <h1 className="text-6xl font-black tracking-tighter italic text-white leading-none">NEXUS <span className="text-cyan-400">SUPREMO</span> V18</h1>
+            <h1 className="text-6xl font-black tracking-tighter italic text-white leading-none">NEXUS <span className="text-cyan-400">SUPREMO</span> V19</h1>
             <p className="text-[10px] uppercase font-black tracking-[1em] text-gray-600">Gregori Alpha | Sistema de Comando Soberano</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -146,12 +126,18 @@ export default function NexusSupremoV18() {
   }
 
   const selectedAgent = selectedAgentId ? (AGENT_REGISTRY as any)[selectedAgentId] : null;
+  const isSovereignGroup = selectedAgent && ["mentes clonadas", "conclave", "mega brain"].includes(selectedAgent.group.toLowerCase());
+  
+  // MÉTRICAS SOBERANAS (PERSONALIZADAS OU UNIVERSAIS)
   const customMetrics = selectedAgentId ? SOVEREIGN_METRICS[selectedAgentId] : null;
-  const isSovereignLayout = !!customMetrics;
+  const metrics = customMetrics || {
+    gauges: [{ label: "EFICIÊNCIA NÚCLEO", val: 94, color: "text-[#00ff88]" }, { label: "PROCESSAMENTO NEURAL", val: 91, color: "text-cyan-400" }, { label: "POTENCIAL ESCALA", val: 89, color: "text-[#7000ff]" }],
+    strategy: [`O AGENTE ${selectedAgent?.name} ESTÁ EM MODO DE EXECUÇÃO SOBERANA.`, `SINCRONIA ALPHA ATIVA PARA MAXIMIZAR RESULTADOS TÁTICOS.`],
+    pillars: ["SINCRONIA ALPHA", "LOGICA DE DADOS", "EXECUÇÃO PURISTA"]
+  };
 
   return (
     <div className="grid grid-cols-[300px_1fr_400px] h-screen overflow-hidden bg-[#050505] font-['Outfit']">
-      
       {/* ── SIDEBAR ── */}
       <aside className="border-r border-white/5 bg-black/40 flex flex-col overflow-hidden">
         <div className="p-6 border-b border-white/5 space-y-6">
@@ -205,26 +191,21 @@ export default function NexusSupremoV18() {
                 <div className="space-y-2 border-x border-white/5"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Campanha Ativa</p><select value={selectedCampaign} onChange={(e) => setSelectedCampaign(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase text-white p-4 focus:outline-none cursor-pointer"><option value="" className="bg-[#050505]">Todas as Campanhas</option>{campaigns.map(camp => (<option key={camp.id} value={camp.id} className="bg-[#050505]">{camp.name}</option>))}</select></div>
                 <div className="space-y-2"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Período Tático</p><div className="flex gap-2 px-4 py-2">{['today', 'yesterday', 'last_7d', 'last_30d'].map(p => (<button key={p} onClick={() => setSelectedDate(p)} className={`px-4 py-2 rounded-lg text-[9px] font-black uppercase transition-all ${selectedDate === p ? 'bg-cyan-500 text-black shadow-lg shadow-cyan-500/20' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}>{p === 'today' ? 'Hoje' : p === 'yesterday' ? 'Ontem' : p === 'last_7d' ? '7D' : '30D'}</button>))}</div></div>
               </div>
-
               {/* CARDS SUPREMO 2.0 */}
               <div className="grid grid-cols-4 gap-6">
                 {[
                   { label: "Investimento", value: `R$ ${data?.metrics?.spend?.toFixed(2) || "0,00"}`, color: "text-white", icon: Wallet },
                   { label: "Vendas Alpha", value: data?.metrics?.sales || "0", color: "text-[#00ff88]", icon: ShoppingCart },
                   { label: "CPA Médio", value: `R$ ${data?.metrics?.cpa || "0,00"}`, color: "text-red-500", icon: Target },
-                  { label: "Connect Rate", value: data?.metrics?.connectRate || "0.0%", color: (parseFloat(data?.metrics?.connectRate) >= 80 ? "text-[#00ff88]" : parseFloat(data?.metrics?.connectRate) >= 70 ? "text-yellow-400" : "text-red-500"), icon: LinkIcon },
+                  { label: "Connect Rate", value: data?.metrics?.connectRate || "0.0%", color: "text-cyan-400", icon: LinkIcon },
                   { label: "Faturamento", value: `R$ ${data?.metrics?.salesValue?.toFixed(2) || "0,00"}`, color: "text-[#00ff88]", icon: DollarSign },
                   { label: "ROAS Supremo", value: `${data?.metrics?.roas?.toFixed(2) || "0.00"}x`, color: "text-[#7000ff]", icon: TrendingUp },
                   { label: "Visualizações (LPV)", value: data?.metrics?.totalLPV?.toLocaleString() || "0", color: "text-blue-400", icon: Monitor },
                   { label: "Cliques no Link", value: data?.metrics?.totalLinkClicks?.toLocaleString() || "0", color: "text-yellow-400", icon: MousePointer2 },
-                  { label: "Alcance Real", value: data?.metrics?.totalReach?.toLocaleString() || "0", color: "text-orange-400", icon: Eye },
-                  { label: "Frequência", value: data?.metrics?.avgFrequency || "0.00", color: "text-purple-400", icon: RefreshCw },
-                  { label: "Checkouts (IC)", value: data?.metrics?.totalCheckouts || "0", color: "text-pink-400", icon: ShieldCheck },
-                  { label: "Carrinhos (ATC)", value: data?.metrics?.totalCarts || "0", color: "text-cyan-400", icon: ShoppingCart },
                 ].map((stat, i) => (
-                  <div key={i} className="glass-card p-6 group hover:border-cyan-500/30 transition-all shadow-xl relative overflow-hidden">
-                    <div className="flex items-center justify-between mb-4"><stat.icon size={16} className="text-gray-600 group-hover:text-cyan-400 transition-colors" /><p className="text-[8px] uppercase font-black tracking-widest text-gray-500">{stat.label}</p></div>
-                    <h3 className={`text-2xl font-black tracking-tighter ${stat.color} drop-shadow-2xl`}>{stat.value}</h3>
+                  <div key={i} className="glass-card p-6 shadow-xl relative overflow-hidden group">
+                    <div className="flex items-center justify-between mb-4"><stat.icon size={16} className="text-gray-600" /><p className="text-[8px] uppercase font-black tracking-widest text-gray-500">{stat.label}</p></div>
+                    <h3 className={`text-2xl font-black tracking-tighter ${stat.color}`}>{stat.value}</h3>
                   </div>
                 ))}
               </div>
@@ -236,8 +217,8 @@ export default function NexusSupremoV18() {
             <div className="grid grid-cols-3 gap-8 animate-in slide-in-from-bottom-4 duration-500">
               {Object.values(AGENT_REGISTRY).filter(a => a.group === activeTab).map((agent) => (
                 <button key={agent.id} onClick={() => setSelectedAgentId(agent.id)} className="glass-card p-10 text-left hover:border-cyan-500/40 transition-all group relative overflow-hidden shadow-xl">
-                  <div className="absolute -right-6 -bottom-6 text-9xl opacity-5 group-hover:scale-125 transition-all">{agent.icon}</div>
-                  <span className="text-5xl mb-6 block group-hover:scale-110 transition-transform">{agent.icon}</span>
+                  <div className="absolute -right-6 -bottom-6 text-9xl opacity-5">{agent.icon}</div>
+                  <span className="text-5xl mb-6 block">{agent.icon}</span>
                   <h3 className="text-xl font-black text-white uppercase italic tracking-tighter mb-4">{agent.name}</h3>
                   <div className="mt-8 flex items-center gap-3 text-[10px] font-black uppercase text-cyan-400 italic">Identificar Agente <ArrowRight size={14} /></div>
                 </button>
@@ -245,8 +226,8 @@ export default function NexusSupremoV18() {
             </div>
           )}
 
-          {/* DASHBOARD SOBERANO (CLONES + CONCLAVE + MEGA BRAIN) */}
-          {isSovereignLayout && customMetrics && (
+          {/* DASHBOARD SOBERANO (UNIFICADO) */}
+          {selectedAgent && isSovereignGroup && (
             <div className="space-y-12 animate-in zoom-in-95 duration-700">
               <div className="flex items-center justify-between border-b border-white/5 pb-10">
                 <div className="flex items-center gap-10">
@@ -259,9 +240,8 @@ export default function NexusSupremoV18() {
                   </div>
                 </div>
               </div>
-
               <div className="grid grid-cols-3 gap-8">
-                {customMetrics.gauges.map((g: any, i: number) => (
+                {metrics.gauges.map((g: any, i: number) => (
                   <div key={i} className="glass-card p-10 flex flex-col items-center text-center space-y-6">
                     <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{g.label}</p>
                     <div className="relative w-32 h-32 flex items-center justify-center">
@@ -271,36 +251,20 @@ export default function NexusSupremoV18() {
                   </div>
                 ))}
               </div>
-
               <div className="grid grid-cols-2 gap-8">
-                <div className="glass-card p-10 space-y-6 border-l-4 border-cyan-500">
-                  <h3 className="text-[11px] font-black text-cyan-500 uppercase tracking-[4px] italic">CORE STRATEGY</h3>
-                  <p className="text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">{customMetrics.strategy[0]}</p>
-                </div>
-                <div className="glass-card p-10 space-y-6 border-l-4 border-[#00ff88]">
-                  <h3 className="text-[11px] font-black text-[#00ff88] uppercase tracking-[4px] italic">TACTICAL INTELLIGENCE</h3>
-                  <p className="text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">{customMetrics.strategy[1]}</p>
-                </div>
+                <div className="glass-card p-10 space-y-6 border-l-4 border-cyan-500"><h3 className="text-[11px] font-black text-cyan-500 uppercase tracking-[4px] italic">CORE STRATEGY</h3><p className="text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">{metrics.strategy[0]}</p></div>
+                <div className="glass-card p-10 space-y-6 border-l-4 border-[#00ff88]"><h3 className="text-[11px] font-black text-[#00ff88] uppercase tracking-[4px] italic">TACTICAL INTELLIGENCE</h3><p className="text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">{metrics.strategy[1]}</p></div>
               </div>
-
               <div className="glass-card p-10 space-y-8 bg-black/60 border-cyan-500/20">
                 <h3 className="text-[11px] font-black text-white uppercase tracking-[5px] text-center italic">PILLARS OF EXECUTION</h3>
-                <div className="space-y-6">
-                  {customMetrics.pillars.map((p: any, i: number) => (
-                    <div key={i} className="flex items-center justify-between p-6 border border-white/5 rounded-2xl bg-white/[0.02]">
-                      <span className="text-[11px] font-black text-gray-400 tracking-widest uppercase">{p}</span>
-                      <CheckCircle2 className="text-cyan-400" size={18} />
-                    </div>
-                  ))}
-                </div>
+                <div className="space-y-6">{metrics.pillars.map((p: any, i: number) => (<div key={i} className="flex items-center justify-between p-6 border border-white/5 rounded-2xl bg-white/[0.02]"><span className="text-[11px] font-black text-gray-400 tracking-widest uppercase">{p}</span><CheckCircle2 className="text-cyan-400" size={18} /></div>))}</div>
               </div>
             </div>
           )}
 
-          {/* DASHBOARD PADRÃO PARA OUTROS AGENTES (COM TELINHA LATERAL) */}
-          {selectedAgent && !isSovereignLayout && (
+          {/* DASHBOARD PADRÃO (OUTROS) */}
+          {selectedAgent && !isSovereignGroup && (
             <div className="grid grid-cols-[1fr_380px] gap-8 animate-in zoom-in-95 duration-500 h-[calc(100vh-180px)]">
-              {/* COLUNA ESQUERDA: TERMINAL OPERACIONAL */}
               <div className="flex flex-col space-y-8 overflow-hidden">
                 <div className="flex items-center gap-8 border-b border-white/5 pb-6">
                   <div className="w-20 h-20 bg-white/5 rounded-[30px] flex items-center justify-center text-4xl border border-white/10 shadow-xl">{selectedAgent.icon}</div>
@@ -313,14 +277,12 @@ export default function NexusSupremoV18() {
                   <div className="p-8 flex-1 flex flex-col">
                     <div className="bg-black/60 rounded-2xl p-6 font-mono text-xs text-cyan-500/70 border border-white/5 flex-1 overflow-y-auto">
                       <p className="mb-2">&gt; Inicializando núcleo {selectedAgent.name.toLowerCase()}...</p>
-                      <p className="mb-2 text-white/40">&gt; Sincronizando com Jarvis Supremo...</p>
-                      <p className="mb-2">&gt; Aguardando ordens táticas de escala...</p>
+                      <p className="mb-2">&gt; Aguardando ordens táticas...</p>
                       <div className="w-1.5 h-4 bg-cyan-500 animate-pulse inline-block mt-2"></div>
                     </div>
                   </div>
                 </div>
               </div>
-              {/* COLUNA DIREITA: DNA PURISTA */}
               <div className="flex flex-col gap-6 overflow-y-auto pr-2 scrollbar-hide">
                 <div className="p-6 glass-card bg-white/[0.03] border-cyan-500/10 shadow-2xl">
                   <h3 className="text-[11px] font-black text-white uppercase tracking-[5px] mb-8 italic border-b border-white/5 pb-4">DNA PURISTA</h3>
