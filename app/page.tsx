@@ -154,7 +154,9 @@ export default function NexusSupremoV30() {
         <div className="flex-1 overflow-y-auto p-4 space-y-8 scrollbar-hide">
           <div className="space-y-2">
             {Object.keys(GROUP_CONFIG).map((group) => (
-              <button key={group} onClick={() => { setActiveTab(group); setSelectedAgentId(null); setSidebarOpen(false); }} className={`w-full text-left p-4 rounded-2xl text-[10px] font-black tracking-widest transition-all border ${activeTab === group ? "bg-white/10 text-white border-white/20" : "text-gray-600 border-transparent hover:bg-white/5"}`} style={{ color: activeTab === group ? (GROUP_CONFIG as any)[group].color : "" }}>{(GROUP_CONFIG as any)[group].icon} {group.toUpperCase()}</button>
+              <button key={group} onClick={() => { setActiveTab(group); setSelectedAgentId(null); setSidebarOpen(false); }} className={`w-full text-left p-4 md:p-5 rounded-2xl text-xs md:text-sm font-black tracking-widest transition-all border ${activeTab === group ? "bg-white/10 text-white border-white/20 shadow-lg" : "text-gray-500 border-transparent hover:bg-white/5 hover:text-gray-300"}`} style={{ color: activeTab === group ? (GROUP_CONFIG as any)[group].color : "", textShadow: activeTab === group ? `0 0 15px ${(GROUP_CONFIG as any)[group].color}80` : "" }}>
+                {(GROUP_CONFIG as any)[group].label}
+              </button>
             ))}
           </div>
           <div className="space-y-3">
@@ -179,7 +181,7 @@ export default function NexusSupremoV30() {
             <div>
               <div className="flex items-center gap-3">
                 <h2 className="text-sm md:text-xl font-black uppercase tracking-[2px] md:tracking-[4px] text-white italic truncate max-w-[150px] md:max-w-none">{activeTab === 'traffic' ? 'CONSOLIDAÇÃO SUPREMO' : activeTab}</h2>
-                <span className="hidden sm:inline-block px-2 py-0.5 bg-[#7000ff]/20 border border-[#7000ff]/40 rounded text-[8px] font-black text-[#7000ff] tracking-widest animate-pulse">V32.2 ALPHA - AGENTS SYNCED</span>
+                <span className="hidden sm:inline-block px-2 py-0.5 bg-[#7000ff]/20 border border-[#7000ff]/40 rounded text-[8px] font-black text-[#7000ff] tracking-widest animate-pulse">V32.3 ALPHA - UI REFINED</span>
               </div>
               <p className="text-[8px] md:text-[10px] text-gray-500 font-bold uppercase tracking-widest">{selectedAgent ? `Sincronia Alpha: ${selectedAgent.name}` : `Sincronização: ${lastUpdate || '--:--'}`}</p>
             </div>
