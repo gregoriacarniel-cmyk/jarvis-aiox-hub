@@ -138,7 +138,7 @@ export default function NexusSupremoV30() {
   }
 
   const selectedAgent = selectedAgentId ? AGENT_REGISTRY[selectedAgentId] : null;
-  const isSovereignGroup = selectedAgent && ["mentes clonadas", "conclave", "mega brain", "inteligência mega brain"].includes(selectedAgent.group.toLowerCase());
+  const isSovereignGroup = selectedAgent && ["minds", "conclave", "sys"].includes(selectedAgent.cat?.toLowerCase());
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#050505] font-['Outfit'] relative">
@@ -251,11 +251,12 @@ export default function NexusSupremoV30() {
 
           {activeTab !== "traffic" && !selectedAgent && (
              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 animate-in slide-in-from-bottom-4 duration-500">
-             {Object.values(AGENT_REGISTRY).filter(a => a.group === activeTab).map((agent) => (
+             {Object.values(AGENT_REGISTRY).filter((a: any) => a.cat === activeTab).map((agent: any) => (
                <button key={agent.id} onClick={() => setSelectedAgentId(agent.id)} className="glass-card p-8 md:p-10 text-left hover:border-cyan-500/40 transition-all group relative overflow-hidden shadow-xl">
-                 <div className="absolute -right-6 -bottom-6 text-9xl opacity-5">{agent.icon}</div>
-                 <span className="text-4xl md:text-5xl mb-6 block">{agent.icon}</span>
+                 <div className="absolute -right-6 -bottom-6 w-64 h-64 bg-cover bg-center opacity-5" style={{ backgroundImage: `url('${agent.img}')` }}></div>
+                 <div className="w-16 h-16 rounded-2xl mb-6 bg-cover bg-center border border-white/10 shadow-lg" style={{ backgroundImage: `url('${agent.img}')` }}></div>
                  <h3 className="text-lg md:text-xl font-black text-white uppercase italic tracking-tighter mb-4">{agent.name}</h3>
+                 <p className="text-[9px] text-gray-500 font-bold mb-8 uppercase tracking-widest leading-relaxed line-clamp-2">{agent.faz}</p>
                  <div className="mt-8 flex items-center gap-3 text-[10px] font-black uppercase text-cyan-400 italic">Ativar Agente <ChevronRight size={14} /></div>
                </button>
              ))}
@@ -266,12 +267,12 @@ export default function NexusSupremoV30() {
              <div className="space-y-8 md:space-y-12 animate-in zoom-in-95 duration-700">
                <div className="flex flex-col md:flex-row items-center gap-6 md:justify-between border-b border-white/5 pb-8 md:pb-10">
                 <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10 text-center md:text-left">
-                  <div className="w-24 h-24 md:w-32 md:h-32 bg-white/5 rounded-[35px] md:rounded-[45px] flex items-center justify-center text-4xl md:text-6xl border border-white/10 shadow-2xl relative">
-                    {selectedAgent.icon} {isExecuting && <div className="absolute inset-0 rounded-[45px] border-2 border-cyan-500 animate-ping opacity-50" />}
+                  <div className="w-24 h-24 md:w-32 md:h-32 bg-white/5 rounded-[35px] md:rounded-[45px] flex items-center justify-center border border-white/10 shadow-2xl relative bg-cover bg-center" style={{ backgroundImage: `url('${selectedAgent.img}')` }}>
+                    {isExecuting && <div className="absolute inset-0 rounded-[45px] border-2 border-cyan-500 animate-ping opacity-50" />}
                   </div>
                   <div>
                     <h2 className="text-3xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-none">{selectedAgent.name}</h2>
-                    <p className="text-[8px] md:text-[10px] text-cyan-400 font-black uppercase tracking-[0.5em] mt-3 italic">{selectedAgent.group.toUpperCase()} — SOBERANO</p>
+                    <p className="text-[8px] md:text-[10px] text-cyan-400 font-black uppercase tracking-[0.5em] mt-3 italic">{selectedAgent.cat?.toUpperCase()} — SOBERANO</p>
                   </div>
                 </div>
               </div>
