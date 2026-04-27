@@ -73,38 +73,45 @@ export default function NexusSupremoV30() {
     setLoading(false);
   };
 
-  const handleSendMessage = async (e: any) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-    const userMsg = { role: "user", content: input };
-    setMessages(prev => [...prev, userMsg]);
-    setInput("");
-    if (selectedAgentId) setIsExecuting(true);
-    
-    const sanitizedMessages = messages.map(m => ({ role: m.role, content: m.content }));
+    const messagesEndRef = React.useRef(null);
+    const [isChatExpanded, setIsChatExpanded] = useState(false);
 
-    try {
-      const res = await fetch("/api/jarvis-v31", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [...sanitizedMessages, userMsg],
-          metrics: data?.metrics || null,
-          adsets: data?.adsets || [],
-          currentAccount: selectedAccount,
-          selectedAgentId: selectedAgentId
-        }),
-      });
-      const aiRes = await res.json();
-      setMessages(prev => [...prev, { 
-        role: "assistant", 
-        content: aiRes.response, 
-        agent: aiRes.agentUsed,
-        fullResult: aiRes.fullResult 
-      }]);
-      setTimeout(() => setIsExecuting(false), 3000);
-    } catch (err) { console.error(err); setIsExecuting(false); }
-  };
+    useEffect(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    const handleSendMessage = async (e: any) => {
+      e.preventDefault();
+      if (!input.trim()) return;
+      const userMsg = { role: "user", content: input };
+      setMessages(prev => [...prev, userMsg]);
+      setInput("");
+      if (selectedAgentId) setIsExecuting(true);
+      
+      const sanitizedMessages = messages.map(m => ({ role: m.role, content: m.content }));
+
+      try {
+        const res = await fetch("/api/jarvis-v31", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: [...sanitizedMessages, userMsg],
+            metrics: data?.metrics || null,
+            adsets: data?.adsets || [],
+            currentAccount: selectedAccount,
+            selectedAgentId: selectedAgentId
+          }),
+        });
+        const aiRes = await res.json();
+        setMessages(prev => [...prev, { 
+          role: "assistant", 
+          content: aiRes.response, 
+          agent: aiRes.agentUsed,
+          fullResult: aiRes.fullResult 
+        }]);
+        setTimeout(() => setIsExecuting(false), 3000);
+      } catch (err) { console.error(err); setIsExecuting(false); }
+    };
 
   if (!mounted) return <div className="bg-[#050505] min-h-screen" />;
 
@@ -172,7 +179,7 @@ export default function NexusSupremoV30() {
             <div>
               <div className="flex items-center gap-3">
                 <h2 className="text-sm md:text-xl font-black uppercase tracking-[2px] md:tracking-[4px] text-white italic truncate max-w-[150px] md:max-w-none">{activeTab === 'traffic' ? 'CONSOLIDAÇÃO SUPREMO' : activeTab}</h2>
-                <span className="hidden sm:inline-block px-2 py-0.5 bg-[#7000ff]/20 border border-[#7000ff]/40 rounded text-[8px] font-black text-[#7000ff] tracking-widest animate-pulse">V31.9 ALPHA - INTELLIGENCE FILTER</span>
+                <span className="hidden sm:inline-block px-2 py-0.5 bg-[#7000ff]/20 border border-[#7000ff]/40 rounded text-[8px] font-black text-[#7000ff] tracking-widest animate-pulse">V32.0 ALPHA - EXPANSION & PERSONA</span>
               </div>
               <p className="text-[8px] md:text-[10px] text-gray-500 font-bold uppercase tracking-widest">{selectedAgent ? `Sincronia Alpha: ${selectedAgent.name}` : `Sincronização: ${lastUpdate || '--:--'}`}</p>
             </div>
@@ -288,15 +295,19 @@ export default function NexusSupremoV30() {
         </div>
       </main>
 
-      <aside className={`fixed inset-y-0 right-0 z-50 w-[350px] md:w-[400px] border-l border-white/5 bg-black/95 transform transition-transform duration-300 lg:relative lg:translate-x-0 ${isChatOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <aside className={`fixed inset-y-0 right-0 z-50 ${isChatExpanded ? 'w-[350px] lg:w-[800px]' : 'w-[350px] lg:w-[400px]'} border-l border-white/5 bg-black/95 transform transition-all duration-500 flex flex-col`}>
         <div className="p-6 md:p-8 border-b border-white/5 bg-white/[0.02] flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 md:w-14 md:h-14 bg-cyan-500 rounded-2xl md:rounded-3xl flex items-center justify-center shadow-2xl shadow-cyan-500/20"><MessageSquare className="text-black" size={24} /></div>
             <div><h3 className="text-xs md:text-sm font-black uppercase tracking-[0.2em] italic text-white leading-none">Jarvis Supremo</h3><p className="text-[8px] md:text-[9px] text-[#00ff88] font-black uppercase mt-1 animate-pulse">Groq Sync active</p></div>
           </div>
-          <button onClick={() => setChatOpen(false)} className="lg:hidden text-gray-500 hover:text-white"><X size={24} /></button>
+          <div className="flex items-center gap-3">
+             <button onClick={() => setIsChatExpanded(!isChatExpanded)} className="hidden lg:flex w-10 h-10 items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl text-gray-400 hover:text-white transition-all"><ArrowRight size={18} className={`transform transition-transform ${isChatExpanded ? 'rotate-180' : ''}`} /></button>
+             <button onClick={() => setChatOpen(false)} className="lg:hidden text-gray-500 hover:text-white"><X size={24} /></button>
+          </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 md:space-y-8 scrollbar-hide">
+        
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 md:space-y-8 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent hover:scrollbar-thumb-white/20 transition-all">
           {messages.map((msg, i) => (
             <div key={i} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'} animate-in fade-in`}>
               <div className={`max-w-[90%] p-4 md:p-5 rounded-[18px] md:rounded-[22px] text-[10px] md:text-[11px] font-bold shadow-xl ${msg.role === 'user' ? 'bg-cyan-500 text-black italic' : 'bg-white/5 text-gray-300 border border-white/10'}`}>{msg.content}</div>
@@ -304,9 +315,12 @@ export default function NexusSupremoV30() {
             </div>
           ))}
           {isExecuting && <div className="flex items-center gap-3 p-3 md:p-4 bg-white/5 rounded-2xl w-fit animate-pulse"><Cpu className="text-cyan-400 animate-spin" size={14} /><span className="text-[8px] md:text-[9px] font-black uppercase tracking-widest text-cyan-400">Processando...</span></div>}
+          <div ref={messagesEndRef} />
         </div>
-        <form onSubmit={handleSendMessage} className="p-6 md:p-8 bg-black/50 border-t border-white/5 flex gap-3 md:gap-4">
-          <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Comando..." className="flex-1 bg-white/[0.04] border border-white/10 rounded-xl md:rounded-2xl px-4 md:px-6 py-3 md:py-5 text-[11px] md:text-[12px] text-white focus:outline-none focus:border-cyan-500/50 font-bold" /><button type="submit" className="bg-cyan-500 text-black p-3 md:p-5 rounded-xl md:rounded-2xl hover:scale-110 active:scale-90 transition-all shadow-2xl shadow-cyan-500/30"><Zap size={20} /></button>
+
+        <form onSubmit={handleSendMessage} className="p-6 md:p-8 bg-black/50 border-t border-white/5 flex gap-3 md:gap-4 shrink-0">
+          <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Comando..." className="flex-1 bg-white/[0.04] border border-white/10 rounded-xl md:rounded-2xl px-4 md:px-6 py-3 md:py-5 text-[11px] md:text-[12px] text-white focus:outline-none focus:border-cyan-500/50 font-bold" />
+          <button type="submit" className="bg-cyan-500 text-black p-3 md:p-5 rounded-xl md:rounded-2xl hover:scale-110 active:scale-90 transition-all shadow-2xl shadow-cyan-500/30 flex items-center justify-center shrink-0"><Zap size={20} /></button>
         </form>
       </aside>
     </div>

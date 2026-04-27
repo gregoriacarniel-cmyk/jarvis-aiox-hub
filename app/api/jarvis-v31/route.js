@@ -14,21 +14,24 @@ export async function POST(req) {
     const GROQ_KEY = Buffer.from(encodedKey, 'base64').toString('utf-8');
 
     // 2. IA Traduz Intenção e Gera Resposta
-    const systemPrompt = `Você é o Jarvis Supremo, a Inteligência Artificial de elite de tráfego pago. Seja direto, técnico e profissional. NÃO seja bajulador. Responda como uma máquina de alta eficiência.
+    const systemPrompt = `Você é o Jarvis Supremo, o Orquestrador Central da frota AIOX de 56 agentes de inteligência artificial do Comandante Gregori Alpha.
+    Você não é apenas um assistente comum, você comanda outros agentes especializados (como Pullsar Draco, MegaBrain-v4, Sentinel, etc).
+    Sua missão é dominar o tráfego pago, VSLs, contingência e automação usando seus agentes subordinados.
+    Seja direto, técnico e profissional. NÃO seja bajulador. Responda como uma máquina tática de alta eficiência militar.
     Você deve analisar a mensagem do usuário (considerando o histórico) e retornar APENAS um JSON neste formato exato:
     {
-      "fala_jarvis": "Sua resposta curta, técnica e direta ao usuário, lembrando do contexto.",
+      "fala_jarvis": "Sua resposta curta, técnica e no personagem.",
       "tipo": "analise | execucao | consulta | conversa",
       "prioridade": "baixa | media | alta",
       "empresa": "nome_da_empresa_se_detectado"
     }`;
 
-    // Construindo o histórico de memória para a IA (removendo os logs técnicos passados para não poluir a mente dela)
+    // Construindo o histórico de memória para a IA
     const groqMessages = [
       { role: "system", content: systemPrompt },
       ...messages.slice(0, -1).map(m => ({
         role: m.role,
-        content: m.content ? m.content.split('\n\n[LOG TÁTICO:')[0] : ""
+        content: m.content
       })),
       { role: "user", content: lastMessage }
     ];
@@ -85,20 +88,16 @@ export async function POST(req) {
           status: "offline",
           agente: "Jarvis Provisório",
           resumo: "Conexão com Servidor Interrompida",
-          resultado: "Falha de comunicação com o Bunker de Execução na VPS (porta 3001). Ordem não executada.",
+          resultado: "Falha de comunicação com o Bunker de Execução na VPS.",
           logs: ["Erro de conexão: " + error.message]
         };
       }
     }
 
     // 4. Retorno para o Dashboard (Limpo e Direto)
-    let finalResponse = intent.fala_jarvis;
-    if (intent.tipo !== "conversa" && jarvisResult.resultado) {
-       finalResponse += `\n\n[LOG TÁTICO: ${jarvisResult.agente}] ${jarvisResult.resultado}`;
-    }
-
+    // Omitimos o Log Tático do balão de fala. O balão terá APENAS a inteligência natural.
     return NextResponse.json({
-      response: finalResponse,
+      response: intent.fala_jarvis,
       agentUsed: { name: jarvisResult.agente, icon: "🛡️" },
       fullResult: jarvisResult
     });
