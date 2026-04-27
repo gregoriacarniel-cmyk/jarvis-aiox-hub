@@ -192,7 +192,7 @@ export default function NexusSupremoV30() {
             <div>
               <div className="flex items-center gap-3">
                 <h2 className="text-sm md:text-xl font-black uppercase tracking-[2px] md:tracking-[4px] text-white italic truncate max-w-[150px] md:max-w-none">{activeTab === 'traffic' ? 'CONSOLIDAÇÃO SUPREMO' : activeTab}</h2>
-                <span className="hidden sm:inline-block px-2 py-0.5 bg-[#7000ff]/20 border border-[#7000ff]/40 rounded text-[8px] font-black text-[#7000ff] tracking-widest animate-pulse">V32.4 ALPHA - NEO DESIGN</span>
+                <span className="hidden sm:inline-block px-2 py-0.5 bg-[#7000ff]/20 border border-[#7000ff]/40 rounded text-[8px] font-black text-[#7000ff] tracking-widest animate-pulse">V32.5 ALPHA - INTEL ACTIVE</span>
               </div>
               <p className="text-[8px] md:text-[10px] text-gray-500 font-bold uppercase tracking-widest">{selectedAgent ? `Sincronia Alpha: ${selectedAgent.name}` : `Sincronização: ${lastUpdate || '--:--'}`}</p>
             </div>
@@ -276,7 +276,7 @@ export default function NexusSupremoV30() {
            </div>
           )}
 
-          {selectedAgent && isSovereignGroup && (
+          {selectedAgent && (
              <div className="space-y-8 md:space-y-12 animate-in zoom-in-95 duration-700">
                <div className="flex flex-col md:flex-row items-center gap-6 md:justify-between border-b border-white/5 pb-8 md:pb-10">
                 <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10 text-center md:text-left">
@@ -285,25 +285,45 @@ export default function NexusSupremoV30() {
                   </div>
                   <div>
                     <h2 className="text-3xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-none">{selectedAgent.name}</h2>
-                    <p className="text-[8px] md:text-[10px] text-cyan-400 font-black uppercase tracking-[0.5em] mt-3 italic">{selectedAgent.cat?.toUpperCase()} — SOBERANO</p>
+                    <p className="text-[8px] md:text-[10px] text-cyan-400 font-black uppercase tracking-[0.5em] mt-3 italic">{selectedAgent.cat?.toUpperCase()} — AGENTE ATIVO</p>
                   </div>
                 </div>
+                <button onClick={() => setSelectedAgentId(null)} className="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-400 transition-all">Voltar à Frota</button>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
-                {[
-                  { label: "FORÇA DA OFERTA", val: 85, color: "text-[#00ff88]" },
-                  { label: "MULTIPLICADOR LTV", val: 72, color: "text-cyan-400" },
-                  { label: "ÍNDICE DE ESCALA", val: 64, color: "text-[#7000ff]" }
-                ].map((g, i) => (
-                  <div key={i} className="glass-card p-8 md:p-10 flex flex-col items-center text-center space-y-6">
-                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-500">{g.label}</p>
-                    <div className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
-                      <svg className="w-full h-full transform -rotate-90"><circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="10" fill="transparent" className="text-white/5" /><circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="10" fill="transparent" strokeDasharray="364.4" strokeDashoffset={364.4 - (364.4 * g.val) / 100} className={`${g.color} transition-all duration-1000`} /></svg>
-                      <span className={`absolute text-xl md:text-2xl font-black ${g.color}`}>{g.val}%</span>
+
+              {/* INTEL BOXES */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                <div className="glass-card p-6 md:p-8 space-y-4 border-white/5 bg-white/[0.02]">
+                  <span className="text-[9px] font-black text-cyan-400 uppercase tracking-[3px]">01. O QUE FAZ</span>
+                  <p className="text-xs md:text-sm text-gray-300 font-bold leading-relaxed">{selectedAgent.faz}</p>
+                </div>
+                <div className="glass-card p-6 md:p-8 space-y-4 border-white/5 bg-white/[0.02]">
+                  <span className="text-[9px] font-black text-[#00ff88] uppercase tracking-[3px]">02. O QUE RESOLVE</span>
+                  <p className="text-xs md:text-sm text-gray-300 font-bold leading-relaxed">{selectedAgent.res}</p>
+                </div>
+                <div className="glass-card p-6 md:p-8 space-y-4 border-white/5 bg-white/[0.02]">
+                  <span className="text-[9px] font-black text-[#7000ff] uppercase tracking-[3px]">03. ONDE USAR</span>
+                  <p className="text-xs md:text-sm text-gray-300 font-bold leading-relaxed">{selectedAgent.u}</p>
+                </div>
+              </div>
+
+              {isSovereignGroup && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+                  {[
+                    { label: "FORÇA DA OFERTA", val: 85, color: "text-[#00ff88]" },
+                    { label: "MULTIPLICADOR LTV", val: 72, color: "text-cyan-400" },
+                    { label: "ÍNDICE DE ESCALA", val: 64, color: "text-[#7000ff]" }
+                  ].map((g, i) => (
+                    <div key={i} className="glass-card p-8 md:p-10 flex flex-col items-center text-center space-y-6">
+                      <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-500">{g.label}</p>
+                      <div className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
+                        <svg className="w-full h-full transform -rotate-90"><circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="10" fill="transparent" className="text-white/5" /><circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="10" fill="transparent" strokeDasharray="364.4" strokeDashoffset={364.4 - (364.4 * g.val) / 100} className={`${g.color} transition-all duration-1000`} /></svg>
+                        <span className={`absolute text-xl md:text-2xl font-black ${g.color}`}>{g.val}%</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
              </div>
           )}
         </div>
