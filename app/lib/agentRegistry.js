@@ -1,151 +1,106 @@
 // =====================================================================
-// AGENT REGISTRY — NEXUS PLATINUM V12 (TOTAL POTENTIAL)
-// DNA 100% MEGA BRAIN: Mentes Clonadas, Conclave e Core Division
+// AGENT REGISTRY — NEXUS PLATINUM SUPREMO V14.5
+// 56 Agentes Mapeados Exatamente como no Arquivo HTML Oficial
 // =====================================================================
 
-export const AGENT_REGISTRY = {
-  // ── 01. MENTES CLONADAS (13 Mentores de Elite) ────────────────────
-  "m1": { 
-    id: "m1", name: "ALEX HORMOZI", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Estratégia de 100M Offers e criação de ofertas sem resistência.", 
-    r: "Garante que ninguém consiga dizer não para o valor que você entrega.", 
-    u: "Arquitetura de Ofertas", description: "Estratégia de 100M Offers.", phases: ["Análise", "Valor", "Oferta", "Escala"] 
-  },
-  "m2": { 
-    id: "m2", name: "JEREMY MINER", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Engenharia de Vendas NEPQ que faz o lead se vender sozinho.", 
-    r: "Elimina a rejeição e transforma vendas complexas em fechamentos naturais.", 
-    u: "Engenharia de Vendas", description: "Vendas NEPQ.", phases: ["Descoberta", "Conexão", "Solução", "Fechamento"] 
-  },
-  "m3": { 
-    id: "m3", name: "COLE GORDON", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Fechamento High-Ticket e gestão de closers de alta performance.", 
-    r: "Transforma leads frios em pagamentos imediatos através de telefone ou chat.", 
-    u: "Fechamento High-Ticket", description: "Fechamento de Elite.", phases: ["Qualificação", "Apresentação", "Objeção", "Venda"] 
-  },
-  "m4": { 
-    id: "m4", name: "DAN KENNEDY", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Marketing de Resposta Direta focado em autoridade magnética.", 
-    r: "Garante o controle do preço e atrai apenas os clientes que mais pagam.", 
-    u: "Autoridade e Resposta Direta", description: "Resposta Direta.", phases: ["Autoridade", "Magnetismo", "Resposta", "Copy"] 
-  },
-  "m5": { 
-    id: "m5", name: "GARY HALBERT", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Escrita emocional direta que obriga o lead a agir agora.", 
-    r: "Cria desejo voraz e urgência real em qualquer oferta, independente do preço.", 
-    u: "Copy Emocional", description: "Copy Direto.", phases: ["Emoção", "Desejo", "Urgência", "Ação"] 
-  },
-  "m6": { 
-    id: "m6", name: "EUGENE SCHWARTZ", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Mapeamento dos 5 níveis de consciência do mercado.", 
-    r: "Fala exatamente o que o lead precisa ouvir na fase em que ele se encontra.", 
-    u: "Mapeamento de Mercado", description: "Níveis de Consciência.", phases: ["Consciência", "Segmentação", "Ângulo", "Impacto"] 
-  },
-  "m7": { 
-    id: "m7", name: "DAVID OGILVY", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Construção de Big Ideas e Brand Storytelling de classe mundial.", 
-    r: "Eleva o produto de commoditíe para lenda, dominando o mercado.", 
-    u: "Big Idea e Branding", description: "Big Idea Builder.", phases: ["Conceito", "Marca", "Storytelling", "Dominação"] 
-  },
-  "m8": { 
-    id: "m8", name: "ROBERT CIALDINI", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Injeção científica de gatilhos de influência e prova social.", 
-    r: "Usa o cérebro social do lead para validar a compra sem questionamentos.", 
-    u: "Gatilhos Mentais", description: "Mestre da Persuasão.", phases: ["Reciprocidade", "Autoridade", "Escassez", "Prova Social"] 
-  },
-  "m9": { 
-    id: "m9", name: "JORDAN BELFORD", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Persuasão em Linha Reta e controle tonal do fechamento.", 
-    r: "Mantém o lead no trilho da venda até que o sim seja inevitável.", 
-    u: "Persuasão em Linha Reta", description: "Straight Line System.", phases: ["Abertura", "Trilho", "Controle Tonal", "Fechamento"] 
-  },
-  "m10": { 
-    id: "m10", name: "JIM EDWARDS", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Automação de scripts de copy de alta velocidade.", 
-    r: "Produz copy que funciona em massa em tempo recorde, sem paralisia criativa.", 
-    u: "Copywriting de Massa", description: "Copy Automator.", phases: ["Scripting", "Variação", "Teste", "Deploy"] 
-  },
-  "m11": { 
-    id: "m11", name: "RUSSELL BRUNSON", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Arquitetura de Funis e Escadas de Valor infinitas.", 
-    r: "Maximiza o lucro vitalício de cada cliente dentro do seu ecossistema.", 
-    u: "Escada de Valor", description: "Funnel Builder.", phases: ["Funil", "Escada", "Otimização", "LTV"] 
-  },
-  "m12": { 
-    id: "m12", name: "FRANK KERN", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Behavior Marketing e vendas baseadas em estilo de vida.", 
-    r: "Cria conexão instantânea através de uma persona cool e confiável.", 
-    u: "Behavior Marketing", description: "Persona & Brand.", phases: ["Estilo", "Conexão", "Oferta", "Venda"] 
-  },
-  "m13": { 
-    id: "m13", name: "STEFAN GEORGIE", group: "Mentes Clonadas", icon: "🧬", 
-    f: "Metodologia RMBC para criação de VSLs de 7-8 dígitos.", 
-    r: "Garante a melhor retenção do mundo no seu vídeo de vendas principal.", 
-    u: "Metodologia RMBC", description: "RMBC Master.", phases: ["Pesquisa", "Mecanismo", "Corpo", "CTA"] 
-  },
+const rawAgents = [
+    // 03 - CONCLAVE DELIBERATIVO (WHITE) - Decision Governance
+    { id: "CRITIC", name: "Crítico Metodológico", cat: "conclave", color: "white", isUser: false, img: "/images/architect_core_sys_agent_1776436691571.png", faz: "Auditoria fria de falhas lógicas e viabilidade técnica.", res: "Evita o desperdício de meses de trabalho em ideias que não têm lógica de mercado.", u: "Antes de iniciar produção pesada." },
+    { id: "DEVIL", name: "Advogado do Diabo", cat: "conclave", color: "white", isUser: false, img: "/images/architect_core_sys_agent_1776436691571.png", faz: "Encontra todos os motivos pelos quais a sua oferta VAI FALHAR.", res: "Blindagem psicológica da copy e antecipação de objeções.", u: "Na fase de refinamento do roteiro da VSL." },
+    { id: "SYNTH", name: "Sintetizador Master", cat: "conclave", color: "white", isUser: false, img: "/images/architect_core_sys_agent_1776436691571.png", faz: "Unifica os pareceres do Conclave em um Roadmap único.", res: "Elimina a paralisia por análise e dá o veredito final.", u: "Reunião final de estratégia antes do deploy." },
 
-  // ── 02. CONCLAVE & VALUATORS (Decisão e Auditoria) ────────────────
-  "c1": { 
-    id: "c1", name: "ADVOGADO DIABO", group: "Conclave", icon: "⚖️", 
-    f: "Teste de estresse em ofertas e inquisição brutal da lógica de conversão.", 
-    r: "Blinda o negócio contra falhas estruturais antes do investimento.", 
-    u: "Auditoria de Lógica", description: "Inquisição Crítica.", phases: ["Estresse", "Inquisição", "Lógica", "Veredito"] 
-  },
-  "c2": { 
-    id: "c2", name: "O CRÍTICO", group: "Conclave", icon: "🎭", 
-    f: "Auditoria de UI UX e percepção de valor estético High-Ticket.", 
-    r: "Garante que a oferta pareça de elite, permitindo cobrar 5x mais.", 
-    u: "Design Visual", description: "Auditor de UX.", phases: ["Interface", "Experiência", "Design", "Feedback"] 
-  },
-  "c3": { 
-    id: "c3", name: "SINTETIZADOR", group: "Conclave", icon: "🧪", 
-    f: "Compilação de inteligência multicanais em um único dossiê.", 
-    r: "Elimina a paralisia por análise e foca no que gera caixa.", 
-    u: "Consolidação", description: "Síntese de Dados.", phases: ["Coleta", "Triagem", "Síntese", "Dossiê"] 
-  },
-  "v1": { id: "v1", name: "AUDITOR MASTER", group: "Conclave", icon: "📋", f: "Checklist de conformidade operacional.", r: "Minimiza bloqueios Ads.", u: "Segurança", phases: ["Check", "Valid", "Safe"], description: "Compliance Officer." },
-  "v2": { id: "v2", name: "VIGIA ROI", group: "Conclave", icon: "📈", f: "Monitoramento de margens líquidas e CPA.", r: "Garante lucro real.", u: "Finanças", phases: ["Monitor", "Calc", "Profit"], description: "ROI Guardian." },
-  "v3": { id: "v3", name: "JUIZ DE ESCALA", group: "Conclave", icon: "⚖️", f: "Decisão estratégica de reinvestimento.", r: "Maximiza lucro exponencial.", u: "Aceleração", phases: ["Scale", "Pivot", "Speed"], description: "Scale Judge." },
-  "v4": { id: "v4", name: "JUIZ DE OFERTA", group: "Conclave", icon: "⚔️", f: "Veredito final sobre Score de Conversão.", r: "Valida oferta antes do capital.", u: "Validação", phases: ["Score", "Valid", "Verdict"], description: "Offer Judge." },
+    // 04 - MENTES CLONADAS (GOLD) - External Experts
+    { id: "HORMOZI", name: "Alex Hormozi Clone", cat: "minds", color: "gold", isUser: false, img: "/images/hormozi_clone_agent_1776436596228.png", faz: "Criação de Grand Slam Offers e ofertas irrecusáveis.", res: "Transforma produtos 'commodities' em desejos vorazes.", u: "Desenho da oferta principal." },
+    { id: "BRUNSON", name: "Russell Brunson Clone", cat: "minds", color: "gold", isUser: false, img: "/images/brunson_clone_agent_1776436612466.png", faz: "Arquitetura de Funis de Vendas Complexos.", res: "Maximiza o LTV (valor vitalício).", u: "Desenho da jornada do cliente." },
+    { id: "COLE-G", name: "Cole Gordon Master", cat: "minds", color: "gold", isUser: false, img: "/images/vigia_metrics_traffic_agent_1776436674655.png", faz: "Estratégia de Inbound Sales e treinamento de Closers.", res: "Aumenta conversão em vendas de alto ticket.", u: "Otimização de processos de vendas por WhatsApp." },
+    { id: "MINER", name: "Jeremy Miner (NEPQ)", cat: "minds", color: "gold", isUser: false, img: "/images/simon_similarweb_spy_1776436421734.png", faz: "Psicologia de vendas reversa via perguntas NEPQ.", res: "Elimina a resistência de compra natural.", u: "Criação de scripts de vendas." },
+    { id: "HAYNES", name: "Jeremy Haynes Guru", cat: "minds", color: "gold", isUser: false, img: "/images/architect_core_sys_agent_1776436691571.png", faz: "Posicionamento de Agência e Branding de Autoridade Mundial.", res: "Cria uma percepção de valor altíssima.", u: "Branding pessoal e escala de agências." },
 
-  // ── 03. MEGA BRAIN CORE (A Divisão Soberana) ─────────────────────
-  "mente-maestro": { 
-    id: "mente-maestro", name: "MENTE MAESTRO", group: "Inteligência Mega Brain", icon: "🧠", 
-    f: "Orquestração Suprema e comando geral do ecossistema.", 
-    r: "Garante a ordem e a execução perfeita de todos os agentes.", 
-    u: "Comando Central", description: "General Supremo.", phases: ["Ordem", "Delegar", "Monitorar", "Concluir"] 
-  },
-  "gestor-trafego": { 
-    id: "gestor-trafego", name: "GESTOR DE TRÁFEGO ALPHA", group: "Inteligência Mega Brain", icon: "🚀", 
-    f: "Controle absoluto de Meta Ads e escala vertical via API.", 
-    r: "Identifica gargalos em ROAS e ajusta orçamentos.", 
-    u: "Escala Ads", description: "Traffic General.", phases: ["Auditoria", "Gargalo", "Budget", "Escala"] 
-  },
-  "mente-quantica": { id: "mente-quantica", name: "MENTE QUÂNTICA", group: "Inteligência Mega Brain", icon: "⚛️", f: "Análise de padrões complexos e tendências.", r: "Predição de mercado.", u: "Dados", phases: ["Scan", "Calc", "Insight"], description: "Quantum Brain." },
-  "cto": { id: "cto", name: "CARGO CTO", group: "Inteligência Mega Brain", icon: "🛠️", f: "Diretoria de Tecnologia e Infraestrutura.", r: "Zera bugs operacionais.", u: "Tech", phases: ["Infra", "Code", "Scale"], description: "Tech Director." },
-  "cmo": { id: "cmo", name: "CARGO CMO", group: "Inteligência Mega Brain", icon: "📢", f: "Diretoria de Marketing e Aquisição.", r: "Maximiza entrada de novos leads.", u: "Marketing", phases: ["Market", "Funnels", "Growth"], description: "Marketing Director." },
-  "cfo": { id: "cfo", name: "CARGO CFO", group: "Inteligência Mega Brain", icon: "💰", f: "Gestão financeira e lucratividade líquida.", r: "Preserva a margem de lucro.", u: "Financeiro", phases: ["Flow", "Margin", "ROI"], description: "Finance Director." },
-  "intel": { id: "intel", name: "AGENTE INTEL", group: "Inteligência Mega Brain", icon: "🕵️", f: "Espionagem e análise de concorrência profunda.", r: "Mapeia ofertas lucrativas.", u: "Espionagem", phases: ["Spy", "Map", "Dossier"], description: "Intelligence Agent." },
-  "developer": { id: "developer", name: "AIOX DEVELOPER", group: "Inteligência Mega Brain", icon: "💻", f: "Desenvolvimento Fullstack e Automação Elite.", r: "Cria ferramentas de alta velocidade.", u: "Automação", phases: ["Dev", "Test", "Deploy"], description: "Dev Master." },
-  "heygen": { id: "heygen", name: "PRODUCTION HEYGEN", group: "Inteligência Mega Brain", icon: "🎭", f: "Geração de vídeos via IA com avatares reais.", r: "Escala produção de conteúdo.", u: "Vídeo IA", phases: ["Avatar", "Script", "Render"], description: "AI Video Production." },
-  "soundgen": { id: "soundgen", name: "SOUNDGEN ELEVEN", group: "Inteligência Mega Brain", icon: "🎙️", f: "Geração de vozes ultra-realistas (TTS).", r: "Narração de alta conversão.", u: "Áudio", phases: ["Voice", "Tone", "Gen"], description: "Audio AI Production." },
-  "monitor": { id: "monitor", name: "SUPPORT MONITOR", group: "Inteligência Mega Brain", icon: "🖥️", f: "Monitoramento de saúde do sistema 24/7.", r: "Garante 100% de uptime.", u: "Estabilidade", phases: ["Health", "Ping", "Alert"], description: "System Monitor." },
-  "stealth-mouse": { id: "stealth-mouse", name: "STEALTH MOUSE", group: "Inteligência Mega Brain", icon: "🖱️", f: "Simulação de comportamento humano anti-bot.", r: "Zera o risco de bloqueio.", u: "Segurança", phases: ["Stealth", "Mask", "Safe"], description: "Stealth System." },
-};
+    // 05 - ESPIONAGEM (INTELLIGENCE)
+    { id: "PULLSAR", name: "Pullsar Draco", cat: "spy", color: "magenta", isUser: true, img: "/images/pullsar_draco_spy_1776436373778.png", faz: "Infiltração profunda em funis rivais.", res: "Expõe os gatilhos psicológicos e a promessa central rival.", u: "Antes de modelar qualquer script." },
+    { id: "RADAR", name: "Radar Duplo", cat: "spy", color: "magenta", isUser: true, img: "/images/radar_duplo_spy_1776436359773.png", faz: "Mineração profunda de dados via YouTube API.", res: "Encontra ângulos virais e demandas represadas.", u: "Identificação de novas ondas culturais." },
+    { id: "ADS-SPY", name: "Ad Library Scraper", cat: "spy", color: "magenta", isUser: true, img: "/images/ad_library_spy_1776436390180.png", faz: "Monitoramento massivo da Biblioteca de Anúncios.", res: "Mapeia os criativos vencedores.", u: "Início da criação de qualquer campanha." },
+    { id: "YT-SPY", name: "YouTube Spy", cat: "spy", color: "green", isUser: false, img: "/images/youtube_spy_agent_1776436406398.png", faz: "Análise de avatares e mineração de comentários via IA.", res: "Extrai as dores, medos e desejos reais.", u: "Pesquisa de persona para roteiros." },
+    { id: "SIMON", name: "Simon (SimilarWeb)", cat: "spy", color: "green", isUser: false, img: "/images/simon_similarweb_spy_1776436421734.png", faz: "Auditoria de tráfego SimilarWeb.", res: "Certifica de onde vem o tráfego do rival.", u: "Validação final antes de modelar funil." },
+    { id: "SCOUT", name: "AG-SCOUT Hunter", cat: "spy", color: "green", isUser: false, img: "/images/ag_scout_hunter_agent_v2_1776436715719.png", faz: "Vigilância autônoma de novas ofertas silenciosas.", res: "Avisa sobre novos mecanismos vencedores antes que saturem.", u: "Vigilância estratégica constante." },
+
+    // 06 - ENGENHARIA PRODUTO
+    { id: "NICHO", name: "Gerador de Nicho", cat: "product", color: "magenta", isUser: true, img: "/images/gerador_nicho_agent_v2_1776436732741.png", faz: "Criação de Avatar Quântico e Mecanismo Único.", res: "Transforma uma ideia genérica em oportunidade única.", u: "Definição do DNA de infoproduto." },
+    { id: "MODEL", name: "Modelagem Oferta", cat: "product", color: "magenta", isUser: true, img: "/images/modelagem_oferta_agent_1776436579323.png", faz: "Análise Reversa de Copy e Tropicalização.", res: "Garante que oferta dos EUA funcione no Brasil.", u: "Fase de modelagem da oferta principal." },
+    { id: "SAAS-REC", name: "SaaS & Recorrência", cat: "product", color: "green", isUser: false, img: "/images/architect_core_sys_agent_1776436691571.png", faz: "Modelagem de negócios de assinatura.", res: "Troca o esforço diário pela previsibilidade da recorrência.", u: "Projetos de LTV alto." },
+    { id: "BACK-E", name: "Backend Architect", cat: "product", color: "blue", isUser: false, img: "/images/architect_core_sys_agent_1776436691571.png", faz: "Configuração lógica de Up-sells e Order-bumps.", res: "Aumenta ticket médio em até 60%.", u: "Finalização técnica do funil." },
+    { id: "QUIZ", name: "Quiz Master", cat: "product", color: "blue", isUser: false, img: "/images/architect_core_sys_agent_1776436691571.png", faz: "Geração de funis de diagnóstico via Quiz.", res: "Aquece o lead e entrega oferta personalizada.", u: "Funis de conscientização." },
+
+    // 07 - COPYWRITING
+    { id: "ARIA", name: "Aria Lyra (VSL)", cat: "copy", color: "magenta", isUser: true, img: "/images/aria_lyra_copy_agent_1776436627050.png", faz: "Criação de Scripts de VSL de alta retenção.", res: "Garante urgência de compra no vídeo.", u: "Roteirização de vídeos de vendas." },
+    { id: "GEORGIE", name: "Stefan Georgie Clone", cat: "copy", color: "gold", isUser: false, img: "/images/stefan_georgie_copy_agent_1776436641705.png", faz: "Escrita agressiva via método RMBC.", res: "Produz cartas de vendas em tempo recorde.", u: "Copy de resposta direta." },
+    { id: "CONTENT", name: "Dept. Conteúdo", cat: "copy", color: "green", isUser: false, img: "/images/aria_lyra_copy_agent_1776436627050.png", faz: "Criação de Ebooks e iscas digitais.", res: "Gera a entrega prometida com alta qualidade.", u: "Criação do produto." },
+    { id: "EMAIL", name: "Email Automator", cat: "copy", color: "green", isUser: false, img: "/images/stefan_georgie_copy_agent_1776436641705.png", faz: "Sequências de Boas-vindas e Recuperação.", res: "Recupera até 30% das vendas.", u: "Pós-clique e nutrição." },
+
+    // 08 - DESIGN & PRO
+    { id: "MAYA", name: "Maya Builder (LP)", cat: "pro", color: "magenta", isUser: true, img: "/images/maya_builder_design_agent_1776436658197.png", faz: "Montagem de Landing Pages ultra-leves.", res: "Elimina perda de leads por lentidão.", u: "Deploy final das páginas." },
+    { id: "CRIATIVOS", name: "Master Criativos", cat: "pro", color: "green", isUser: false, img: "/images/maya_builder_design_agent_1776436658197.png", faz: "Produção massiva de anúncios visuais.", res: "Mantém CTR alto baixando custo por clique.", u: "Abastecimento diário de campanhas." },
+    { id: "VIDEO", name: "Dept. Vídeo", cat: "pro", color: "green", isUser: false, img: "/images/architect_core_sys_agent_1776436691571.png", faz: "Edição de vídeos de vendas.", res: "Entrega imagem de marca profissional.", u: "Finalização de VSLs." },
+    { id: "IA-VIDEO", name: "IA-Vídeo Pro", cat: "pro", color: "green", isUser: false, img: "/images/architect_core_sys_agent_1776436691571.png", faz: "Geração de cenas via IA.", res: "Reduz custo de produção em 90%.", u: "Criação de cenas de apoio." },
+
+    // 09 - TRAFEGO & ESCALA
+    { id: "VIGIA", name: "Vigia (Metrics)", cat: "traffic", color: "gold", isUser: false, img: "/images/vigia_metrics_traffic_agent_1776436674655.png", faz: "Monitoramento real-time de CPA/ROAS.", res: "Evita perda de dinheiro em campanhas ruins.", u: "Gestão diária de budgets." },
+    { id: "FB-ADS", name: "Meta Ads Spec", cat: "traffic", color: "green", isUser: false, img: "/images/vigia_metrics_traffic_agent_1776436674655.png", faz: "Gestão técnica de públicos no Meta.", res: "Garante alcance máximo ao menor custo.", u: "Escala no Facebook e IG." },
+    { id: "CLOSER", name: "Closer PRO", cat: "traffic", color: "magenta", isUser: true, img: "/images/vigia_metrics_traffic_agent_1776436674655.png", faz: "Fechamento de leads de alto valor.", res: "Recupera boletos aumentando faturamento.", u: "Abordagem via WhatsApp." },
+    { id: "BDR", name: "BDR Hunter", cat: "traffic", color: "blue", isUser: false, img: "/images/vigia_metrics_traffic_agent_1776436674655.png", faz: "Prospecção ativa.", res: "Alimenta funil com prospects qualificados.", u: "Outbound sales." },
+
+    // 10 - ESTRATÉGIA & CORE
+    { id: "LIB", name: "Biblioteca Premium", cat: "sys", color: "cyan", isUser: false, img: "/images/conclave_critico_agent_1776437237632.png", faz: "Consultoria baseada em 700+ livros.", res: "Entrega heurísticas de bilionários.", u: "Decisões estratégicas importantes." },
+    { id: "ARCH", name: "Architect (Core)", cat: "sys", color: "blue", isUser: false, img: "/images/architect_core_sys_agent_1776436691571.png", faz: "Manutenção da infraestrutura AI.", res: "Garante que o sistema nunca caia.", u: "Coração técnico da operação." },
+    { id: "CFO", name: "CFO Financeiro", cat: "sys", color: "white", isUser: false, img: "/images/conclave_critico_agent_1776437237632.png", faz: "Gestão de caixa e lucratividade.", res: "Garante saúde financeira real.", u: "Auditoria mensal de lucros." },
+    { id: "AUDITOR", name: "Agente Auditor", cat: "sys", color: "green", isUser: false, img: "/images/conclave_critico_agent_1776437237632.png", faz: "Validação de entregas de todos os agentes.", res: "Evita que erros cheguem ao cliente.", u: "Revisão final de qualquer ativo." }
+];
+
+const surplusNames = [
+    "LNS Specialist", "nepq-specialist", "Sales Coordinator", "Sales Manager", "Sales Lead", "Customer Success",
+    "Data Engineer", "QA Master", "Developer Unit", "Integrador Checkout", "Deployer LP", "Quiz Logic",
+    "Tradução Global", "Audit Proxy", "Gateway Monitor", "DNS Sentinel", "COO Operations", "CMO Marketing", "CRO Revenue",
+    "Estrategista Master", "Publicação Supabase", "Designer Gamma", "WhatsApp Auto", "Distribuicao Unit", "Metricas Unit Econ"
+];
+
+surplusNames.forEach((n, i) => { 
+    if (rawAgents.length < 56) {
+        let cat = (i < 5 ? "traffic" : (i < 15 ? "sys" : "pro"));
+        let faz = cat === "sys" ? "Suporte de infraestrutura e segurança neural." : (cat === "traffic" ? "Otimização tática de fluxos de vendas." : "Apoio em ativos de design e produção.");
+        rawAgents.push({ 
+            id: `S-${i}`, name: n, cat: cat, color: "blue", isUser: false, 
+            img: "/images/architect_core_sys_agent_1776436691571.png", 
+            faz: faz, 
+            res: "Garante a estabilidade da célula.", 
+            u: "Missões de alta demanda." 
+        }); 
+    }
+});
+
+export const AGENT_REGISTRY = rawAgents.reduce((acc, curr) => {
+    acc[curr.id] = { ...curr, group: curr.cat };
+    return acc;
+}, {});
 
 export const getAgent = (id) => {
-  return AGENT_REGISTRY[id.toLowerCase()];
+    return AGENT_REGISTRY[id];
 };
 
 export const ALL_AGENTS = Object.values(AGENT_REGISTRY);
 export const AGENTS_BY_GROUP = ALL_AGENTS.reduce((acc, agent) => {
-  if (!acc[agent.group]) acc[agent.group] = [];
-  acc[agent.group].push(agent);
-  return acc;
+    if (!acc[agent.cat]) acc[agent.cat] = [];
+    acc[agent.cat].push(agent);
+    return acc;
 }, {});
 
+// Mapping to readable names exactly as the old HTML
 export const GROUP_CONFIG = {
-  "Mentes Clonadas": { color: "#ffcc00", icon: "🧬" },
-  "Conclave": { color: "#ff3c3c", icon: "⚖️" },
-  "Inteligência Mega Brain": { color: "#00ff88", icon: "🧠" }
+    "conclave": { label: "03 - CONCLAVE DELIBERATIVO", color: "#ffffff", icon: "⚖️" },
+    "minds": { label: "04 - MENTES CLONADAS", color: "#ffcc00", icon: "🧠" },
+    "spy": { label: "05 - DEPTO ESPIONAGEM", color: "#ff00ff", icon: "🕵️" },
+    "product": { label: "06 - ENGENHARIA PRODUTO", color: "#ffcc00", icon: "📦" },
+    "copy": { label: "07 - COPYWRITING & VSL", color: "#00f2ff", icon: "✍️" },
+    "pro": { label: "08 - DESIGN & PRODUÇÃO", color: "#bf00ff", icon: "🎨" },
+    "traffic": { label: "09 - TRÁFEGO & ESCALA", color: "#ffcc00", icon: "🚀" },
+    "sys": { label: "10 - SISTEMA & CORE", color: "#00f2ff", icon: "⚙️" }
 };
