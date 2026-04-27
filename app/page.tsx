@@ -172,7 +172,7 @@ export default function NexusSupremoV30() {
             <div>
               <div className="flex items-center gap-3">
                 <h2 className="text-sm md:text-xl font-black uppercase tracking-[2px] md:tracking-[4px] text-white italic truncate max-w-[150px] md:max-w-none">{activeTab === 'traffic' ? 'CONSOLIDAÇÃO SUPREMO' : activeTab}</h2>
-                <span className="hidden sm:inline-block px-2 py-0.5 bg-[#7000ff]/20 border border-[#7000ff]/40 rounded text-[8px] font-black text-[#7000ff] tracking-widest animate-pulse">V31.5 ALPHA - FINAL</span>
+                <span className="hidden sm:inline-block px-2 py-0.5 bg-[#7000ff]/20 border border-[#7000ff]/40 rounded text-[8px] font-black text-[#7000ff] tracking-widest animate-pulse">V31.7 ALPHA - GROQ ONLINE</span>
               </div>
               <p className="text-[8px] md:text-[10px] text-gray-500 font-bold uppercase tracking-widest">{selectedAgent ? `Sincronia Alpha: ${selectedAgent.name}` : `Sincronização: ${lastUpdate || '--:--'}`}</p>
             </div>
