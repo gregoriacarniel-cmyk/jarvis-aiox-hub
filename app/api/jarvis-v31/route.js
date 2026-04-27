@@ -18,7 +18,7 @@ export async function POST(req) {
     Você deve analisar a mensagem do usuário (considerando o histórico) e retornar APENAS um JSON neste formato exato:
     {
       "fala_jarvis": "Sua resposta curta, técnica e direta ao usuário, lembrando do contexto.",
-      "tipo": "analise | execucao | consulta",
+      "tipo": "analise | execucao | consulta | conversa",
       "prioridade": "baixa | media | alta",
       "empresa": "nome_da_empresa_se_detectado"
     }`;
@@ -28,12 +28,12 @@ export async function POST(req) {
       { role: "system", content: systemPrompt },
       ...messages.slice(0, -1).map(m => ({
         role: m.role,
-        content: m.content ? m.content.split('\n\n[LOG DO SERVIDOR:')[0] : ""
+        content: m.content ? m.content.split('\n\n[LOG TÁTICO:')[0] : ""
       })),
       { role: "user", content: lastMessage }
     ];
 
-    let intent = { tipo: "analise", prioridade: "media", empresa: "FOXCONECT", fala_jarvis: "Comando recebido. Processando tática." };
+    let intent = { tipo: "conversa", prioridade: "media", empresa: "FOXCONECT", fala_jarvis: "Comando recebido. Processando." };
     
     try {
       const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -59,38 +59,46 @@ export async function POST(req) {
 
     // 3. Chamada à API Central do Jarvis (TÚNEL NGROK ATIVO)
     const VPS_URL = "https://upchuck-latrine-washtub.ngrok-free.dev";
-    let jarvisResult;
+    let jarvisResult = { status: "ignorado", agente: "Jarvis Core", resumo: "Apenas conversa", resultado: "" };
 
-    try {
-      const vpsRes = await fetch(`${VPS_URL}/jarvis/task`, {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "ngrok-skip-browser-warning": "true" 
-        },
-        body: JSON.stringify({
-          user_id: "GREGORI_ALPHA",
-          empresa: intent.empresa || "FOXCONECT",
-          mensagem: lastMessage,
-          tipo: intent.tipo || "analise",
-          prioridade: intent.prioridade || "media"
-        })
-      });
-      jarvisResult = await vpsRes.json();
-    } catch (error) {
-      // MODO DE EMERGÊNCIA: VPS OFFLINE
-      jarvisResult = {
-        status: "offline",
-        agente: "Jarvis Provisório",
-        resumo: "Conexão com Servidor Interrompida",
-        resultado: "Falha de comunicação com o Bunker de Execução na VPS (porta 3001). Ordem não executada.",
-        logs: ["Erro de conexão: " + error.message]
-      };
+    // Só dispara pro servidor VPS se for uma ordem real
+    if (intent.tipo !== "conversa") {
+      try {
+        const vpsRes = await fetch(`${VPS_URL}/jarvis/task`, {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "ngrok-skip-browser-warning": "true" 
+          },
+          body: JSON.stringify({
+            user_id: "GREGORI_ALPHA",
+            empresa: intent.empresa || "FOXCONECT",
+            mensagem: lastMessage,
+            tipo: intent.tipo || "analise",
+            prioridade: intent.prioridade || "media"
+          })
+        });
+        jarvisResult = await vpsRes.json();
+      } catch (error) {
+        // MODO DE EMERGÊNCIA: VPS OFFLINE
+        jarvisResult = {
+          status: "offline",
+          agente: "Jarvis Provisório",
+          resumo: "Conexão com Servidor Interrompida",
+          resultado: "Falha de comunicação com o Bunker de Execução na VPS (porta 3001). Ordem não executada.",
+          logs: ["Erro de conexão: " + error.message]
+        };
+      }
     }
 
     // 4. Retorno para o Dashboard (Limpo e Direto)
+    let finalResponse = intent.fala_jarvis;
+    if (intent.tipo !== "conversa" && jarvisResult.resultado) {
+       finalResponse += `\n\n[LOG TÁTICO: ${jarvisResult.agente}] ${jarvisResult.resultado}`;
+    }
+
     return NextResponse.json({
-      response: `${intent.fala_jarvis}\n\n[LOG DO SERVIDOR: ${jarvisResult.agente}] ${jarvisResult.resumo}\n${jarvisResult.resultado}`,
+      response: finalResponse,
       agentUsed: { name: jarvisResult.agente, icon: "🛡️" },
       fullResult: jarvisResult
     });
