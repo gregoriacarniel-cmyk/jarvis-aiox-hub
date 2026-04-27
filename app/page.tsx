@@ -8,6 +8,7 @@ import {
   BarChart3, MousePointer2, Monitor, DollarSign, Link as LinkIcon, Power, TrendingDown, Eye, Percent, Menu, X, ChevronRight
 } from "lucide-react";
 import { AGENT_REGISTRY, GROUP_CONFIG } from "@/app/lib/agentRegistry";
+import Link from "next/link";
 
 export default function NexusSupremoV30() {
   const [activeProject, setActiveProject] = useState("");
@@ -120,7 +121,7 @@ export default function NexusSupremoV30() {
       <div className="min-h-screen bg-[#050505] flex items-center justify-center p-8 relative overflow-hidden font-['Outfit']">
         <div className="max-w-4xl w-full space-y-12 relative z-10 text-center">
           <div className="space-y-4">
-            <h1 className="text-4xl md:text-6xl font-black tracking-tighter italic text-white leading-none">NEXUS <span className="text-cyan-400">SUPREMO</span> V30</h1>
+            <h1 className="text-4xl md:text-6xl font-black tracking-tighter italic text-white leading-none">NEXUS <span className="text-cyan-400">SUPREMO</span> V32.7</h1>
             <p className="text-[10px] uppercase font-black tracking-[1em] text-gray-600">Gregori Alpha | Engenharia de Construção Mobile</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -171,14 +172,14 @@ export default function NexusSupremoV30() {
             ))}
           </div>
           <div className="space-y-3">
-            <h3 className="px-4 text-[9px] font-black uppercase tracking-[3px] text-cyan-500">COMANDO MASTER</h3>
-            <button onClick={() => { setSelectedAgentId("mente-maestro"); setActiveTab("mente-maestro"); setSidebarOpen(false); }} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${selectedAgentId === "mente-maestro" ? 'bg-white/[0.05] border-white/10 shadow-xl' : 'hover:bg-white/[0.02] border-transparent'}`}>
+            <h3 className="px-4 text-[9px] font-black uppercase tracking-[3px] text-gray-500">01 - COMANDO MASTER</h3>
+            <button onClick={() => { setSelectedAgentId("mente-maestro"); setActiveTab("conclave"); setSidebarOpen(false); }} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${selectedAgentId === "mente-maestro" ? 'bg-white/[0.05] border-white/10 shadow-xl' : 'hover:bg-white/[0.02] border-transparent'}`}>
               <span className="text-2xl">🧠</span>
               <div className="text-left"><p className={`text-[12px] font-black tracking-tight ${selectedAgentId === "mente-maestro" ? 'text-white' : 'text-gray-500'}`}>MENTE MAESTRO</p></div>
             </button>
-            <button onClick={() => { setActiveTab("traffic"); setSelectedAgentId(null); setSidebarOpen(false); }} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${activeTab === "traffic" ? 'bg-white/[0.05] border-white/10 shadow-xl' : 'hover:bg-white/[0.02] border-transparent'}`}>
-              <span className="text-2xl">🚀</span>
-              <div className="text-left"><p className={`text-[12px] font-black tracking-tight ${activeTab === "traffic" ? 'text-white' : 'text-gray-500'}`}>GESTOR DE TRÁFEGO ALPHA</p></div>
+            <button onClick={() => { setActiveTab("traffic"); setSelectedAgentId(null); setSidebarOpen(false); }} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border ${activeTab === "traffic" && !selectedAgentId ? 'bg-white/[0.05] border-white/10 shadow-xl' : 'hover:bg-white/[0.02] border-transparent'}`}>
+              <span className="text-2xl">📊</span>
+              <div className="text-left"><p className={`text-[12px] font-black tracking-tight ${activeTab === "traffic" && !selectedAgentId ? 'text-white' : 'text-gray-500'}`}>02 - ORGANOGRAMA</p></div>
             </button>
           </div>
         </div>
@@ -192,12 +193,16 @@ export default function NexusSupremoV30() {
             <div>
               <div className="flex items-center gap-3">
                 <h2 className="text-sm md:text-xl font-black uppercase tracking-[2px] md:tracking-[4px] text-white italic truncate max-w-[150px] md:max-w-none">{activeTab === 'traffic' ? 'CONSOLIDAÇÃO SUPREMO' : activeTab}</h2>
-                <span className="hidden sm:inline-block px-2 py-0.5 bg-[#7000ff]/20 border border-[#7000ff]/40 rounded text-[8px] font-black text-[#7000ff] tracking-widest animate-pulse">V32.6 ALPHA - FULL COLLAPSE</span>
+                <span className="hidden sm:inline-block px-2 py-0.5 bg-cyan-500/20 border border-cyan-500/40 rounded text-[8px] font-black text-cyan-400 tracking-widest animate-pulse">V32.7 ALPHA - ELITE COMMAND</span>
               </div>
               <p className="text-[8px] md:text-[10px] text-gray-500 font-bold uppercase tracking-widest">{selectedAgent ? `Sincronia Alpha: ${selectedAgent.name}` : `Sincronização: ${lastUpdate || '--:--'}`}</p>
             </div>
           </div>
           <div className="flex items-center gap-2 md:gap-4">
+            <Link href="/dashboard" className="hidden md:flex items-center gap-3 px-5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-400 hover:bg-white/10 hover:text-cyan-400 transition-all">
+              <Activity size={14} className="animate-pulse" />
+              Monitorar Squad
+            </Link>
             {activeTab === "traffic" && <button onClick={fetchData} className="flex items-center justify-center md:justify-start gap-2 p-3 md:px-6 md:py-3 glass-card hover:border-cyan-500/50 transition-all text-[10px] font-black text-cyan-400 uppercase tracking-widest"><RefreshCw className={loading ? "animate-spin" : ""} size={14} /><span className="hidden md:inline">Atualizar</span></button>}
             <button onClick={() => setChatOpen(!isChatOpen)} className="w-10 h-10 flex items-center justify-center bg-cyan-500 rounded-xl text-black shadow-lg shadow-cyan-500/20 transition-transform active:scale-95"><MessageSquare size={20} /></button>
           </div>
@@ -294,15 +299,15 @@ export default function NexusSupremoV30() {
               {/* INTEL BOXES */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                 <div className="glass-card p-6 md:p-8 space-y-4 border-white/5 bg-white/[0.02]">
-                  <span className="text-[9px] font-black text-cyan-400 uppercase tracking-[3px]">01. O QUE FAZ</span>
+                  <span className="text-[9px] font-black text-cyan-400 uppercase tracking-[3px]">O QUE FAZ</span>
                   <p className="text-xs md:text-sm text-gray-300 font-bold leading-relaxed">{selectedAgent.faz}</p>
                 </div>
                 <div className="glass-card p-6 md:p-8 space-y-4 border-white/5 bg-white/[0.02]">
-                  <span className="text-[9px] font-black text-[#00ff88] uppercase tracking-[3px]">02. O QUE RESOLVE</span>
+                  <span className="text-[9px] font-black text-[#00ff88] uppercase tracking-[3px]">O QUE RESOLVE</span>
                   <p className="text-xs md:text-sm text-gray-300 font-bold leading-relaxed">{selectedAgent.res}</p>
                 </div>
                 <div className="glass-card p-6 md:p-8 space-y-4 border-white/5 bg-white/[0.02]">
-                  <span className="text-[9px] font-black text-[#7000ff] uppercase tracking-[3px]">03. ONDE USAR</span>
+                  <span className="text-[9px] font-black text-[#7000ff] uppercase tracking-[3px]">ONDE USAR</span>
                   <p className="text-xs md:text-sm text-gray-300 font-bold leading-relaxed">{selectedAgent.u}</p>
                 </div>
               </div>
