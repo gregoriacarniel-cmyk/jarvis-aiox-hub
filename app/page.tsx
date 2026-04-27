@@ -192,14 +192,14 @@ export default function NexusSupremoV30() {
             <div>
               <div className="flex items-center gap-3">
                 <h2 className="text-sm md:text-xl font-black uppercase tracking-[2px] md:tracking-[4px] text-white italic truncate max-w-[150px] md:max-w-none">{activeTab === 'traffic' ? 'CONSOLIDAÇÃO SUPREMO' : activeTab}</h2>
-                <span className="hidden sm:inline-block px-2 py-0.5 bg-[#7000ff]/20 border border-[#7000ff]/40 rounded text-[8px] font-black text-[#7000ff] tracking-widest animate-pulse">V32.5 ALPHA - INTEL ACTIVE</span>
+                <span className="hidden sm:inline-block px-2 py-0.5 bg-[#7000ff]/20 border border-[#7000ff]/40 rounded text-[8px] font-black text-[#7000ff] tracking-widest animate-pulse">V32.6 ALPHA - FULL COLLAPSE</span>
               </div>
               <p className="text-[8px] md:text-[10px] text-gray-500 font-bold uppercase tracking-widest">{selectedAgent ? `Sincronia Alpha: ${selectedAgent.name}` : `Sincronização: ${lastUpdate || '--:--'}`}</p>
             </div>
           </div>
           <div className="flex items-center gap-2 md:gap-4">
             {activeTab === "traffic" && <button onClick={fetchData} className="flex items-center justify-center md:justify-start gap-2 p-3 md:px-6 md:py-3 glass-card hover:border-cyan-500/50 transition-all text-[10px] font-black text-cyan-400 uppercase tracking-widest"><RefreshCw className={loading ? "animate-spin" : ""} size={14} /><span className="hidden md:inline">Atualizar</span></button>}
-            <button onClick={() => setChatOpen(!isChatOpen)} className="lg:hidden w-10 h-10 flex items-center justify-center bg-cyan-500 rounded-xl text-black shadow-lg shadow-cyan-500/20"><MessageSquare size={20} /></button>
+            <button onClick={() => setChatOpen(!isChatOpen)} className="w-10 h-10 flex items-center justify-center bg-cyan-500 rounded-xl text-black shadow-lg shadow-cyan-500/20 transition-transform active:scale-95"><MessageSquare size={20} /></button>
           </div>
         </header>
 
@@ -329,7 +329,7 @@ export default function NexusSupremoV30() {
         </div>
       </main>
 
-      <aside className={`fixed inset-y-0 right-0 z-50 ${isChatExpanded ? 'w-[350px] lg:w-[800px]' : 'w-[350px] lg:w-[400px]'} border-l border-white/5 bg-black/95 transform transition-all duration-500 flex flex-col`}>
+      <aside className={`fixed inset-y-0 right-0 z-50 ${isChatExpanded ? 'w-full lg:w-[800px]' : 'w-[350px] lg:w-[400px]'} border-l border-white/5 bg-black/95 transform transition-all duration-500 flex flex-col ${isChatOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="p-6 md:p-8 border-b border-white/5 bg-white/[0.02] flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 md:w-14 md:h-14 bg-cyan-500 rounded-2xl md:rounded-3xl flex items-center justify-center shadow-2xl shadow-cyan-500/20"><MessageSquare className="text-black" size={24} /></div>
@@ -337,7 +337,7 @@ export default function NexusSupremoV30() {
           </div>
           <div className="flex items-center gap-3">
              <button onClick={() => setIsChatExpanded(!isChatExpanded)} className="hidden lg:flex w-10 h-10 items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl text-gray-400 hover:text-white transition-all"><ArrowRight size={18} className={`transform transition-transform ${isChatExpanded ? 'rotate-180' : ''}`} /></button>
-             <button onClick={() => setChatOpen(false)} className="lg:hidden text-gray-500 hover:text-white"><X size={24} /></button>
+             <button onClick={() => setChatOpen(false)} className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl text-gray-500 hover:text-white transition-all"><X size={20} /></button>
           </div>
         </div>
         
