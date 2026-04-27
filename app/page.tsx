@@ -214,7 +214,23 @@ export default function NexusSupremoV30() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 p-4 glass-card border-white/5 bg-white/[0.02] shadow-2xl">
                 <div className="space-y-2"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Conta Alpha</p><select value={selectedAccount} onChange={(e) => setSelectedAccount(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase text-white p-2 md:p-4 focus:outline-none cursor-pointer">{accounts.map(acc => (<option key={acc.id} value={acc.id} className="bg-[#050505]">{acc.name}</option>))}</select></div>
                 <div className="space-y-2 md:border-x border-white/5"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Campanha Ativa</p><select value={selectedCampaign} onChange={(e) => setSelectedCampaign(e.target.value)} className="w-full bg-transparent text-[11px] font-black uppercase text-white p-2 md:p-4 focus:outline-none cursor-pointer"><option value="" className="bg-[#050505]">Todas</option>{campaigns.map(camp => (<option key={camp.id} value={camp.id} className="bg-[#050505]">{camp.name}</option>))}</select></div>
-                <div className="space-y-2"><p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Período Tático</p><div className="flex gap-1 md:gap-2 px-2 md:px-4 py-2 overflow-x-auto scrollbar-hide">{['today', 'yesterday', 'last_7d', 'last_30d'].map(p => (<button key={p} onClick={() => setSelectedDate(p)} className={`flex-1 min-w-[50px] px-2 py-2 rounded-lg text-[8px] md:text-[9px] font-black uppercase transition-all ${selectedDate === p ? 'bg-cyan-500 text-black shadow-lg shadow-cyan-500/20' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}>{p === 'today' ? 'Hoje' : p === 'yesterday' ? 'Ontem' : p === 'last_7d' ? '7D' : '30D'}</button>))}</div></div>
+                <div className="space-y-2">
+                  <p className="text-[9px] font-black text-gray-600 uppercase px-4 tracking-widest">Período Tático</p>
+                  <div className="px-4 space-y-2">
+                    <div className="flex gap-1 overflow-x-auto scrollbar-hide">
+                      {['today', 'yesterday', 'last_7d', 'last_30d'].map(p => (
+                        <button key={p} onClick={() => setSelectedDate(p)} className={`flex-1 min-w-[45px] py-1.5 rounded-lg text-[8px] font-black uppercase transition-all ${selectedDate === p ? 'bg-cyan-500 text-black shadow-lg shadow-cyan-500/20' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}>
+                          {p === 'today' ? 'Hoje' : p === 'yesterday' ? 'Ontem' : p === 'last_7d' ? '7D' : '30D'}
+                        </button>
+                      ))}
+                    </div>
+                    <div className={`flex items-center justify-between gap-1 p-1.5 rounded-lg border ${selectedDate.includes('_') || selectedDate.match(/^\d{4}-\d{2}-\d{2}$/) ? 'border-cyan-500 shadow-lg shadow-cyan-500/20' : 'border-white/10'} bg-white/[0.02]`}>
+                      <input type="date" value={selectedDate.split('_')[0] && selectedDate.split('_')[0].match(/^\d{4}-\d{2}-\d{2}$/) ? selectedDate.split('_')[0] : ''} onChange={(e) => { const s = e.target.value; const eDate = selectedDate.includes('_') ? selectedDate.split('_')[1] : s; setSelectedDate(s ? `${s}_${eDate}` : 'today'); }} className="bg-transparent text-cyan-400 font-black text-[9px] focus:outline-none cursor-pointer w-full [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert" />
+                      <span className="text-gray-500 text-[8px] font-black uppercase shrink-0">Até</span>
+                      <input type="date" value={selectedDate.includes('_') ? selectedDate.split('_')[1] : ''} onChange={(e) => { const eDate = e.target.value; const s = selectedDate.includes('_') ? selectedDate.split('_')[0] : eDate; setSelectedDate(eDate ? `${s}_${eDate}` : 'today'); }} className="bg-transparent text-cyan-400 font-black text-[9px] focus:outline-none cursor-pointer w-full [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert" />
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -232,9 +248,9 @@ export default function NexusSupremoV30() {
                   { label: "CPM Médio", value: `R$ ${data?.metrics?.cpm || "0,00"}`, color: "text-gray-400", icon: Eye },
                   { label: "CTR Master", value: `${data?.metrics?.ctr || "0.00"}%`, color: "text-cyan-400", icon: Percent },
                 ].map((stat, i) => (
-                  <div key={i} className="glass-card p-4 md:p-6 shadow-xl relative overflow-hidden group border-white/5 hover:border-cyan-500/20 transition-all">
-                    <div className="flex items-center justify-between mb-2 md:mb-4"><stat.icon size={14} className="text-gray-600" /><p className="text-[7px] md:text-[8px] uppercase font-black tracking-widest text-gray-500">{stat.label}</p></div>
-                    <h3 className={`text-sm md:text-2xl font-black tracking-tighter ${stat.color} truncate`}>{stat.value}</h3>
+                  <div key={i} className="glass-card p-4 md:p-6 bg-white/[0.03] shadow-[0_0_20px_rgba(255,255,255,0.06)] border border-white/10 relative overflow-hidden group hover:border-cyan-500/30 transition-all">
+                    <div className="flex items-center justify-between mb-3 md:mb-5"><stat.icon size={16} className="text-gray-300 drop-shadow-md" /><p className="text-[10px] md:text-[11px] uppercase font-black tracking-widest text-gray-200 drop-shadow-md">{stat.label}</p></div>
+                    <h3 className={`text-xl md:text-3xl font-black tracking-tighter ${stat.color} truncate drop-shadow-lg`}>{stat.value}</h3>
                   </div>
                 ))}
               </div>

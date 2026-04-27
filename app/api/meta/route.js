@@ -28,7 +28,15 @@ export async function GET(request) {
     if (type === 'insights' && accountId) {
       const targetId = campaignId || accountId;
       
-      const url = `https://graph.facebook.com/${API_VERSION}/${targetId}/insights?fields=adset_id,adset_name,spend,reach,frequency,cpm,ctr,cpc,actions,action_values,inline_link_clicks,purchase_roas&level=adset&date_preset=${datePreset}&access_token=${token}`;
+      let dateQuery = `&date_preset=${datePreset}`;
+      if (datePreset.match(/^\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}$/)) {
+        const [start, end] = datePreset.split('_');
+        dateQuery = `&time_range={"since":"${start}","until":"${end}"}`;
+      } else if (datePreset.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        dateQuery = `&time_range={"since":"${datePreset}","until":"${datePreset}"}`;
+      }
+      
+      const url = `https://graph.facebook.com/${API_VERSION}/${targetId}/insights?fields=adset_id,adset_name,spend,reach,frequency,cpm,ctr,cpc,actions,action_values,inline_link_clicks,purchase_roas&level=adset${dateQuery}&access_token=${token}`;
       
       const res = await fetch(url);
       const rawData = await res.json();
